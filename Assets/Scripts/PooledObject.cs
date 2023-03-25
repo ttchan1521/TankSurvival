@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PooledObject: MonoBehaviour
+public class PooledObject : MonoBehaviour
 {
     [HideInInspector]
     public ObjectPool pool;

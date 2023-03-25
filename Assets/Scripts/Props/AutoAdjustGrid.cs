@@ -4,18 +4,20 @@
 using UnityEngine;
 using System.Collections;
 
-public class AutoAdjustGrid : MonoBehaviour {
-	
-	public float gridSize=0.5f;
-	
-	// Use this for initialization
-	void Start () {
-		Renderer rend=transform.GetComponent<Renderer>();
-		if(rend==null) return;
-		
-		Material mat=rend.material;
-		
-		mat.mainTextureScale=new Vector2(transform.localScale.x*gridSize, transform.localScale.y*gridSize);
-	}
-	
+public class AutoAdjustGrid : MonoBehaviour
+{
+
+    public float gridSize = 0.5f;
+
+    // Use this for initialization
+    void Start()
+    {
+        Renderer rend = transform.GetComponent<Renderer>();
+        if (rend == null) return;
+
+        Material mat = rend.material;
+
+        mat.mainTextureScale = new Vector2(transform.localScale.x * gridSize, transform.localScale.y * gridSize);
+    }
+
 }
