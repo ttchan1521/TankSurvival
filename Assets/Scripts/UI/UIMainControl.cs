@@ -6,10 +6,7 @@ using System.Collections.Generic;
 
 using UnityStandardAssets.ImageEffects;
 
-using TDSTK;
-
-
-namespace TDSTK_UI
+namespace UI
 {
 
     public class UIMainControl : MonoBehaviour
@@ -97,14 +94,14 @@ namespace TDSTK_UI
 
         void OnEnable()
         {
-            TDS.onGameOverE += OnGameOver;
+            TDS.onEndGame += OnGameOver;
             TDS.onGameMessageE += OnGameMessage;
 
             TDS.onPlayerRespawnedE += OnPlayerRespawn;
         }
         void OnDisable()
         {
-            TDS.onGameOverE -= OnGameOver;
+            TDS.onEndGame -= OnGameOver;
             TDS.onGameMessageE -= OnGameMessage;
 
             TDS.onPlayerRespawnedE -= OnPlayerRespawn;

@@ -7,7 +7,7 @@ using System.Collections;
 using UnityStandardAssets.ImageEffects;
 
 
-namespace TDSTK_UI
+namespace UI
 {
 
     public class UI

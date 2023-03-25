@@ -2,9 +2,7 @@
 
 using System.Collections;
 
-using TDSTK;
-
-namespace TDSTK_UI
+namespace UI
 {
 
     public class TDSTouchInput : MonoBehaviour

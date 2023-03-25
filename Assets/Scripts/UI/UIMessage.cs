@@ -4,9 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-using TDSTK;
-
-namespace TDSTK_UI
+namespace UI
 {
 
     public class UIMessage : MonoBehaviour

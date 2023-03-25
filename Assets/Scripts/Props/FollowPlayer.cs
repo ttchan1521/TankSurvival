@@ -3,8 +3,6 @@
 using UnityEngine;
 using System.Collections;
 
-using TDSTK;
-
 public class FollowPlayer : MonoBehaviour
 {
 

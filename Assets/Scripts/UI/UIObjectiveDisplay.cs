@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 using System.Collections;
 
-using TDSTK;
-
-namespace TDSTK_UI
+namespace UI
 {
 
 
