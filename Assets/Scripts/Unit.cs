@@ -370,7 +370,8 @@ public class Unit : PooledObject
         //check if the unit is going to drop any collectible
         if (useDropManager)
         {   //if useDropManager is enabled, inform CollectibleDropManager
-            CollectibleDropManager.UnitDestroyed(thisT.position);
+        
+            CollectibleDropManager.instance.UnitDestroyed(thisT.position);
         }
         else
         {

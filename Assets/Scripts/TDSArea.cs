@@ -11,55 +11,40 @@ public class TDSArea : MonoBehaviour
     public enum _AreaType { Square, Circle }
     public _AreaType type;
 
-    private Transform thisT;
-
-    void Awake()
-    {
-        thisT = transform;
-    }
-
-
     public Quaternion GetRotation()
     {
-        return Quaternion.Euler(0, thisT.rotation.eulerAngles.y, 0);
+        return Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 
 
     public Vector3 GetPos()
     {
-        return thisT != null ? thisT.position : transform.position;
+        return transform.position;
     }
 
-    public Vector3 GetPosition()
+    public Vector3 GetRandomPosition()
     {
         if (type == _AreaType.Square)
         {
-            float x = Random.Range(-thisT.localScale.x, thisT.localScale.x);
-            float z = Random.Range(-thisT.localScale.z, thisT.localScale.z);
-            Vector3 v = thisT.position + thisT.rotation * new Vector3(x, 0, z);
+            float x = Random.Range(-transform.localScale.x, transform.localScale.x);
+            float z = Random.Range(-transform.localScale.z, transform.localScale.z);
+            Vector3 v = transform.position + transform.rotation * new Vector3(x, 0, z);
             return v;
         }
         else if (type == _AreaType.Circle)
         {
             Vector3 dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-            return thisT.position + thisT.rotation * dir * Random.Range(0, GetMaximumScale());
+            return transform.position + transform.rotation * dir * Random.Range(0, GetMaximumScale());
         }
 
-        return thisT.position;
+        return transform.position;
     }
 
     float GetMaximumScale()
     {
-        if (thisT != null)
-        {
-            float scale = Mathf.Max(thisT.localScale.x, thisT.localScale.y);
-            return Mathf.Max(scale, thisT.localScale.z);
-        }
-        else
-        {
-            float scale = Mathf.Max(transform.localScale.x, transform.localScale.y);
-            return Mathf.Max(scale, transform.localScale.z);
-        }
+
+        float scale = Mathf.Max(transform.localScale.x, transform.localScale.y);
+        return Mathf.Max(scale, transform.localScale.z);
     }
 
     [HideInInspector] public Color gizmoColor;

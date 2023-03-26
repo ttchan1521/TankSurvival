@@ -8,14 +8,9 @@ using UnityStandardAssets.ImageEffects;
 
 public class CameraControl : MonoBehaviour
 {
-
-    [HideInInspector] public Transform thisT;
-    [HideInInspector] public GameObject thisObj;
-
     private static CameraControl instance;
 
-    private Camera cam;
-    private Transform camT;
+    [SerializeField] private Camera cam;
     public static Camera GetMainCamera() { return instance.cam; }
 
     [HideInInspector] public BlurOptimized blurEffect;
@@ -36,26 +31,31 @@ public class CameraControl : MonoBehaviour
     public float defaultZoom;
     public float defaultZoomOrtho;
 
+     //camera shake
+    public float shakeMultiplier = 0.5f;        //check the inspector
+    private float camShakeMagnitude = 0;    //current active shake magnitude
+
     void Awake()
     {
-        instance = this;
-        thisT = transform;
-        thisObj = gameObject;
+        if (instance == null)
+            instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        cam = thisObj.GetComponentInChildren<Camera>();
-        camT = cam.transform;
-
-        defaultZoom = camT.localPosition.z;
+        defaultZoom = cam.transform.localPosition.z;
         defaultZoomOrtho = cam.orthographicSize;
 
-        blurEffect = thisObj.GetComponentInChildren<BlurOptimized>();
+        blurEffect = gameObject.GetComponentInChildren<BlurOptimized>();
         if (blurEffect != null) blurEffect.enabled = false;
     }
 
     void Start()
     {
         if (trackSpeed > 0 && GameControl.GetPlayer() != null)
-            thisT.position = GameControl.GetPlayer().thisT.position + posOffset;
+            transform.position = GameControl.GetPlayer().thisT.position + posOffset;
     }
 
     void OnEnable()
@@ -91,7 +91,7 @@ public class CameraControl : MonoBehaviour
             }
 
             //lerp to target's position
-            thisT.position = Vector3.Lerp(thisT.position, targetPos, Time.deltaTime * trackSpeed);
+            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * trackSpeed);
 
             //adjust wanted zoom level based on player speed
             wantedZoom = defaultZoom * (1 + (player.GetVelocity() / zoomNormalizeFactor));
@@ -101,9 +101,29 @@ public class CameraControl : MonoBehaviour
         //if dynamicZoom is enabled, adjust the zoom acording to wanted zoom level
         if (enableDynamicZoom)
         {
-            camT.localPosition = new Vector3(camT.localPosition.x, camT.localPosition.y, Mathf.Lerp(camT.localPosition.z, wantedZoom, Time.deltaTime * zoomSpeed));
+            cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, cam.transform.localPosition.y, Mathf.Lerp(cam.transform.localPosition.z, wantedZoom, Time.deltaTime * zoomSpeed));
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, wantedZoomOrtho, Time.deltaTime * zoomSpeed);
         }
+    }
+
+    //delagates of TDS.onCameraShakeE
+    public void CameraShake(float magnitude = 1)
+    {
+        if (magnitude == 0) return;
+        instance.camShakeMagnitude = magnitude * 0.5f;
+    }
+    //called from Update()
+    public void Shake()
+    {
+        if (Time.timeScale == 0 || camShakeMagnitude <= 0) return;    //dont execute if the game is paused
+        
+        //randomize the camera transform x and y local position, create a shaking effect
+        float x = 2 * (Random.value - 0.5f) * camShakeMagnitude * shakeMultiplier;
+        float y = 2 * (Random.value - 0.5f) * camShakeMagnitude * shakeMultiplier;
+        cam.transform.localPosition = new Vector3(x, y, cam.transform.localPosition.z);
+
+        //reduce the shake magnitude overtime
+        camShakeMagnitude *= (1 - Time.deltaTime * 5);
     }
 
 
@@ -145,29 +165,9 @@ public class CameraControl : MonoBehaviour
 
 
 
-    //camera shake
-    public float shakeMultiplier = 0.5f;        //check the inspector
-    private float camShakeMagnitude = 0;    //current active shake magnitude
+   
 
-    //delagates of TDS.onCameraShakeE
-    public void CameraShake(float magnitude = 1)
-    {
-        if (magnitude == 0) return;
-        instance.camShakeMagnitude = magnitude * 0.5f;
-    }
-    //called from Update()
-    public void Shake()
-    {
-        if (Time.timeScale == 0) return;    //dont execute if the game is paused
-
-        //randomize the camera transform x and y local position, create a shaking effect
-        float x = 2 * (Random.value - 0.5f) * camShakeMagnitude * shakeMultiplier;
-        float y = 2 * (Random.value - 0.5f) * camShakeMagnitude * shakeMultiplier;
-        camT.localPosition = new Vector3(x, y, camT.localPosition.z);
-
-        //reduce the shake magnitude overtime
-        camShakeMagnitude *= (1 - Time.deltaTime * 5);
-    }
+    
 
 
 

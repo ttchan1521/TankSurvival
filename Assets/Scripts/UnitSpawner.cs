@@ -244,7 +244,7 @@ public class UnitSpawner : MonoBehaviour
 
                 Quaternion rot = !randomRotation ? sArea.GetRotation() : Quaternion.Euler(0, Random.Range(0, 360), 0);
 
-                UnitAI unitInstance = SpawnUnit(subWave.unitPrefab, sArea.GetPosition(), rot, subWave.unitPrefab.gameObject.name + "_" + spawnCount);
+                UnitAI unitInstance = SpawnUnit(subWave.unitPrefab, sArea.GetRandomPosition(), rot, subWave.unitPrefab.gameObject.name + "_" + spawnCount);
                 unitInstance.SetWaveID(this, wave.waveID);  //assign the unit with the waveID so they know they belong to a wave (unit with valid waveID will call UnitCleared() callback)
 
                 wave.activeUnitCount += 1;
@@ -328,7 +328,7 @@ public class UnitSpawner : MonoBehaviour
 
             //randomly choose a spawn area and position as well as a rotation
             int rand = Random.Range(0, spawnAreaList.Count);
-            Vector3 pos = spawnAreaList[rand].GetPosition();
+            Vector3 pos = spawnAreaList[rand].GetRandomPosition();
             Quaternion rot = !randomRotation ? spawnAreaList[rand].GetRotation() : Quaternion.Euler(0, Random.Range(0, 360), 0);
 
             //choose the unit prefab to spawn

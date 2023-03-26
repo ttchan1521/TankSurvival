@@ -17,7 +17,19 @@ public class CollectibleSpawner : MonoBehaviour
 {
 
     public bool spawnUponStart = true;
-    private bool spawnStarted = false;
+    private bool spawned = false;
+
+    [HideInInspector] public TDSArea spawnArea;
+
+    public float startDelay = 5;
+    public float spawnCD = 10;
+    public int maxItemCount = 1;
+    private List<Collectible> existItemList = new List<Collectible>();
+
+    public float spawnChance = 0.2f;
+    public float failModifier = 0.1f;
+    private int unSpawnCount = 0;
+    public List<CollectibleSpawnInfo> spawnItemList = new List<CollectibleSpawnInfo>();
 
 
     void Awake()
@@ -28,46 +40,31 @@ public class CollectibleSpawner : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < spawnItemList.Count; i++)
-        {
-            if (spawnItemList[i].item == null)
-            {
-                spawnItemList.RemoveAt(i);
-                i -= 1;
-                continue;
-            }
+        // for (int i = 0; i < spawnItemList.Count; i++)
+        // {
+        //     if (spawnItemList[i].item == null)
+        //     {
+        //         spawnItemList.RemoveAt(i);
+        //         i--;
+        //         continue;
+        //     }
 
-            //Debug.Log(i+"   "+spawnItemList[i].item);
-            //ObjectPoolManager.New(spawnItemList[i].item.gameObject, 1);
-        }
+        //     Debug.Log(i+"   "+spawnItemList[i].item);
+        //     ObjectPoolManager.New(spawnItemList[i].item.gameObject, 1);
+        // }
 
         //if spawnUponStart is enabled, start spawning
-        if (spawnUponStart) StartSpawn();
+        if (spawnUponStart) 
+            StartSpawn();
     }
 
     public void StartSpawn()
     {
-        if (spawnStarted) return;
-        spawnStarted = true;
+        if (spawned) return;
+        spawned = true;
 
         StartCoroutine(SpawnRoutine());
     }
-
-
-
-
-    [HideInInspector] public TDSArea spawnArea;
-
-    public float startDelay = 5;
-    public float spawnCD = 10;
-    public int maxItemCount = 1;
-    private List<Collectible> existingItemList = new List<Collectible>();
-
-    public float spawnChance = 0.2f;
-    public float failModifier = 0.1f;
-    private int failCount = 0;
-    public List<CollectibleSpawnInfo> spawnItemList = new List<CollectibleSpawnInfo>();
-
 
     IEnumerator SpawnRoutine()
     {
@@ -76,11 +73,11 @@ public class CollectibleSpawner : MonoBehaviour
         //keep on looping
         while (true)
         {
-            Collectible newObj = SpawnItem(spawnArea.GetPosition());
+            Collectible newObj = SpawnItem(spawnArea.GetRandomPosition());
             if (newObj != null)
             {
-                newObj.SetTriggerCallback(this.ItemTriggeredCallback);  //set callback function for the collectible (which clear the item in existingItemList)
-                existingItemList.Add(newObj);   //add the new item to existingItemList
+                newObj.SetTriggerCallback(ItemDisableCallback);  //set callback function for the collectible (which clear the item in existingItemList)
+                existItemList.Add(newObj);   //add the new item to existingItemList
             }
 
             //wait for spawnCD before attempting next spawn
@@ -91,28 +88,29 @@ public class CollectibleSpawner : MonoBehaviour
     void Update()
     {
         //iterate the cooldown of each spawn item
-        for (int i = 0; i < spawnItemList.Count; i++) spawnItemList[i].currentCD -= Time.deltaTime;
+        for (int i = 0; i < spawnItemList.Count; i++) 
+            spawnItemList[i].currentCD -= Time.deltaTime;
     }
 
 
 
     public Collectible SpawnItem(Vector3 pos)
     {
-        if (existingItemList.Count >= maxItemCount) return null;
+        if (existItemList.Count >= maxItemCount) return null;
 
-        float chance = spawnChance + (failCount * failModifier);
+        float chance = spawnChance + (unSpawnCount * failModifier);
 
         //check the chance, if this doesnt pass, dont spawn
         if (Random.value > chance)
         {
-            failCount += 1;
+            unSpawnCount++;
             return null;
         }
 
-        failCount = 0;
+        unSpawnCount = 0;
 
         //a list of potential item available for spawn
-        List<int> potentialList = new List<int>();
+        List<int> avaiableItemList = new List<int>();
 
         //loop through all item, add the available item to potential list
         for (int i = 0; i < spawnItemList.Count; i++)
@@ -121,21 +119,21 @@ public class CollectibleSpawner : MonoBehaviour
             if (spawnItemList[i].currentCD > 0) continue;
             if (Random.value > spawnItemList[i].chance) continue;
 
-            potentialList.Add(i);
+            avaiableItemList.Add(i);
         }
 
         //if there's item available to spawn
-        if (potentialList.Count > 0)
+        if (avaiableItemList.Count > 0)
         {
             //select an random item from the list and spawn it
-            int rand = Random.Range(0, potentialList.Count);
-            int ID = potentialList[rand];
+            int rand = Random.Range(0, avaiableItemList.Count);
+            int itemIndex = avaiableItemList[rand];
             //GameObject obj=ObjectPoolManager.Spawn(spawnItemList[ID].item.gameObject, pos, Quaternion.identity);
-            Collectible obj = spawnItemList[ID].item.GetPoolItem<Collectible>(pos, Quaternion.identity);
+            Collectible obj = spawnItemList[itemIndex].item.GetPoolItem<Collectible>(pos, Quaternion.identity);
             //GameObject obj=(GameObject)Instantiate(spawnItemList[ID].item.gameObject, pos, Quaternion.identity);
 
             //refresh the item cooldown
-            spawnItemList[ID].currentCD = spawnItemList[ID].cooldown;
+            spawnItemList[itemIndex].currentCD = spawnItemList[itemIndex].cooldown;
 
             return obj;
         }
@@ -145,9 +143,9 @@ public class CollectibleSpawner : MonoBehaviour
 
 
     //callback function for when an item is triggered
-    public void ItemTriggeredCallback(Collectible obj)
+    public void ItemDisableCallback(Collectible obj)
     {
-        existingItemList.Remove(obj);
+        existItemList.Remove(obj);
     }
 
 

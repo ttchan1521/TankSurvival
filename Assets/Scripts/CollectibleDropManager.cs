@@ -9,29 +9,33 @@ using System.Collections;
 public class CollectibleDropManager : MonoBehaviour
 {
 
-    private static CollectibleDropManager instance;
-    public static CollectibleDropManager GetInstance() { return instance; }
+    public static CollectibleDropManager instance;
 
-    [HideInInspector] public CollectibleSpawner spawner;
+    public CollectibleSpawner spawner;
 
     void Awake()
     {
-        instance = this;
-
-        spawner = gameObject.GetComponent<CollectibleSpawner>();
+        if (instance == null)
+            instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
         spawner.spawnUponStart = false; //disable the spawner spawnUponStart so that it only spawned when called
     }
 
 
     //called from Unit with useDropManager enabled.
-    public static void UnitDestroyed(Vector3 pos)
+    public void UnitDestroyed(Vector3 pos)
     {
         if (instance == null) return;
         if (instance.spawner == null) return;
 
         //if the spawner exist, spawned a collectible item at the unit position
         //this doesnt guarantee a successful spawn, it will depend on the spawn chance of the spawner and what not
-        instance.spawner.SpawnItem(pos);
+        spawner.SpawnItem(pos);
     }
 
 }
