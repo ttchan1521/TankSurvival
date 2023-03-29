@@ -22,7 +22,10 @@ public class CollectibleDropManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
+
+        if (spawner == null)
+            spawner = gameObject.GetComponent<CollectibleSpawner>();
+
         spawner.spawnUponStart = false; //disable the spawner spawnUponStart so that it only spawned when called
     }
 

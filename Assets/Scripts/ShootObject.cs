@@ -533,7 +533,8 @@ public class ShootObject : PooledObject
         if (thisCollider != null) thisCollider.enabled = false;
 
         if (hideObject != null) hideObject.SetActive(false);
-        ObjectPoolManager.Unspawn(thisObj, projectileDestroyDelay);
+        //ObjectPoolManager.Unspawn(thisObj, projectileDestroyDelay);
+        ReturnToPool(projectileDestroyDelay);
     }
 
 

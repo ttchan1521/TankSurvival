@@ -148,8 +148,9 @@ public class Ability : Item
             AttackInstance aInstance = new AttackInstance(GameControl.GetPlayer(), GetRuntimeAttackStats());
 
             //Instantiate the shoot-object and fires it
-            GameObject soObj = (GameObject)MonoBehaviour.Instantiate(shootObject, shootPos, shootRot);
-            ShootObject soInstance = soObj.GetComponent<ShootObject>();
+            // GameObject soObj = (GameObject)MonoBehaviour.Instantiate(shootObject, shootPos, shootRot);
+            // ShootObject soInstance = soObj.GetComponent<ShootObject>();
+            ShootObject soInstance = shootObject.GetComponent<ShootObject>().GetPoolItem<ShootObject>(shootPos, shootRot);
             soInstance.Shoot(GameControl.GetPlayer().thisObj.layer, GetRange(), srcT, aInstance);
         }
 

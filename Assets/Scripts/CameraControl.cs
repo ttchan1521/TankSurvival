@@ -45,6 +45,9 @@ public class CameraControl : MonoBehaviour
             return;
         }
 
+        if (cam == null)
+            cam = GetComponentInChildren<Camera>();
+
         defaultZoom = cam.transform.localPosition.z;
         defaultZoomOrtho = cam.orthographicSize;
 
