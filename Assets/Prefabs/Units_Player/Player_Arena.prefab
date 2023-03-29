@@ -450,7 +450,7 @@ MonoBehaviour:
   shootPointList:
   - {fileID: 0}
   shootPointDelay: 0
-  turretObj: {fileID: 0}
+  turretObj: {fileID: 469078}
   smoothTurretRotation: 1
   turretTrackingSpeed: 10
   range: 30
@@ -520,7 +520,7 @@ MonoBehaviour:
     critChanceMul: 1
     critMultiplierMul: 1
     expired: 0
-  weaponMountPoint: {fileID: 0}
+  weaponMountPoint: {fileID: 474164}
   enableAllWeapons: 0
   weaponList:
   - {fileID: 11456444, guid: fd09f1a85fedd2d4aa40fff4d2e91afd, type: 3}
