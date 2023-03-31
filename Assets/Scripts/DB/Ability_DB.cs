@@ -35,6 +35,16 @@ public class Ability_DB : ScriptableObject
         return null;
     }
 
+    public static Ability GetItem(int ID)
+    {
+        Init();
+        for (int i = 0; i < instance.abilityList.Count; i++)
+        {
+            if (instance.abilityList[i].ID == ID) return instance.abilityList[i];
+        }
+        return null;
+    }
+
     public static List<Ability> Load() { Init(); return instance.abilityList; }
 
     public static List<Ability> LoadClone()
@@ -43,6 +53,16 @@ public class Ability_DB : ScriptableObject
         List<Ability> newList = new List<Ability>();
         for (int i = 0; i < instance.abilityList.Count; i++) newList.Add(instance.abilityList[i].Clone());
         return newList;
+    }
+
+    public static int GetIndexAbility(int ID)
+    {
+        Init();
+        for (int i = 0; i < instance.abilityList.Count; i++)
+        {
+            if (instance.abilityList[i].ID == ID) return i;
+        }
+        return -1;
     }
 
 

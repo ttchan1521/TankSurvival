@@ -243,76 +243,76 @@ public class PlayerPerk : MonoBehaviour
             hitPointGainMul += perk.hitPointGainMul;
             energyGainMul += perk.energyGainMul;
         }
-        else if (perk.type == _PerkType.AddWeapon && perk.newWeaponID >= 0)
-        {
+        // else if (perk.type == _PerkType.AddWeapon && perk.newWeaponID >= 0)
+        // {
 
-            Weapon newWeapon = Weapon_DB.GetPrefab(perk.newWeaponID);
+        //     Weapon newWeapon = Weapon_DB.GetPrefab(perk.newWeaponID);
 
-            if (newWeapon != null)
-            {
-                if (perk.replaceExisting)
-                {
-                    player.AddWeapon(newWeapon, true);
-                }
-                else if (perk.replaceWeaponID >= 0)
-                {
-                    int replaceIndex = -1;
-                    for (int i = 0; i < player.weaponList.Count; i++)
-                    {
-                        if (perk.replaceWeaponID == player.weaponList[i].ID)
-                        {
-                            replaceIndex = i;
-                            break;
-                        }
-                    }
+        //     if (newWeapon != null)
+        //     {
+        //         if (perk.replaceExisting)
+        //         {
+        //             player.AddWeapon(newWeapon, true);
+        //         }
+        //         else if (perk.replaceWeaponID >= 0)
+        //         {
+        //             int replaceIndex = -1;
+        //             for (int i = 0; i < player.weaponList.Count; i++)
+        //             {
+        //                 if (perk.replaceWeaponID == player.weaponList[i].ID)
+        //                 {
+        //                     replaceIndex = i;
+        //                     break;
+        //                 }
+        //             }
 
-                    if (replaceIndex >= 0)
-                    {
-                        player.SwitchWeapon(replaceIndex);
-                        player.AddWeapon(newWeapon, true);
-                    }
-                    else player.AddWeapon(newWeapon);
-                }
-                else
-                {
-                    player.AddWeapon(newWeapon);
-                }
-            }
+        //             if (replaceIndex >= 0)
+        //             {
+        //                 player.SwitchWeapon(replaceIndex);
+        //                 player.AddWeapon(newWeapon, true);
+        //             }
+        //             else player.AddWeapon(newWeapon);
+        //         }
+        //         else
+        //         {
+        //             player.AddWeapon(newWeapon);
+        //         }
+        //     }
 
-            for (int i = 0; i < perkList.Count; i++)
-            {
-                if (perkList[i].purchased > 0 && perkList[i].type == _PerkType.ModifyWeapon)
-                {
-                    if (perkList[i].appliedToAllWeapon || perkList[i].weaponIDList.Contains(perk.newWeaponID))
-                    {
-                        if (perkList[i].weapEffectID >= 0) player.ChangeWeaponEffect(perk.newWeaponID, perkList[i].weapEffectID);
-                        if (perkList[i].weapAbilityID >= 0) player.ChangeWeaponAbility(perk.newWeaponID, perkList[i].weapAbilityID);
-                    }
-                }
-            }
-        }
-        else if (perk.type == _PerkType.AddAbility && perk.newAbilityID >= 0)
-        {
-            AbilityManager.AddAbility(perk.newAbilityID, perk.replaceAbilityID);
+        //     for (int i = 0; i < perkList.Count; i++)
+        //     {
+        //         if (perkList[i].purchased > 0 && perkList[i].type == _PerkType.ModifyWeapon)
+        //         {
+        //             if (perkList[i].appliedToAllWeapon || perkList[i].weaponIDList.Contains(perk.newWeaponID))
+        //             {
+        //                 if (perkList[i].weapEffectID >= 0) player.ChangeWeaponEffect(perk.newWeaponID, perkList[i].weapEffectID);
+        //                 if (perkList[i].weapAbilityID >= 0) player.ChangeWeaponAbility(perk.newWeaponID, perkList[i].weapAbilityID);
+        //             }
+        //         }
+        //     }
+        // }
+        // else if (perk.type == _PerkType.AddAbility && perk.newAbilityID >= 0)
+        // {
+        //     AbilityManager.AddAbility(perk.newAbilityID, perk.replaceAbilityID);
 
-            for (int i = 0; i < perkList.Count; i++)
-            {
-                if (perkList[i].purchased > 0 && perkList[i].type == _PerkType.ModifyAbility)
-                {
-                    if (perkList[i].appliedToAllAbility || perkList[i].abilityIDList.Contains(perk.newAbilityID))
-                    {
-                        if (perkList[i].abEffectID >= 0) player.ChangeAbilityEffect(perk.newAbilityID, perkList[i].abEffectID);
-                    }
-                }
-            }
-        }
+        //     for (int i = 0; i < perkList.Count; i++)
+        //     {
+        //         if (perkList[i].purchased > 0 && perkList[i].type == _PerkType.ModifyAbility)
+        //         {
+        //             if (perkList[i].appliedToAllAbility || perkList[i].abilityIDList.Contains(perk.newAbilityID))
+        //             {
+        //                 if (perkList[i].abEffectID >= 0) player.ChangeAbilityEffect(perk.newAbilityID, perkList[i].abEffectID);
+        //             }
+        //         }
+        //     }
+        // }
         else if (perk.type == _PerkType.ModifyWeapon)
         {
             if (perk.appliedToAllWeapon)
             {
                 weapStatG.ModifyWithPerk(perk);
-                if (perk.weapEffectID >= 0) player.ChangeAllWeaponEffect(perk.weapEffectID);
-                if (perk.weapAbilityID >= 0) player.ChangeAllWeaponAbility(perk.weapAbilityID);
+                // if (perk.weapEffectID >= 0) player.ChangeAllWeaponEffect(perk.weapEffectID);
+                // if (perk.weapAbilityID >= 0) player.ChangeAllWeaponAbility(perk.weapAbilityID);
             }
             else
             {
@@ -329,8 +329,8 @@ public class PlayerPerk : MonoBehaviour
 
                     item.ModifyWithPerk(perk);
 
-                    if (perk.weapEffectID >= 0) player.ChangeWeaponEffect(perk.weaponIDList[i], perk.weapEffectID);
-                    if (perk.weapAbilityID >= 0) player.ChangeWeaponAbility(perk.weaponIDList[i], perk.weapAbilityID);
+                    // if (perk.weapEffectID >= 0) player.ChangeWeaponEffect(perk.weaponIDList[i], perk.weapEffectID);
+                    // if (perk.weapAbilityID >= 0) player.ChangeWeaponAbility(perk.weaponIDList[i], perk.weapAbilityID);
                 }
             }
         }

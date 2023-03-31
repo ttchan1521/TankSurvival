@@ -24,10 +24,8 @@ namespace UI
             //~ thisObj.GetComponent<RectTransform>().anchoredPosition=new Vector3(0, 0, 0);
         }
 
-        private bool singleButton = false;
-
         public RectTransform selectT;
-        public List<UIButton> buttonList = new List<UIButton>();
+        public UIButton button;
 
 
         private bool initiated = false;
@@ -35,7 +33,7 @@ namespace UI
         {
             yield return null;
 
-            if (!GameControl.EnableAbility() || AbilityManager.GetAbilityList().Count == 0)
+            if (!GameControl.EnableAbility() || AbilityManager.GetAbility() == null)
             {
                 DisableAllButtons();
                 yield break;
@@ -43,54 +41,51 @@ namespace UI
 
             initiated = true;
 
-            singleButton = !UIMainControl.ListAllAbility();
 
-            if (singleButton)
-            {
-                buttonList[0].Init();
-                buttonList[0].labelAlt.enabled = false;
-                OnSwitchAbility(AbilityManager.GetAbilityList()[AbilityManager.GetSelectID()]);
-                selectT.gameObject.SetActive(false);
-            }
-            else
-            {
-                List<Ability> abilityList = AbilityManager.GetAbilityList();
+            button.Init();
+            button.labelAlt.enabled = false;
+            OnSwitchAbility(AbilityManager.GetAbility());
+            selectT.gameObject.SetActive(false);
 
-                for (int i = 0; i < abilityList.Count; i++)
-                {
-                    if (i == 0) buttonList[i].Init();
-                    else buttonList.Add(UIButton.Clone(buttonList[0].rootObj, "AbilityButton" + (i + 1)));
+            // else
+            // {
+            //     List<Ability> abilityList = AbilityManager.GetAbilityList();
 
-                    buttonList[i].imgIcon.sprite = abilityList[i].icon;
-                    buttonList[i].labelAlt.text = (i + 1).ToString();
-                    buttonList[i].label.text = "";
-                }
+            //     for (int i = 0; i < abilityList.Count; i++)
+            //     {
+            //         if (i == 0) buttonList[i].Init();
+            //         else buttonList.Add(UIButton.Clone(buttonList[0].rootObj, "AbilityButton" + (i + 1)));
 
-                yield return null;  //give it one frame delay for the layoutGroup to rearrange the buttons
-                selectT.localPosition = buttonList[AbilityManager.GetSelectID()].rectT.localPosition;
-            }
+            //         buttonList[i].imgIcon.sprite = abilityList[i].icon;
+            //         buttonList[i].labelAlt.text = (i + 1).ToString();
+            //         buttonList[i].label.text = "";
+            //     }
+
+            //     yield return null;  //give it one frame delay for the layoutGroup to rearrange the buttons
+            //     selectT.localPosition = buttonList[AbilityManager.GetSelectID()].rectT.localPosition;
+            // }
         }
 
-        void OnNewAbility(Ability ab, int replaceIndex = -1)
-        {
-            if (replaceIndex >= 0)
-            {
-                buttonList[replaceIndex].imgIcon.sprite = ab.icon;
-            }
-            else
-            {
-                if (!singleButton)
-                {
-                    int index = buttonList.Count;
-                    buttonList.Add(UIButton.Clone(buttonList[0].rootObj, "AbilityButton" + (index + 1)));
+        // void OnNewAbility(Ability ab, int replaceIndex = -1)
+        // {
+        //     if (replaceIndex >= 0)
+        //     {
+        //         buttonList[replaceIndex].imgIcon.sprite = ab.icon;
+        //     }
+        //     else
+        //     {
+        //         if (!singleButton)
+        //         {
+        //             int index = buttonList.Count;
+        //             buttonList.Add(UIButton.Clone(buttonList[0].rootObj, "AbilityButton" + (index + 1)));
 
-                    buttonList[index].imgIcon.sprite = ab.icon;
-                    buttonList[index].labelAlt.text = (buttonList.Count).ToString();
-                    buttonList[index].label.text = "";
-                }
-            }
-            OnSwitchAbility(ab);
-        }
+        //             buttonList[index].imgIcon.sprite = ab.icon;
+        //             buttonList[index].labelAlt.text = (buttonList.Count).ToString();
+        //             buttonList[index].label.text = "";
+        //         }
+        //     }
+        //     OnSwitchAbility(ab);
+        // }
 
         void DisableAllButtons()
         {
@@ -100,57 +95,52 @@ namespace UI
         }
 
 
-        void OnEnable()
-        {
-            TDS.onSwitchAbilityE += OnSwitchAbility;
-            TDS.onNewAbilityE += OnNewAbility;
-        }
-        void OnDisable()
-        {
-            TDS.onSwitchAbilityE -= OnSwitchAbility;
-            TDS.onNewAbilityE += OnNewAbility;
-        }
+        // void OnEnable()
+        // {
+        //     TDS.onSwitchAbilityE += OnSwitchAbility;
+        //     TDS.onNewAbilityE += OnNewAbility;
+        // }
+        // void OnDisable()
+        // {
+        //     TDS.onSwitchAbilityE -= OnSwitchAbility;
+        //     TDS.onNewAbilityE += OnNewAbility;
+        // }
 
 
         void Update()
         {
             if (!initiated || !GameControl.EnableAbility()) return;
 
+            Ability ability = AbilityManager.GetAbility();
 
-            if (singleButton)
-            {
-                Ability ability = AbilityManager.GetAbilityList()[AbilityManager.GetSelectID()];
+            button.label.text = ability.currentCD <= 0 ? "" : ability.currentCD.ToString("f1") + "s";
+            button.button.interactable = ability.IsReady() == "" ? true : false;
 
-                buttonList[0].label.text = ability.currentCD <= 0 ? "" : ability.currentCD.ToString("f1") + "s";
-                buttonList[0].button.interactable = ability.IsReady() == "" ? true : false;
-            }
-            else
-            {
-                List<Ability> abilityList = AbilityManager.GetAbilityList();
+            // else
+            // {
+            //     List<Ability> abilityList = AbilityManager.GetAbilityList();
 
-                for (int i = 0; i < buttonList.Count; i++)
-                {
-                    //Debug.Log(i);
-                    buttonList[i].label.text = abilityList[i].currentCD <= 0 ? "" : abilityList[i].currentCD.ToString("f1") + "s";
-                    buttonList[i].button.interactable = abilityList[i].IsReady() == "" ? true : false;
-                }
-            }
+            //     for (int i = 0; i < buttonList.Count; i++)
+            //     {
+            //         //Debug.Log(i);
+            //         buttonList[i].label.text = abilityList[i].currentCD <= 0 ? "" : abilityList[i].currentCD.ToString("f1") + "s";
+            //         buttonList[i].button.interactable = abilityList[i].IsReady() == "" ? true : false;
+            //     }
+            // }
 
         }
 
 
         void OnSwitchAbility(Ability ability)
         {
-            if (singleButton)
-            {
                 //Debug.Log("switch ability  "+ability+"   "+uiButtonAbility.imgIcon);
-                buttonList[0].imgIcon.sprite = ability.icon;
-            }
-            else
-            {
-                if (!initiated || buttonList.Count < AbilityManager.GetSelectID()) return;
-                selectT.localPosition = buttonList[AbilityManager.GetSelectID()].rectT.localPosition;
-            }
+                button.imgIcon.sprite = ability.icon;
+            
+            // else
+            // {
+            //     if (!initiated || buttonList.Count < AbilityManager.GetSelectID()) return;
+            //     selectT.localPosition = buttonList[AbilityManager.GetSelectID()].rectT.localPosition;
+            // }
         }
 
     }

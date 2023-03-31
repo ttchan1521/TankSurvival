@@ -14,7 +14,6 @@ namespace UI
         public TDSJoystick joystickAim;
 
         public GameObject fireButton;
-        public GameObject weaponAbilityTabButton;
 
         public GameObject levelPerkButton;
 
@@ -41,7 +40,7 @@ namespace UI
             joystickAim.transform.parent.gameObject.SetActive(player.enableTurretRotate);
             fireButton.SetActive(!player.enableTurretRotate);
 
-            if (!UIMainControl.EnableItemSelectTab()) weaponAbilityTabButton.SetActive(false);
+            //if (!UIMainControl.EnableItemSelectTab()) weaponAbilityTabButton.SetActive(false);
             if (!UILevelPerkMenu.Enabled()) levelPerkButton.SetActive(false);
             Debug.Log("StartStart  " + UILevelPerkMenu.Enabled());
         }
@@ -83,25 +82,25 @@ namespace UI
             if (player != null) player.FireAbilityAlt();
         }
 
-        public void OnWeaponAbilityTab()
-        {
-            if (!UIWeaponAbilityTab.IsOn())
-            {
-                UIWeaponAbilityTab.TurnTabOn();
-                _Hide();
-            }
-            else UIWeaponAbilityTab.TurnTabOff();
-        }
+        // public void OnWeaponAbilityTab()
+        // {
+        //     if (!UIWeaponAbilityTab.IsOn())
+        //     {
+        //         UIWeaponAbilityTab.TurnTabOn();
+        //         _Hide();
+        //     }
+        //     else UIWeaponAbilityTab.TurnTabOff();
+        // }
 
 
-        public void OnPrevWeapon()
-        {
-            if (player != null) player.ScrollWeapon(-1);
-        }
-        public void OnNextWeapon()
-        {
-            if (player != null) player.ScrollWeapon(1);
-        }
+        // public void OnPrevWeapon()
+        // {
+        //     if (player != null) player.ScrollWeapon(-1);
+        // }
+        // public void OnNextWeapon()
+        // {
+        //     if (player != null) player.ScrollWeapon(1);
+        // }
 
 
         public void OnLevelPerkButton()

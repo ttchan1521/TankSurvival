@@ -273,7 +273,7 @@ public class Collectible : PooledObject
         //gain ammo
         if (ammo != 0)
         {
-            player.GainAmmo(ammoID, ammo);
+            player.GainAmmo(ammo);
 
             Vector3 offsetPos = new Vector3(0, Random.value + 0.5f, 0);
             new TextOverlay(transform.position + offsetPos, "+ammo");
@@ -303,25 +303,25 @@ public class Collectible : PooledObject
         //if(effect!=null && effect.duration>0) player.ApplyEffect(effect);
 
         //gain weapon
-        if (gainWeapon && weaponList.Count > 0)
-        {
-            int playerWeaponID = player.weaponList[player.weaponID].ID;
-            int rand = randomWeapon ? Random.Range(0, weaponList.Count) : 0;
-            if (randomWeapon && weaponList.Count > 1)
-            {
-                int count = 0;
-                while (weaponList[rand].ID == playerWeaponID)
-                {
-                    rand = Random.Range(0, weaponList.Count);
-                    count += 1;
-                    if (count > 50) break;
-                }
-            }
+        // if (gainWeapon && weaponList.Count > 0)
+        // {
+        //     int playerWeaponID = player.weaponList[player.weaponID].ID;
+        //     int rand = randomWeapon ? Random.Range(0, weaponList.Count) : 0;
+        //     if (randomWeapon && weaponList.Count > 1)
+        //     {
+        //         int count = 0;
+        //         while (weaponList[rand].ID == playerWeaponID)
+        //         {
+        //             rand = Random.Range(0, weaponList.Count);
+        //             count += 1;
+        //             if (count > 50) break;
+        //         }
+        //     }
 
-            bool replaceWeapon = weaponType == _WeaponType.Replacement;
-            bool temporaryWeapon = weaponType == _WeaponType.Temporary;
-            player.AddWeapon(weaponList[rand], replaceWeapon, temporaryWeapon, tempWeapDuration);
-        }
+        //     bool replaceWeapon = weaponType == _WeaponType.Replacement;
+        //     bool temporaryWeapon = weaponType == _WeaponType.Temporary;
+        //     player.AddWeapon(weaponList[rand], replaceWeapon, temporaryWeapon, tempWeapDuration);
+        // }
     }
 
 

@@ -20,9 +20,7 @@ public class UnitPlayer : Unit
     [Header("Weapon Info")]
     public Transform weaponMountPoint;
 
-    public bool enableAllWeapons = true;
-    public List<Weapon> weaponList = new List<Weapon>();
-    public int weaponID = 0;
+    public Weapon weapon;
     [HideInInspector] public bool weaponInitiated = false;  //for respawning unit
 
 
@@ -76,7 +74,7 @@ public class UnitPlayer : Unit
 
         SetDestroyCallback(this.PlayerDestroyCallback);
 
-        if (enableAllWeapons) weaponList = new List<Weapon>(Weapon_DB.Load());
+        weapon = Weapon_DB.GetPrefab(PlayerPrefs.GetInt("weapon_selected", 0));
 
         if (weaponMountPoint == null) weaponMountPoint = thisT;
 
@@ -111,13 +109,13 @@ public class UnitPlayer : Unit
         camT = cam.transform;
         //camPivot=cam.transform.parent;
 
-        if (enableAbility && GameControl.EnableAbility())
-            AbilityManager.SetupAbility(abilityIDList, enableAllAbilities);
+        // if (enableAbility && GameControl.EnableAbility())
+        //     AbilityManager.SetupAbility(abilityIDList, enableAllAbilities);
 
         if (perk != null)
         {
-            List<Ability> abList = AbilityManager.GetAbilityList();
-            for (int i = 0; i < abList.Count; i++) abList[i].SetPlayerPerk(perk);
+            Ability ab = AbilityManager.GetAbility();
+            ab.SetPlayerPerk(perk);
         }
 
         Init();
@@ -135,37 +133,44 @@ public class UnitPlayer : Unit
         if (!weaponInitiated)
         {
             weaponInitiated = true;
-            for (int i = 0; i < weaponList.Count; i++)
+            // for (int i = 0; i < weaponList.Count; i++)
+            // {
+            //     GameObject obj = MountWeapon((GameObject)Instantiate(weaponList[i].gameObject));
+            //     weaponList[i] = obj.GetComponent<Weapon>();
+            //     weaponList[i].Reset();
+            //     if (i > 0) obj.SetActive(false);
+
+            //     if (perk != null) weaponList[i].SetPlayerPerk(perk);
+            // }
+
+            GameObject obj = MountWeapon((Instantiate(weapon.gameObject)));
+            weapon = obj.GetComponent<Weapon>();
+            weapon.Reset();
+
+            if (perk != null) weapon.SetPlayerPerk(perk);
+
+            if (weapon == null)
             {
-                GameObject obj = MountWeapon((GameObject)Instantiate(weaponList[i].gameObject));
-                weaponList[i] = obj.GetComponent<Weapon>();
-                weaponList[i].Reset();
-                if (i > 0) obj.SetActive(false);
+                obj = MountWeapon(null, "defaultObject");
+                //weaponList.Add(obj.AddComponent<Weapon>());
+                weapon = obj.AddComponent<Weapon>();
+                //weaponList[0].aStats.damageMax = 2;
+                weapon.aStats.damageMax = 2;
+                //weaponList[0].Reset();
+                weapon.Reset();
 
-                if (perk != null) weaponList[i].SetPlayerPerk(perk);
-            }
-
-            if (weaponList.Count == 0)
-            {
-                GameObject obj = MountWeapon(null, "defaultObject");
-                weaponList.Add(obj.AddComponent<Weapon>());
-                weaponList[0].aStats.damageMax = 2;
-                weaponList[0].Reset();
-
-                obj = MountWeapon(GameObject.CreatePrimitive(PrimitiveType.Sphere), "defaultShootObject");
-                obj.AddComponent<ShootObject>();
-                obj.SetActive(false);
-                obj.transform.localScale = new Vector3(.2f, .2f, .2f);
+                // obj = MountWeapon(GameObject.CreatePrimitive(PrimitiveType.Sphere), "defaultShootObject");
+                // obj.AddComponent<ShootObject>();
+                // obj.SetActive(false);
+                // obj.transform.localScale = new Vector3(.2f, .2f, .2f);
 
                 GameObject soObj = (GameObject)Instantiate(Resources.Load("Prefab_TDSTK/DefaultShootObject", typeof(GameObject)));
                 soObj.SetActive(false);
 
-                weaponList[0].shootObject = soObj;
-                weaponList[0].InitShootObject();
+                weapon.shootObject = soObj;
+                weapon.InitShootObject();
             }
         }
-
-        TDS.SwitchWeapon(weaponList[weaponID]);
     }
 
 
@@ -180,87 +185,87 @@ public class UnitPlayer : Unit
         return obj;
     }
 
-    private int tempWeapReturnID = 0;   //a cache to store the default weaponID when using temporary weapon
-    public void AddWeapon(Weapon prefab, bool replaceWeapon = false, bool temporary = false, float temporaryTimer = 30)
-    {
-        GameObject obj = MountWeapon((GameObject)Instantiate(prefab.gameObject));
+    // private int tempWeapReturnID = 0;   //a cache to store the default weaponID when using temporary weapon
+    // public void AddWeapon(Weapon prefab, bool replaceWeapon = false, bool temporary = false, float temporaryTimer = 30)
+    // {
+    //     GameObject obj = MountWeapon((GameObject)Instantiate(prefab.gameObject));
 
-        //replace weapon and temporary are mutually exclusive
-        if (replaceWeapon)
-        {
-            Destroy(weaponList[weaponID].gameObject);
-            weaponList[weaponID] = obj.GetComponent<Weapon>();
+    //     //replace weapon and temporary are mutually exclusive
+    //     if (replaceWeapon)
+    //     {
+    //         Destroy(weaponList[weaponID].gameObject);
+    //         weaponList[weaponID] = obj.GetComponent<Weapon>();
 
-            TDS.NewWeapon(weaponList[weaponID], weaponID);
-        }
-        else if (temporary)
-        {
-            tempWeapReturnID = weaponID;
-            weaponList[weaponID].gameObject.SetActive(false);
+    //         TDS.NewWeapon(weaponList[weaponID], weaponID);
+    //     }
+    //     else if (temporary)
+    //     {
+    //         tempWeapReturnID = weaponID;
+    //         weaponList[weaponID].gameObject.SetActive(false);
 
-            if (weaponList[weaponID].temporary) RemoveWeapon();
+    //         if (weaponList[weaponID].temporary) RemoveWeapon();
 
-            weaponID = weaponList.Count;
-            weaponList.Add(obj.GetComponent<Weapon>());
+    //         weaponID = weaponList.Count;
+    //         weaponList.Add(obj.GetComponent<Weapon>());
 
-            weaponList[weaponList.Count - 1].temporary = true;
-            if (temporaryTimer > 0) StartCoroutine(TemporaryWeaponTimer(weaponList[weaponList.Count - 1], temporaryTimer));
-        }
-        else
-        {
-            weaponID = weaponList.Count;
-            weaponList.Add(obj.GetComponent<Weapon>());
-            TDS.NewWeapon(weaponList[weaponID]);
-        }
+    //         weaponList[weaponList.Count - 1].temporary = true;
+    //         if (temporaryTimer > 0) StartCoroutine(TemporaryWeaponTimer(weaponList[weaponList.Count - 1], temporaryTimer));
+    //     }
+    //     else
+    //     {
+    //         weaponID = weaponList.Count;
+    //         weaponList.Add(obj.GetComponent<Weapon>());
+    //         TDS.NewWeapon(weaponList[weaponID]);
+    //     }
 
-        weaponList[weaponID].Reset();
+    //     weaponList[weaponID].Reset();
 
-        TDS.SwitchWeapon(weaponList[weaponID]);
-    }
-    public void RemoveWeapon()
-    {   //used to remove temporary weapon only
-        if (weaponList.Count <= 1) return;
+    //     TDS.SwitchWeapon(weaponList[weaponID]);
+    // }
+    // public void RemoveWeapon()
+    // {   //used to remove temporary weapon only
+    //     if (weaponList.Count <= 1) return;
 
-        if (weaponList[weaponID] != null) Destroy(weaponList[weaponID].gameObject);
+    //     if (weaponList[weaponID] != null) Destroy(weaponList[weaponID].gameObject);
 
-        weaponList.RemoveAt(weaponID);
-        weaponID = tempWeapReturnID;
+    //     weaponList.RemoveAt(weaponID);
+    //     weaponID = tempWeapReturnID;
 
-        weaponList[weaponID].gameObject.SetActive(true);
-        TDS.SwitchWeapon(weaponList[weaponID]);
-    }
+    //     weaponList[weaponID].gameObject.SetActive(true);
+    //     TDS.SwitchWeapon(weaponList[weaponID]);
+    // }
 
-    IEnumerator TemporaryWeaponTimer(Weapon weapon, float time)
-    {
-        Effect effect = new Effect();
-        effect.ID = 999;
-        effect.duration = time;
-        effect.icon = weapon.icon;
-        ApplyEffect(effect);
+    // IEnumerator TemporaryWeaponTimer(Weapon weapon, float time)
+    // {
+    //     Effect effect = new Effect();
+    //     effect.ID = 999;
+    //     effect.duration = time;
+    //     effect.icon = weapon.icon;
+    //     ApplyEffect(effect);
 
-        while (effect.duration > 0 && weapon != null) yield return null;
+    //     while (effect.duration > 0 && weapon != null) yield return null;
 
-        effect.duration = -1;
-        if (weapon != null) RemoveWeapon();
-    }
-
-
+    //     effect.duration = -1;
+    //     if (weapon != null) RemoveWeapon();
+    // }
 
 
-    public void SwitchWeapon(int newID)
-    {
-        weaponList[weaponID].gameObject.SetActive(false);
-        weaponList[newID].gameObject.SetActive(true);
 
-        if (weaponList[newID].currentClip == 0 && GameControl.EnableAutoReload())
-        {
-            weaponList[newID].Reload();
-        }
 
-        TDS.SwitchWeapon(weaponList[newID]);
+    // public void SwitchWeapon(int newID)
+    // {
+    //     weaponList[weaponID].gameObject.SetActive(false);
+    //     weaponList[newID].gameObject.SetActive(true);
 
-        weaponID = newID;
-    }
+    //     if (weaponList[newID].currentClip == 0 && GameControl.EnableAutoReload())
+    //     {
+    //         weaponList[newID].Reload();
+    //     }
+
+    //     TDS.SwitchWeapon(weaponList[newID]);
+
+    //     weaponID = newID;
+    // }
 
 
 
@@ -268,17 +273,17 @@ public class UnitPlayer : Unit
     //Input command
 
     //switch to next/prev weapon in the list
-    public void ScrollWeapon(int scrollDir)
-    {
-        if (destroyed) return;
-        if (weaponList[weaponID].temporary) return;
+    // public void ScrollWeapon(int scrollDir)
+    // {
+    //     if (destroyed) return;
+    //     if (weaponList[weaponID].temporary) return;
 
-        int newID = weaponID + scrollDir;
-        if (newID >= weaponList.Count) newID = 0;
-        else if (newID < 0) newID = weaponList.Count - 1;
+    //     int newID = weaponID + scrollDir;
+    //     if (newID >= weaponList.Count) newID = 0;
+    //     else if (newID < 0) newID = weaponList.Count - 1;
 
-        if (newID != weaponID) SwitchWeapon(newID);
-    }
+    //     if (newID != weaponID) SwitchWeapon(newID);
+    // }
 
     //turret facing
     public void AimTurretMouse(Vector3 mousePos)
@@ -355,11 +360,11 @@ public class UnitPlayer : Unit
         int fireState = CanFire();
         if (fireState == 0)
         {
-            if (weaponList[weaponID].RequireAiming())
+            if (weapon.RequireAiming())
             {
                 Vector2 cursorPos = Input.mousePosition;
 
-                if (weaponList[weaponID].RandCursorForRecoil())
+                if (weapon.RandCursorForRecoil())
                 {
                     float recoil = GameControl.GetPlayer().GetRecoil() * 4;
                     cursorPos += new Vector2(Random.value - 0.5f, Random.value - 0.5f) * recoil;
@@ -377,11 +382,11 @@ public class UnitPlayer : Unit
             }
             else StartCoroutine(ShootRoutine());
 
-            weaponList[weaponID].Fire();
+            weapon.Fire();
 
-            if (weaponList[weaponID].useEnergyAsAmmo)
+            if (weapon.useEnergyAsAmmo)
             {
-                energy -= weaponList[weaponID].energyCost;
+                energy -= weapon.energyCost;
             }
         }
         else
@@ -395,7 +400,7 @@ public class UnitPlayer : Unit
 
             TDS.FireFail(text);
 
-            if (GetCurrentClip() == 0 && GameControl.EnableAutoReload()) weaponList[weaponID].Reload();
+            if (GetCurrentClip() == 0 && GameControl.EnableAutoReload()) weapon.Reload();
         }
     }
     //alt fire, could fire weapon alt-mode to launch selected ability
@@ -404,7 +409,7 @@ public class UnitPlayer : Unit
         if (destroyed || IsStunned()) return;
         if (GameControl.EnableAltFire())
         {
-            weaponList[weaponID].FireAlt();
+            weapon.FireAlt();
         }
         if (!GameControl.EnableAltFire() && GameControl.EnableAbility())
         {
@@ -422,7 +427,7 @@ public class UnitPlayer : Unit
     public void Reload()
     {
         if (destroyed || IsStunned()) return;
-        weaponList[weaponID].Reload();
+        weapon.Reload();
     }
 
     //without this the player can clip into collider when running into a 90 degree corner
@@ -608,28 +613,28 @@ public class UnitPlayer : Unit
     {
         if (uAnimation != null) uAnimation.AttackMelee();
 
-        AttackStats aStats = ModifyAttackStatsToLevel(weaponList[weaponID].GetRuntimeAttackStats());
+        AttackStats aStats = ModifyAttackStatsToLevel(weapon.GetRuntimeAttackStats());
         aStats = ModifyAttackStatsToExistingEffect(aStats);
         //aStats=ModifyAttackStatsToExistingEffect(weaponList[weaponID].GetRuntimeAttackStats());
         AttackInstance aInstance = new AttackInstance(this, aStats);
 
-        int weapID = weaponID;  //to prevent weapon switch and state change while delay and firing multiple so
+        //int weapID = weaponID;  //to prevent weapon switch and state change while delay and firing multiple so
 
-        int spread = weaponList[weapID].spread;
+        int spread = weapon.spread;
         if (spread > 1)
         {
             aInstance.aStats.damageMin /= spread;
             aInstance.aStats.damageMax /= spread;
         }
 
-        float startAngle = spread > 1 ? -weaponList[weapID].spreadAngle / 2f : 0;
-        float angleDelta = spread > 1 ? weaponList[weapID].spreadAngle / (spread - 1) : 0;
+        float startAngle = spread > 1 ? -weapon.spreadAngle / 2f : 0;
+        float angleDelta = spread > 1 ? weapon.spreadAngle / (spread - 1) : 0;
 
         List<Collider> soColliderList = new List<Collider>();   //colliders of all the so fired, used to tell each so to ignore each other
 
-        for (int i = 0; i < weaponList[weapID].shootPointList.Count; i++)
+        for (int i = 0; i < weapon.shootPointList.Count; i++)
         {
-            Transform shootPoint = weaponList[weapID].shootPointList[i];
+            Transform shootPoint = weapon.shootPointList[i];
 
             float recoilSign = (Random.value < recoilSignTH ? -1 : 1);
             recoilSignTH = Mathf.Clamp(recoilSignTH + (recoilSign > 0 ? 0.25f : -0.25f), 0, 1);
@@ -644,7 +649,7 @@ public class UnitPlayer : Unit
 
                 //GameObject soObj=(GameObject)Instantiate(weaponList[weapID].shootObject, shootPos, shootRot);
                 //GameObject soObj=ObjectPoolManager.Spawn(weaponList[weapID].shootObject, shootPos, shootRot);
-                ShootObject soInstance = weaponList[weapID].shootObject.GetComponent<ShootObject>().GetPoolItem<ShootObject>(shootPos, shootRot);
+                ShootObject soInstance = weapon.shootObject.GetComponent<ShootObject>().GetPoolItem<ShootObject>(shootPos, shootRot);
 
                 soInstance.IgnoreCollider(GetCollider());
                 for (int n = 0; n < soColliderList.Count; n++) soInstance.IgnoreCollider(soColliderList[n]);
@@ -654,11 +659,11 @@ public class UnitPlayer : Unit
                 //soInstance.Shoot(thisObj.layer, GetRange(), shootPoint, aInstance.Clone(), hit);
             }
 
-            TDS.CameraShake(weaponList[weapID].recoilCamShake);
+            TDS.CameraShake(weapon.recoilCamShake);
 
-            if (weaponList[weapID].shootPointDelay > 0) yield return new WaitForSeconds(weaponList[weapID].shootPointDelay);
+            if (weapon.shootPointDelay > 0) yield return new WaitForSeconds(weapon.shootPointDelay);
 
-            if (weapID >= weaponList.Count) break;
+            //if (weapID >= weaponList.Count) break;
         }
 
     }
@@ -674,69 +679,44 @@ public class UnitPlayer : Unit
     public int CanFire()
     {
         if (disableFire) return 1;
-        if (weaponList[weaponID].OnCoolDown()) return 2;
-        if (weaponList[weaponID].OutOfAmmo()) return 3;
-        if (weaponList[weaponID].Reloading()) return 4;
-        if (weaponList[weaponID].useEnergyAsAmmo && energy < weaponList[weaponID].energyCost) return 5;
+        if (weapon.OnCoolDown()) return 2;
+        if (weapon.OutOfAmmo()) return 3;
+        if (weapon.Reloading()) return 4;
+        if (weapon.useEnergyAsAmmo && energy < weapon.energyCost) return 5;
         return 0;
     }
 
-    public bool ContinousFire() { return GameControl.EnableContinousFire() & weaponList[weaponID].continousFire; }
+    public bool ContinousFire() { return GameControl.EnableContinousFire() & weapon.continousFire; }
 
-    public override float GetRange() { return weaponList[weaponID].GetRange(); }
+    public override float GetRange() { return weapon.GetRange(); }
 
     private float recoilSignTH = 0.5f;
-    public float GetRecoil() { return weaponList[weaponID].GetRecoilMagnitude(); }
+    public float GetRecoil() { return weapon.GetRecoilMagnitude(); }
 
-    public bool UseEnergyAsAmmo() { return weaponList[weaponID].useEnergyAsAmmo; }
+    public bool UseEnergyAsAmmo() { return weapon.useEnergyAsAmmo; }
 
-    public bool Reloading() { return weaponList[weaponID].Reloading(); }
-    public float GetReloadDuration() { return weaponList[weaponID].GetReloadDuration(); }
-    public float GetCurrentReload() { return weaponList[weaponID].currentReload; }
-    public int GetCurrentClip() { return weaponList[weaponID].currentClip; }
-    public int GetAmmo() { return weaponList[weaponID].ammo; }
+    public bool Reloading() { return weapon.Reloading(); }
+    public float GetReloadDuration() { return weapon.GetReloadDuration(); }
+    public float GetCurrentReload() { return weapon.currentReload; }
+    public int GetCurrentClip() { return weapon.currentClip; }
+    public int GetAmmo() { return weapon.ammo; }
 
-    public int GetCurrentWeaponIndex() { return weaponID; }
-    public Ability GetWeaponAbility() { return weaponList[weaponID].ability; }
-
+    public Ability GetWeaponAbility() { return weapon.ability; }
 
 
-    public void GainAmmo(int idx, int value)
+
+    public void GainAmmo(int value)
     {
-        if (idx >= weaponList.Count)
+        if (value == -1)
         {
-            Debug.LogWarning("collectible ammo info not matched");
-            return;
+            weapon.FullAmmo();
+        }
+        else
+        {
+            weapon.GainAmmo(value);
         }
 
-        if (idx < 0)
-        {
-            if (value == -1)
-            {
-                for (int i = 0; i < weaponList.Count; i++)
-                {
-                    weaponList[i].FullAmmo();
-                }
-            }
-            else
-            {
-                for (int i = 0; i < weaponList.Count; i++)
-                {
-                    weaponList[i].GainAmmo(value);
-                }
-            }
-
-            return;
-        }
-
-        for (int i = 0; i < weaponList.Count; i++)
-        {
-            if (weaponList[i].ID == idx)
-            {
-                if (value < 0) weaponList[i].FullAmmo();
-                if (value > 0) weaponList[i].GainAmmo(value);
-            }
-        }
+        return;
 
     }
 
@@ -750,7 +730,7 @@ public class UnitPlayer : Unit
 
     public void PlayerDestroyCallback()
     {
-        if (weaponList[weaponID].temporary) RemoveWeapon();
+        //if (weapon.temporary) RemoveWeapon();
         GameControl.PlayerDestroyed();
     }
 
@@ -850,56 +830,42 @@ public class UnitPlayer : Unit
 
 
     //for perk that modify the weapon attack effect
-    public void ChangeAllWeaponEffect(int effectID)
-    {
-        int effectIndex = Effect_DB.GetEffectIndex(effectID);
-        for (int i = 0; i < weaponList.Count; i++) weaponList[i].ChangeEffect(effectID, effectIndex);
-    }
-    public void ChangeWeaponEffect(int weaponID, int effectID)
-    {
-        int effectIndex = Effect_DB.GetEffectIndex(effectID);
-        for (int i = 0; i < weaponList.Count; i++)
-        {
-            if (weaponList[i].ID == weaponID)
-            {
-                weaponList[i].ChangeEffect(effectID, effectIndex);
-                break;
-            }
-        }
-    }
+    // public void ChangeAllWeaponEffect(int effectID)
+    // {
+    //     int effectIndex = Effect_DB.GetEffectIndex(effectID);
+    //     weapon.ChangeEffect(effectID, effectIndex);
+    // }
 
-    //for perk that modify the weapon ability
-    public void ChangeAllWeaponAbility(int abilityID)
-    {
-        for (int i = 0; i < weaponList.Count; i++) weaponList[i].ChangeAbility(abilityID);
-    }
-    public void ChangeWeaponAbility(int weaponID, int abilityID)
-    {
-        for (int i = 0; i < weaponList.Count; i++)
-        {
-            if (weaponList[i].ID == weaponID)
-            {
-                weaponList[i].ChangeAbility(abilityID);
-                break;
-            }
-        }
-    }
+    // //for perk that modify the weapon ability
+    // public void ChangeAllWeaponAbility(int abilityID)
+    // {
+    //     for (int i = 0; i < weaponList.Count; i++) weaponList[i].ChangeAbility(abilityID);
+    // }
+    // public void ChangeWeaponAbility(int weaponID, int abilityID)
+    // {
+    //     for (int i = 0; i < weaponList.Count; i++)
+    //     {
+    //         if (weaponList[i].ID == weaponID)
+    //         {
+    //             weaponList[i].ChangeAbility(abilityID);
+    //             break;
+    //         }
+    //     }
+    // }
 
     //for perk that modify the ability attack effect
     public void ChangeAllAbilityEffect(int effectID)
     {
         int effectIndex = Effect_DB.GetEffectIndex(effectID);
-        List<Ability> abList = AbilityManager.GetAbilityList();
-        for (int i = 0; i < abList.Count; i++) abList[i].ChangeEffect(effectID, effectIndex);
+        Ability ab = AbilityManager.GetAbility();
+        ab.ChangeEffect(effectID, effectIndex);
     }
     public void ChangeAbilityEffect(int abilityID, int effectID)
     {
         int effectIndex = Effect_DB.GetEffectIndex(effectID);
-        List<Ability> abList = AbilityManager.GetAbilityList();
-        for (int i = 0; i < abList.Count; i++)
-        {
-            if (abList[i].ID == abilityID) abList[i].ChangeEffect(effectID, effectIndex);
-        }
+        Ability ab = AbilityManager.GetAbility();
+        if (ab.ID == abilityID) ab.ChangeEffect(effectID, effectIndex);
+        
     }
 
 

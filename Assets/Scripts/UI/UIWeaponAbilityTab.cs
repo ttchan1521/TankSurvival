@@ -32,13 +32,24 @@ namespace UI
         public List<UISelectItem> abilityItemList = new List<UISelectItem>();
         public List<UISelectItem> weaponItemList = new List<UISelectItem>();
 
+        [SerializeField] private Image weaponImg;
+        [SerializeField] private Image abilityImg;
+
+        private bool inited = false;
+
         IEnumerator Start()
         {
             yield return null;
 
-            if (!UIMainControl.EnableItemSelectTab()) thisObj.SetActive(false);
+            //if (!UIMainControl.EnableItemSelectTab()) thisObj.SetActive(false);
+            weaponImg.sprite = Weapon_DB.GetPrefab(PlayerPrefs.GetInt("weapon_selected", 0)).icon;
+            abilityImg.sprite = Ability_DB.GetItem(PlayerPrefs.GetInt("ability_selected", 0)).icon;
+            tabObject.SetActive(false);
+        }
 
-            List<Ability> abilityList = AbilityManager.GetAbilityList();
+        private void Init()
+        {
+            List<Ability> abilityList = Ability_DB.Load();
             for (int i = 0; i < abilityList.Count; i++)
             {
                 if (i == 0) abilityItemList[i].Init();
@@ -48,163 +59,137 @@ namespace UI
                 abilityItemList[i].label.text = abilityList[i].name;
 
                 abilityItemList[i].selectHighlight.SetActive(false);
+                abilityItemList[i].button.onClick.RemoveAllListeners();
+                int index = i;
+                abilityItemList[i].button.onClick.AddListener(() => OnSelectAbility(index));
                 //abilityItemList[i].buttonObj.SetActive(false);
             }
             if (abilityList.Count == 0) abilityItemList[0].rootObj.SetActive(false);
 
 
-            UnitPlayer player = GameControl.GetPlayer();
-            for (int i = 0; i < player.weaponList.Count; i++)
+            //UnitPlayer player = GameControl.GetPlayer();
+            List<Weapon> weapons = Weapon_DB.Load();
+            for (int i = 0; i < weapons.Count; i++)
             {
                 if (i == 0) weaponItemList[i].Init();
                 else weaponItemList.Add(UISelectItem.Clone(weaponItemList[0].rootObj, "Item" + (i + 1)));
 
-                weaponItemList[i].imgIcon.sprite = player.weaponList[i].icon;
-                weaponItemList[i].label.text = player.weaponList[i].weaponName;
+                weaponItemList[i].imgIcon.sprite = weapons[i].icon;
+                weaponItemList[i].label.text = weapons[i].weaponName;
+                weaponItemList[i].labelAlt.text = weapons[i].clipSize + "/" + weapons[i].ammo;
+                weaponItemList[i].button.onClick.RemoveAllListeners();
+                int index = i;
+                weaponItemList[i].button.onClick.AddListener(() => OnSelectWeapon(index));
 
                 weaponItemList[i].selectHighlight.SetActive(false);
                 //weaponItemList[i].buttonObj.SetActive(false);
             }
-
-            tabObject.SetActive(false);
+            inited = true;
         }
 
+        // void OnEnable()
+        // {
+        //     TDS.onNewWeaponE += OnNewWeapon;
+        //     TDS.onNewAbilityE += OnNewAbility;
+        // }
+        // void OnDisable()
+        // {
+        //     TDS.onNewWeaponE -= OnNewWeapon;
+        //     TDS.onNewAbilityE -= OnNewAbility;
+        // }
 
 
-        void OnEnable()
-        {
-            TDS.onNewWeaponE += OnNewWeapon;
-            TDS.onNewAbilityE += OnNewAbility;
-        }
-        void OnDisable()
-        {
-            TDS.onNewWeaponE -= OnNewWeapon;
-            TDS.onNewAbilityE -= OnNewAbility;
-        }
+        // void OnNewWeapon(Weapon weapon, int replaceIndex = -1)
+        // {
+        //     if (replaceIndex >= 0)
+        //     {
+        //         weaponItemList[replaceIndex].imgIcon.sprite = weapon.icon;
+        //         weaponItemList[replaceIndex].label.text = weapon.weaponName;
+        //     }
+        //     else
+        //     {
+        //         int index = weaponItemList.Count;
+        //         weaponItemList.Add(UISelectItem.Clone(weaponItemList[0].rootObj, "Item" + (index)));
 
+        //         weaponItemList[index].imgIcon.sprite = weapon.icon;
+        //         weaponItemList[index].label.text = weapon.weaponName;
 
-        void OnNewWeapon(Weapon weapon, int replaceIndex = -1)
-        {
-            if (replaceIndex >= 0)
-            {
-                weaponItemList[replaceIndex].imgIcon.sprite = weapon.icon;
-                weaponItemList[replaceIndex].label.text = weapon.weaponName;
-            }
-            else
-            {
-                int index = weaponItemList.Count;
-                weaponItemList.Add(UISelectItem.Clone(weaponItemList[0].rootObj, "Item" + (index)));
+        //         weaponItemList[index].rootObj.SetActive(true);
+        //         weaponItemList[index].selectHighlight.SetActive(false);
+        //     }
+        // }
+        // void OnNewAbility(Ability ability, int replaceIndex = -1)
+        // {
+        //     if (replaceIndex >= 0)
+        //     {
+        //         abilityItemList[replaceIndex].imgIcon.sprite = ability.icon;
+        //         abilityItemList[replaceIndex].label.text = ability.name;
+        //     }
+        //     else
+        //     {
+        //         int index = abilityItemList.Count;
+        //         abilityItemList.Add(UISelectItem.Clone(abilityItemList[0].rootObj, "Item" + (index)));
 
-                weaponItemList[index].imgIcon.sprite = weapon.icon;
-                weaponItemList[index].label.text = weapon.weaponName;
+        //         abilityItemList[index].imgIcon.sprite = ability.icon;
+        //         abilityItemList[index].label.text = ability.name;
 
-                weaponItemList[index].rootObj.SetActive(true);
-                weaponItemList[index].selectHighlight.SetActive(false);
-            }
-        }
-        void OnNewAbility(Ability ability, int replaceIndex = -1)
-        {
-            if (replaceIndex >= 0)
-            {
-                abilityItemList[replaceIndex].imgIcon.sprite = ability.icon;
-                abilityItemList[replaceIndex].label.text = ability.name;
-            }
-            else
-            {
-                int index = abilityItemList.Count;
-                abilityItemList.Add(UISelectItem.Clone(abilityItemList[0].rootObj, "Item" + (index)));
-
-                abilityItemList[index].imgIcon.sprite = ability.icon;
-                abilityItemList[index].label.text = ability.name;
-
-                abilityItemList[index].rootObj.SetActive(true);
-                abilityItemList[index].selectHighlight.SetActive(false);
-            }
-        }
+        //         abilityItemList[index].rootObj.SetActive(true);
+        //         abilityItemList[index].selectHighlight.SetActive(false);
+        //     }
+        // }
 
 
 
         void UpdateTab()
         {
-            for (int i = 0; i < AbilityManager.GetAbilityCount(); i++)
-            {
-                if (i == AbilityManager.GetSelectID())
-                {
-                    abilityItemList[i].selectHighlight.SetActive(true);
-                    abilityItemList[i].button.interactable = false;
-                }
-                else
-                {
-                    abilityItemList[i].selectHighlight.SetActive(false);
-                    abilityItemList[i].button.interactable = true;
-                }
-            }
-
-            UnitPlayer player = GameControl.GetPlayer();
-            for (int i = 0; i < player.weaponList.Count; i++)
-            {
-                string clip = player.weaponList[i].currentClip < 0 ? "∞" : player.weaponList[i].currentClip.ToString();
-                string ammo = player.weaponList[i].ammo < 0 ? "∞" : player.weaponList[i].ammo.ToString();
-                weaponItemList[i].labelAlt.text = clip + "/" + ammo;
-
-                if (i == player.weaponID)
-                {
-                    weaponItemList[i].selectHighlight.SetActive(true);
-                    weaponItemList[i].button.interactable = false;
-                }
-                else
-                {
-                    weaponItemList[i].selectHighlight.SetActive(false);
-                    weaponItemList[i].button.interactable = true;
-                }
-            }
-        }
-
-        public void OnSelectWeapon(GameObject butObj)
-        {
-            int newID = 0;
-            for (int i = 0; i < weaponItemList.Count; i++)
-            {
-                if (butObj == weaponItemList[i].buttonObj)
-                {
-                    newID = i; break;
-                }
-            }
-
-            int weaponID = GameControl.GetPlayer().weaponID;
-            if (newID == weaponID) return;
-
-            weaponItemList[newID].selectHighlight.SetActive(true);
-            weaponItemList[newID].button.interactable = false;
-
-            weaponItemList[weaponID].selectHighlight.SetActive(false);
-            weaponItemList[weaponID].button.interactable = true;
-
-            GameControl.GetPlayer().SwitchWeapon(newID);
-        }
-
-        public void OnSelectAbility(GameObject butObj)
-        {
-            int newID = 0;
+            int indexSelectedAbility = Ability_DB.GetIndexAbility(PlayerPrefs.GetInt("ability_selected", 0));
             for (int i = 0; i < abilityItemList.Count; i++)
             {
-                if (butObj == abilityItemList[i].buttonObj)
-                {
-                    newID = i; break;
-                }
+                abilityItemList[i].selectHighlight.SetActive(i == indexSelectedAbility);
+                abilityItemList[i].button.interactable = i != indexSelectedAbility;
             }
 
-            int abilityID = AbilityManager.GetSelectID();
-            if (newID == abilityID) return;
+            int indexSelectedWeapon = Weapon_DB.GetIndexWeapon(PlayerPrefs.GetInt("weapon_selected", 0));
+            for (int i = 0; i < weaponItemList.Count; i++)
+            {
+                weaponItemList[i].selectHighlight.SetActive(i == indexSelectedWeapon);
+                weaponItemList[i].button.interactable = i != indexSelectedWeapon;
+            }
+        }
 
-            abilityItemList[newID].selectHighlight.SetActive(true);
-            abilityItemList[newID].button.interactable = false;
+        public void OnSelectWeapon(int index)
+        {
+            int oldIndex = Weapon_DB.GetIndexWeapon(PlayerPrefs.GetInt("weapon_selected", 0));
+            if (index == oldIndex) return;
+
+            weaponItemList[index].selectHighlight.SetActive(true);
+            weaponItemList[index].button.interactable = false;
+
+            weaponItemList[oldIndex].selectHighlight.SetActive(false);
+            weaponItemList[oldIndex].button.interactable = true;
+
+            var weapon = Weapon_DB.Load()[index];
+
+            weaponImg.sprite = weapon.icon;
+            PlayerPrefs.SetInt("weapon_selected", weapon.ID);
+        }
+
+        public void OnSelectAbility(int index)
+        {
+            int oldIndex = Ability_DB.GetIndexAbility(PlayerPrefs.GetInt("ability_selected", 0));
+            if (index == oldIndex) return;
+
+            abilityItemList[index].selectHighlight.SetActive(true);
+            abilityItemList[index].button.interactable = false;
 
 
-            abilityItemList[abilityID].selectHighlight.SetActive(false);
-            abilityItemList[abilityID].button.interactable = true;
+            abilityItemList[oldIndex].selectHighlight.SetActive(false);
+            abilityItemList[oldIndex].button.interactable = true;
 
-            AbilityManager.Select(newID);
+            var ability = Ability_DB.Load()[index];
+
+            abilityImg.sprite = ability.icon;
+            PlayerPrefs.SetInt("ability_selected", Ability_DB.Load()[index].ID);
         }
 
 
@@ -224,6 +209,7 @@ namespace UI
         public static void TurnTabOn() { instance._TurnTabOn(); }
         public void _TurnTabOn()
         {
+            if (!inited) Init();
             Time.timeScale = 0;
             Cursor.visible = true;
 
@@ -231,7 +217,7 @@ namespace UI
 
             TDSTouchInput.Hide();
 
-            GameControl.GetPlayer().DisableFire();
+            //GameControl.GetPlayer().DisableFire();
             UpdateTab();
             tabObject.SetActive(true);
         }
@@ -245,7 +231,7 @@ namespace UI
 
             TDSTouchInput.Show();
 
-            GameControl.GetPlayer().EnableFire();
+            //GameControl.GetPlayer().EnableFire();
             tabObject.SetActive(false);
         }
 

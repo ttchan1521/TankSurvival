@@ -168,11 +168,11 @@ namespace UI
                     if (Input.GetKey(KeyCode.Space)) player.Brake();
 
                     //switch weapon
-                    if (Input.GetAxisRaw("Mouse ScrollWheel") != 0 && scrollCD <= 0)
-                    {
-                        player.ScrollWeapon(Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1);
-                        scrollCD = 0.15f;
-                    }
+                    // if (Input.GetAxisRaw("Mouse ScrollWheel") != 0 && scrollCD <= 0)
+                    // {
+                    //     player.ScrollWeapon(Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1);
+                    //     scrollCD = 0.15f;
+                    // }
                     scrollCD -= Time.deltaTime;
 
                     //string[] names = Input.GetJoystickNames();
@@ -208,8 +208,8 @@ namespace UI
         }
 
 
-        public void PrevWeapon() { GameControl.GetPlayer().ScrollWeapon(-1); }
-        public void NextWeapon() { GameControl.GetPlayer().ScrollWeapon(1); }
+        // public void PrevWeapon() { GameControl.GetPlayer().ScrollWeapon(-1); }
+        // public void NextWeapon() { GameControl.GetPlayer().ScrollWeapon(1); }
 
 
         public static void ToggleLevelPerkMenu() { instance._ToggleLevelPerkMenu(); }

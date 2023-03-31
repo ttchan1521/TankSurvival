@@ -128,7 +128,7 @@ public class Weapon : MonoBehaviour
                 //if this is a temporary weapon, remove the weapon
                 if (temporary)
                 {
-                    GameControl.GetPlayer().RemoveWeapon();
+                    //GameControl.GetPlayer().RemoveWeapon();
                     return;
                 }
 

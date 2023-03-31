@@ -15,16 +15,15 @@ public class Weapon_DB : ScriptableObject
     public List<Weapon> weaponList = new List<Weapon>();
 
     public static Weapon_DB instance;
-    public static Weapon_DB Init()
+    public static void Init()
     {
-        if (instance != null) return instance;
+        if (instance != null) return;
         instance = LoadDB();
 
 #if UNITY_2018_3_OR_NEWER
         instance.FillObjectList();
 #endif
 
-        return instance;
     }
 
 
@@ -36,6 +35,27 @@ public class Weapon_DB : ScriptableObject
             if (instance.weaponList[i].ID == ID) return instance.weaponList[i];
         }
         return null;
+    }
+
+    // public static Weapon CloneItem(int ID)
+    // {
+    //     Init();
+    //     for (int i = 0; i < instance.weaponList.Count; i++)
+    //     {
+    //         if (instance.weaponList[i].ID == ID) return instance.weaponList[i].CloneAttackStats();
+    //     }
+    //     return null;
+    // }
+
+    public static int GetIndexWeapon(int ID)
+    {
+        Init();
+        for (int i = 0; i < instance.weaponList.Count; i++)
+        {
+            if (instance.weaponList[i].ID == ID)
+                return i;
+        }
+        return -1;
     }
 
 
@@ -53,7 +73,6 @@ public class Weapon_DB : ScriptableObject
 
     public static bool VerifyList(bool hasItemRemoved = false)
     {
-        Init();
 #if UNITY_2018_3_OR_NEWER
         for (int i = 0; i < instance.weaponList.Count; i++)
         {
@@ -108,7 +127,7 @@ public class Weapon_DB : ScriptableObject
         instance.copiedFromOldDB = true;
         instance.weaponList = new List<Weapon>(WeaponDB.Load1());
     }
-    public static bool UpdatedToPost_2018_3() { Init(); return instance.copiedFromOldDB; }
+    public static bool UpdatedToPost_2018_3() { return instance.copiedFromOldDB; }
 
 
 }

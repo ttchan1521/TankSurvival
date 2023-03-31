@@ -9,13 +9,13 @@ using System.Collections.Generic;
 public class AbilityManager : MonoBehaviour
 {
 
-    private List<Ability> abilityList = new List<Ability>();
-    public static List<Ability> GetAbilityList() { return instance.abilityList; }
-    public static int GetAbilityCount() { return instance.abilityList.Count; }
-
-    private int selectedID = -99;
-    public static int GetSelectID() { return instance.selectedID; }
-
+    private Ability ability;
+    public static Ability GetAbility()
+    {
+        if (instance.ability == null)
+            SetupAbility();
+        return instance.ability;
+    }
 
     private static AbilityManager instance;
     public static AbilityManager GetInstance() { return instance; }
@@ -36,69 +36,72 @@ public class AbilityManager : MonoBehaviour
 
 
     //called by the current UnitPlayer to setup ability
-    public static void SetupAbility(List<int> abIDlist, bool enableAll)
+    // public static void SetupAbility(List<int> abIDlist, bool enableAll)
+    // {
+    //     if (instance != null) instance._SetupAbility(abIDlist, enableAll);
+    //     else Debug.LogWarning("No AbilityManager in the scene, Abilities has been disabled", null);
+    // }
+    public static void SetupAbility()
     {
-        if (instance != null) instance._SetupAbility(abIDlist, enableAll);
-        else Debug.LogWarning("No AbilityManager in the scene, Abilities has been disabled", null);
+        if (instance != null) instance._SetupAbility();
     }
-    public void _SetupAbility(List<int> abIDlist, bool enableAll)
+    public void _SetupAbility()
     {
-        abilityList = new List<Ability>();
+        ability = Ability_DB.CloneItem(PlayerPrefs.GetInt("ability_selected", 0));
 
         //cloen the ability from DB list (so they dont get modified in runtime)
-        if (enableAll) abilityList = Ability_DB.LoadClone();
-        else
-        {
-            for (int i = 0; i < abIDlist.Count; i++)
-            {
-                abilityList.Add(Ability_DB.CloneItem(abIDlist[i]));
-                abilityList[i].Init();
-            }
-        }
+        // if (enableAll) abilityList = Ability_DB.LoadClone();
+        // else
+        // {
+        //     for (int i = 0; i < abIDlist.Count; i++)
+        //     {
+        //         abilityList.Add(Ability_DB.CloneItem(abIDlist[i]));
+        //         abilityList[i].Init();
+        //     }
+        // }
 
         //select an ability, if there's any
-        Select((abilityList.Count == 0) ? -1 : 0);
     }
 
-    public static void AddAbility(int abID, int replaceID = -1) { instance._AddAbility(abID, replaceID); }
-    public void _AddAbility(int abID, int replaceID = -1)
-    {
-        Ability newAbility = Ability_DB.CloneItem(abID);
-        if (newAbility == null) return;
+    // public static void AddAbility(int abID, int replaceID = -1) { instance._AddAbility(abID, replaceID); }
+    // public void _AddAbility(int abID, int replaceID = -1)
+    // {
+    //     Ability newAbility = Ability_DB.CloneItem(abID);
+    //     if (newAbility == null) return;
 
-        int slotID = -1;
-        if (replaceID >= 0)
-        {
-            for (int i = 0; i < abilityList.Count; i++)
-            {
-                if (abilityList[i].ID == replaceID) { slotID = i; break; }
-            }
-        }
+    //     int slotID = -1;
+    //     if (replaceID >= 0)
+    //     {
+    //         for (int i = 0; i < abilityList.Count; i++)
+    //         {
+    //             if (abilityList[i].ID == replaceID) { slotID = i; break; }
+    //         }
+    //     }
 
-        if (slotID < 0)
-        {
-            slotID = abilityList.Count;
-            abilityList.Add(null);
-        }
+    //     if (slotID < 0)
+    //     {
+    //         slotID = abilityList.Count;
+    //         abilityList.Add(null);
+    //     }
 
-        abilityList[slotID] = newAbility;
-        abilityList[slotID].Init();
+    //     abilityList[slotID] = newAbility;
+    //     abilityList[slotID].Init();
 
-        if (replaceID < 0 || slotID < 0) TDS.NewAbility(abilityList[slotID]);
-        else TDS.NewAbility(newAbility, slotID);
+    //     if (replaceID < 0 || slotID < 0) TDS.NewAbility(abilityList[slotID]);
+    //     else TDS.NewAbility(newAbility, slotID);
 
-        Select(slotID);
-    }
+    //     Select(slotID);
+    // }
 
 
     //check if a particular ability is ready based on the passed index
-    public static string IsAbilityReady(int index = -1) { return instance._IsAbilityReady(index); }
-    public string _IsAbilityReady(int index = -1)
+    public static string IsAbilityReady() { return instance._IsAbilityReady(); }
+    public string _IsAbilityReady()
     {
-        index = index < 0 ? selectedID : index; //if no index has been passed, check the selected ability
-        if (index < 0 || index >= abilityList.Count) return "Invalid ability";
+        // index = index < 0 ? selectedID : index; //if no index has been passed, check the selected ability
+        // if (index < 0 || index >= abilityList.Count) return "Invalid ability";
 
-        return abilityList[index].IsReady();
+        return ability.IsReady();
     }
 
 
@@ -112,17 +115,17 @@ public class AbilityManager : MonoBehaviour
 
     //function call to launch an ability, based on the passed index
     //for player ability, check the avaibility of the ability before launch
-    public static void LaunchAbility(int index = -1) { instance._LaunchAbility(index); }
-    public void _LaunchAbility(int index = -1)
+    public static void LaunchAbility() { instance._LaunchAbility(); }
+    public void _LaunchAbility()
     {
         if (instance == null) return;
 
         //make sure we have a valid selected ability
-        index = index < 0 ? selectedID : index;
-        if (index < 0 || index >= abilityList.Count) return;
+        // index = index < 0 ? selectedID : index;
+        // if (index < 0 || index >= abilityList.Count) return;
 
         //check if the selected ability is ready
-        string status = abilityList[index].IsReady();
+        string status = ability.IsReady();
         //if the abilty is not ready, fire event explaining why (for UI)
         if (status != "")
         {
@@ -131,26 +134,26 @@ public class AbilityManager : MonoBehaviour
         }
 
         //call function to launch ability
-        LaunchAbility(abilityList[index]);
+        LaunchAbility(ability);
     }
 
     //function call to launch the passed ability
     //for launching weapon alt-fire
-    public static void LaunchAbility(Ability ability, bool useCostNCD = true)
+    public static void LaunchAbility(Ability _ability, bool useCostNCD = true)
     {
-        bool teleport = ability.type == _AbilityType.Movement & ability.moveType == _MoveType.Teleport;
-        if (ability.type == _AbilityType.AOE || ability.type == _AbilityType.Shoot || teleport)
+        bool teleport = _ability.type == _AbilityType.Movement & _ability.moveType == _MoveType.Teleport;
+        if (_ability.type == _AbilityType.AOE || _ability.type == _AbilityType.Shoot || teleport)
         {
             //get the hit point and activate the ability on that particular spot
             Ray ray = CameraControl.GetMainCamera().ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity)) ability.Activate(hit.point);
-            else ability.Activate(GameControl.GetPlayer().thisT.position); //use player position if there's no valid position
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity)) _ability.Activate(hit.point);
+            else _ability.Activate(GameControl.GetPlayer().thisT.position); //use player position if there's no valid position
         }
         else
         {
             //activate the ability on the player position
-            ability.Activate(GameControl.GetPlayer().thisT.position);
+            _ability.Activate(GameControl.GetPlayer().thisT.position);
         }
     }
 
@@ -159,40 +162,40 @@ public class AbilityManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameControl.EnableAbility()) return;
+        if (!GameControl.EnableAbility() || ability == null) return;
 
         //iterates cooldown
-        for (int i = 0; i < abilityList.Count; i++) abilityList[i].currentCD -= Time.deltaTime;
+        ability.currentCD -= Time.deltaTime;
 
         //change selected ability
-        if (Input.GetKeyDown(KeyCode.Alpha1)) Select(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) Select(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) Select(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) Select(3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) Select(4);
-        if (Input.GetKeyDown(KeyCode.Alpha6)) Select(5);
-        if (Input.GetKeyDown(KeyCode.Alpha7)) Select(6);
-        if (Input.GetKeyDown(KeyCode.Alpha8)) Select(7);
-        if (Input.GetKeyDown(KeyCode.Alpha9)) Select(8);
-        if (Input.GetKeyDown(KeyCode.Alpha0)) Select(9);
+        // if (Input.GetKeyDown(KeyCode.Alpha1)) Select(0);
+        // if (Input.GetKeyDown(KeyCode.Alpha2)) Select(1);
+        // if (Input.GetKeyDown(KeyCode.Alpha3)) Select(2);
+        // if (Input.GetKeyDown(KeyCode.Alpha4)) Select(3);
+        // if (Input.GetKeyDown(KeyCode.Alpha5)) Select(4);
+        // if (Input.GetKeyDown(KeyCode.Alpha6)) Select(5);
+        // if (Input.GetKeyDown(KeyCode.Alpha7)) Select(6);
+        // if (Input.GetKeyDown(KeyCode.Alpha8)) Select(7);
+        // if (Input.GetKeyDown(KeyCode.Alpha9)) Select(8);
+        // if (Input.GetKeyDown(KeyCode.Alpha0)) Select(9);
     }
 
 
     //select a particular ability
-    public static void Select(int newID)
-    {
-        if (newID == instance.selectedID) return;
-        if (newID < 0 || newID >= instance.abilityList.Count) return;
+    // public static void Select(int newID)
+    // {
+    //     if (newID == instance.selectedID) return;
+    //     if (newID < 0 || newID >= instance.abilityList.Count) return;
 
-        instance.selectedID = newID;
-        TDS.SwitchAbility(GetSelectedAbility());    //launch the ability switch event to inform the UI
-    }
+    //     instance.selectedID = newID;
+    //     TDS.SwitchAbility(GetSelectedAbility());    //launch the ability switch event to inform the UI
+    // }
 
 
     public static Ability GetSelectedAbility()
     {
-        if (instance.abilityList.Count == 0) return null;
-        return instance.abilityList[instance.selectedID];
+        //if (instance.abilityList.Count == 0) return null;
+        return instance.ability;
     }
 
 
