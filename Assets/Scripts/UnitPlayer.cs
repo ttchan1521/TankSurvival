@@ -22,12 +22,6 @@ public class UnitPlayer : Unit
 
     public Weapon weapon;
     [HideInInspector] public bool weaponInitiated = false;  //for respawning unit
-
-
-    [Header("Abilities")]
-    public bool enableAbility = true;
-    public bool enableAllAbilities = true;
-    public List<int> abilityIDList = new List<int>();
     //[HideInInspector] public List<Ability> abilityList=new List<Ability>();
 
 
@@ -749,7 +743,7 @@ public class UnitPlayer : Unit
     {
         if (!saveProgress) return;
         if (progress != null) progress.Save();
-        if (perk != null) perk.Save();
+        //if (perk != null) perk.Save();
     }
     public void Load()
     {

@@ -70,52 +70,52 @@ public class PlayerPerk : MonoBehaviour
 
 
 
-    public void Save()
-    {
-        PlayerPrefs.SetInt("p" + player.playerID + "_perk", 1); //to indicate save exist when loading
-        int perkCount = 0;
-        for (int i = 0; i < perkList.Count; i++)
-        {
-            if (perkList[i].purchased > 0)
-            {
-                PlayerPrefs.SetInt("p" + player.playerID + "_perk_" + perkCount, perkList[i].ID);
-                PlayerPrefs.SetInt("p" + player.playerID + "_perk_" + perkCount + "_purchased", perkList[i].purchased);
-                perkCount += 1;
-            }
-        }
-        PlayerPrefs.SetInt("p" + player.playerID + "_perk_count", perkCount);
-        PlayerPrefs.SetInt("p" + player.playerID + "_perk_currency", perkCurrency);
-    }
+    // public void Save()
+    // {
+    //     PlayerPrefs.SetInt("p" + player.playerID + "_perk", 1); //to indicate save exist when loading
+    //     int perkCount = 0;
+    //     for (int i = 0; i < perkList.Count; i++)
+    //     {
+    //         if (perkList[i].purchased > 0)
+    //         {
+    //             PlayerPrefs.SetInt("p" + player.playerID + "_perk_" + perkCount, perkList[i].ID);
+    //             PlayerPrefs.SetInt("p" + player.playerID + "_perk_" + perkCount + "_purchased", perkList[i].purchased);
+    //             perkCount += 1;
+    //         }
+    //     }
+    //     PlayerPrefs.SetInt("p" + player.playerID + "_perk_count", perkCount);
+    //     PlayerPrefs.SetInt("p" + player.playerID + "_perk_currency", perkCurrency);
+    // }
     public void Load()
     {
         purchasedIDList = new List<int>();
 
-        if (PlayerPrefs.HasKey("p" + player.playerID + "_perk"))
-        {
-            perkCurrency = PlayerPrefs.GetInt("p" + player.playerID + "_perk_currency", 0);
+        // if (PlayerPrefs.HasKey("p" + player.playerID + "_perk"))
+        // {
+        //     perkCurrency = PlayerPrefs.GetInt("p" + player.playerID + "_perk_currency", 0);
 
-            Debug.Log("p" + player.playerID + "_perk_currency    " + perkCurrency);
+        //     Debug.Log("p" + player.playerID + "_perk_currency    " + perkCurrency);
 
-            int perkCount = PlayerPrefs.GetInt("p" + player.playerID + "_perk_count", 0);
-            for (int i = 0; i < perkCount; i++)
-            {
-                int perkID = PlayerPrefs.GetInt("p" + player.playerID + "_perk_" + i, -1);
-                int purchased = PlayerPrefs.GetInt("p" + player.playerID + "_perk_" + i + "_purchased", 0);
-                if (perkID >= 0)
-                {   //fixed 28NOv2018
-                    for (int n = 0; n < purchased; n++) purchasedIDList.Add(perkID);
-                }
-            }
-        }
+        //     int perkCount = PlayerPrefs.GetInt("p" + player.playerID + "_perk_count", 0);
+        //     for (int i = 0; i < perkCount; i++)
+        //     {
+        //         int perkID = PlayerPrefs.GetInt("p" + player.playerID + "_perk_" + i, -1);
+        //         int purchased = PlayerPrefs.GetInt("p" + player.playerID + "_perk_" + i + "_purchased", 0);
+        //         if (perkID >= 0)
+        //         {   //fixed 28NOv2018
+        //             for (int n = 0; n < purchased; n++) purchasedIDList.Add(perkID);
+        //         }
+        //     }
+        // }
 
-        for (int i = 0; i < perkList.Count; i++)
-        {
-            while (purchasedIDList.Contains(perkList[i].ID))
-            {
-                PurchasePerk(perkList[i], false, false);
-                purchasedIDList.Remove(perkList[i].ID);
-            }
-        }
+        // for (int i = 0; i < perkList.Count; i++)
+        // {
+        //     while (purchasedIDList.Contains(perkList[i].ID))
+        //     {
+        //         PurchasePerk(perkList[i], false, false);
+        //         purchasedIDList.Remove(perkList[i].ID);
+        //     }
+        // }
     }
     public void DeleteSave(int playerID = 0)
     {
@@ -154,7 +154,7 @@ public class PlayerPerk : MonoBehaviour
     private void CurrencyChanged()
     {
         TDS.OnPerkCurrency(perkCurrency);
-        if (player.SaveUponChange()) Save();
+        //if (player.SaveUponChange()) Save();
     }
 
 
@@ -216,7 +216,7 @@ public class PlayerPerk : MonoBehaviour
 
         TDS.PerkPurchased(perk);
 
-        if (player.SaveUponChange()) Save();
+        //if (player.SaveUponChange()) Save();
 
         if (perk.type == _PerkType.ModifyGeneralStats)
         {
