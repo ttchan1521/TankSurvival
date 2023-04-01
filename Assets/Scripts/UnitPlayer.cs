@@ -68,8 +68,6 @@ public class UnitPlayer : Unit
 
         SetDestroyCallback(this.PlayerDestroyCallback);
 
-        weapon = Weapon_DB.GetPrefab(PlayerPrefsManager.weaponSelectID);
-
         if (weaponMountPoint == null) weaponMountPoint = thisT;
 
         //if(enableTurretRotate && turretObj==null) turretObj=thisT;
@@ -119,6 +117,14 @@ public class UnitPlayer : Unit
             ab.SetPlayerPerk(perk);
         }
 
+        if (destroyedEffectObj != null)
+        {
+            if (!destroyedEffectObj.TryGetComponent<PooledObject>(out var pooledObject))
+            {
+                pooledObject = destroyedEffectObj.AddComponent<PooledObject>();
+            }
+        }
+
         Init();
     }
 
@@ -133,6 +139,7 @@ public class UnitPlayer : Unit
 
         if (!weaponInitiated)
         {
+            weapon = Weapon_DB.GetPrefab(PlayerPrefsManager.weaponSelectID);
             weaponInitiated = true;
             // for (int i = 0; i < weaponList.Count; i++)
             // {
