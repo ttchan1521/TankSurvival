@@ -5,8 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 #endif
 
-using System.Collections;
-
 public class DemoUIMenu : MonoBehaviour
 {
 
@@ -18,8 +16,12 @@ public class DemoUIMenu : MonoBehaviour
 
     public Text lbTooltip;
 
-    [SerializeField] private RectTransform colorBtn;
+    private Camera cameraMain;
 
+    private void Awake()
+    {
+        cameraMain = Camera.main;
+    }
 
     void Start()
     {
@@ -38,6 +40,37 @@ public class DemoUIMenu : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = cameraMain.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out var hitInfo))
+            {
+                ShowColorPicker(hitInfo);
+            }
+        }
+        foreach (Touch touch in Input.touches)
+        {
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = cameraMain.ScreenPointToRay(touch.position);
+                if (Physics.Raycast(ray, out var hitInfo))
+                {
+                    ShowColorPicker(hitInfo);
+                }
+            }
+        }
+    }
+
+    void ShowColorPicker(RaycastHit hitInfo)
+    {
+        if (hitInfo.transform.TryGetComponent<UnitPlayer>(out var unit))
+        {
+            var picker = Resources.Load<GameObject>("Picker 2.0 Variant");
+            Instantiate(picker, GetComponentInChildren<Canvas>().transform);
+        }
+    }
 
     public void OnButton(int butIndex)
     {

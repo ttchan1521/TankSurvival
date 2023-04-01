@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using TDSTK;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +8,7 @@ namespace ColorPicker
     public class ColorPickerManager : MonoBehaviour
     {
         [SerializeField] private HSVPicker.ColorPicker picker;
-        [SerializeField] private Dropdown dropdown;
+        [SerializeField] private TMP_Dropdown dropdown;
         [SerializeField] private Button closeButton;
         private UnitPlayer _unitPlayer;
         private Renderer[] _renderers;
@@ -29,7 +29,7 @@ namespace ColorPicker
 
         private void Start()
         {
-            dropdown.options = new List<Dropdown.OptionData>()
+            dropdown.options = new List<TMP_Dropdown.OptionData>()
             {
                 new("Color 1"),
                 new("Color 2"),
@@ -49,9 +49,10 @@ namespace ColorPicker
 
             closeButton.onClick.AddListener(() =>
             {
-                gameObject.SetActive(false);
                 PlayerPrefsManager.mainColor = _renderers[0].material.GetColor($"_Color1");
                 PlayerPrefsManager.subColor = _renderers[0].material.GetColor($"_Color2");
+                Destroy(gameObject);
+                Resources.UnloadUnusedAssets();
             });
         }
     }
