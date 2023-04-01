@@ -438,8 +438,8 @@ public class Unit : PooledObject
 
         //if(destroyParent) Destroy(thisT.parent.gameObject);
 
-        //Destroy(thisObj);
-        ReturnToPool();
+        Destroy(thisObj);
+        //ReturnToPool();
 
         yield return null;
     }

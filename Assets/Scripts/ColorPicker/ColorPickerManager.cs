@@ -47,7 +47,12 @@ namespace ColorPicker
                 }
             });
 
-            closeButton.onClick.AddListener(() => gameObject.SetActive(false));
+            closeButton.onClick.AddListener(() =>
+            {
+                gameObject.SetActive(false);
+                PlayerPrefsManager.mainColor = _renderers[0].material.GetColor($"_Color1");
+                PlayerPrefsManager.subColor = _renderers[0].material.GetColor($"_Color2");
+            });
         }
     }
 }

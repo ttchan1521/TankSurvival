@@ -27,9 +27,15 @@ public class DemoUIMenu : MonoBehaviour
 
         tooltipRectT = tooltipObj.GetComponent<RectTransform>();
         tooltipStartingPos = tooltipRectT.localPosition;
-        // var unit = FindObjectOfType<UnitPlayer>();
+        var unit = FindObjectOfType<UnitPlayer>();
         // Vector3 screenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
         // colorBtn.localPosition = screenPos;
+        var _renderers = unit.GetComponentsInChildren<Renderer>();
+        foreach (var renderer1 in _renderers)
+        {
+            renderer1.material.SetColor($"_Color1", PlayerPrefsManager.mainColor);
+            renderer1.material.SetColor($"_Color2", PlayerPrefsManager.subColor);
+        }
     }
 
 

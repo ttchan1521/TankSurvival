@@ -47,7 +47,7 @@ public class AbilityManager : MonoBehaviour
     }
     public void _SetupAbility()
     {
-        ability = Ability_DB.CloneItem(PlayerPrefs.GetInt("ability_selected", 0));
+        ability = Ability_DB.CloneItem(PlayerPrefsManager.abilitySelectID);
 
         //cloen the ability from DB list (so they dont get modified in runtime)
         // if (enableAll) abilityList = Ability_DB.LoadClone();

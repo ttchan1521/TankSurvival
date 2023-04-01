@@ -68,7 +68,7 @@ public class UnitPlayer : Unit
 
         SetDestroyCallback(this.PlayerDestroyCallback);
 
-        weapon = Weapon_DB.GetPrefab(PlayerPrefs.GetInt("weapon_selected", 0));
+        weapon = Weapon_DB.GetPrefab(PlayerPrefsManager.weaponSelectID);
 
         if (weaponMountPoint == null) weaponMountPoint = thisT;
 
@@ -105,6 +105,13 @@ public class UnitPlayer : Unit
 
         // if (enableAbility && GameControl.EnableAbility())
         //     AbilityManager.SetupAbility(abilityIDList, enableAllAbilities);
+
+        var _renderers = GetComponentsInChildren<Renderer>();
+        foreach (var renderer1 in _renderers)
+        {
+            renderer1.material.SetColor($"_Color1", PlayerPrefsManager.mainColor);
+            renderer1.material.SetColor($"_Color2", PlayerPrefsManager.subColor);
+        }
 
         if (perk != null)
         {

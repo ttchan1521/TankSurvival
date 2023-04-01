@@ -42,8 +42,8 @@ namespace UI
             yield return null;
 
             //if (!UIMainControl.EnableItemSelectTab()) thisObj.SetActive(false);
-            weaponImg.sprite = Weapon_DB.GetPrefab(PlayerPrefs.GetInt("weapon_selected", 0)).icon;
-            abilityImg.sprite = Ability_DB.GetItem(PlayerPrefs.GetInt("ability_selected", 0)).icon;
+            weaponImg.sprite = Weapon_DB.GetPrefab(PlayerPrefsManager.weaponSelectID).icon;
+            abilityImg.sprite = Ability_DB.GetItem(PlayerPrefsManager.abilitySelectID).icon;
             tabObject.SetActive(false);
         }
 
@@ -142,14 +142,14 @@ namespace UI
 
         void UpdateTab()
         {
-            int indexSelectedAbility = Ability_DB.GetIndexAbility(PlayerPrefs.GetInt("ability_selected", 0));
+            int indexSelectedAbility = Ability_DB.GetIndexAbility(PlayerPrefsManager.abilitySelectID);
             for (int i = 0; i < abilityItemList.Count; i++)
             {
                 abilityItemList[i].selectHighlight.SetActive(i == indexSelectedAbility);
                 abilityItemList[i].button.interactable = i != indexSelectedAbility;
             }
 
-            int indexSelectedWeapon = Weapon_DB.GetIndexWeapon(PlayerPrefs.GetInt("weapon_selected", 0));
+            int indexSelectedWeapon = Weapon_DB.GetIndexWeapon(PlayerPrefsManager.weaponSelectID);
             for (int i = 0; i < weaponItemList.Count; i++)
             {
                 weaponItemList[i].selectHighlight.SetActive(i == indexSelectedWeapon);
@@ -159,7 +159,7 @@ namespace UI
 
         public void OnSelectWeapon(int index)
         {
-            int oldIndex = Weapon_DB.GetIndexWeapon(PlayerPrefs.GetInt("weapon_selected", 0));
+            int oldIndex = Weapon_DB.GetIndexWeapon(PlayerPrefsManager.weaponSelectID);
             if (index == oldIndex) return;
 
             weaponItemList[index].selectHighlight.SetActive(true);
@@ -171,12 +171,12 @@ namespace UI
             var weapon = Weapon_DB.Load()[index];
 
             weaponImg.sprite = weapon.icon;
-            PlayerPrefs.SetInt("weapon_selected", weapon.ID);
+            PlayerPrefsManager.weaponSelectID = weapon.ID;
         }
 
         public void OnSelectAbility(int index)
         {
-            int oldIndex = Ability_DB.GetIndexAbility(PlayerPrefs.GetInt("ability_selected", 0));
+            int oldIndex = Ability_DB.GetIndexAbility(PlayerPrefsManager.abilitySelectID);
             if (index == oldIndex) return;
 
             abilityItemList[index].selectHighlight.SetActive(true);
@@ -189,7 +189,7 @@ namespace UI
             var ability = Ability_DB.Load()[index];
 
             abilityImg.sprite = ability.icon;
-            PlayerPrefs.SetInt("ability_selected", Ability_DB.Load()[index].ID);
+            PlayerPrefsManager.abilitySelectID = Ability_DB.Load()[index].ID;
         }
 
 
