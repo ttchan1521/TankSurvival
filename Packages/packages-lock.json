@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.judahperez.hsvcolorpicker": {
+      "version": "https://github.com/judah4/HSV-Color-Picker-Unity.git?path=Packages/com.judahperez.hsvcolorpicker",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f91350d4feaaa02c5bd62d40973f7246876cf681"
+    },
     "com.sabresaurus.playerprefseditor": {
       "version": "https://github.com/sabresaurus/PlayerPrefsEditor.git",
       "depth": 0,

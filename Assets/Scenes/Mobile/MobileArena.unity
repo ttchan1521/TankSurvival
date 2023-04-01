@@ -1940,8 +1940,8 @@ MonoBehaviour:
   creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
-  spawnCD: 0.5
-  activeLimit: 15
+  spawnCD: 4
+  activeLimit: 10
   limitSpawnCount: 50
   limitSpawnTime: 120
   limitType: 1
@@ -3647,7 +3647,7 @@ MonoBehaviour:
   startDelay: 5
   spawnCD: 10
   maxItemCount: 1
-  spawnChance: 1
+  spawnChance: 0.5
   failModifier: 0.1
   spawnItemList:
   - item: {fileID: 11444902, guid: e1f7ac2b4f54e2d439d8523d0744e7dc, type: 3}
@@ -3658,23 +3658,7 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11444902, guid: 4f201c45f1175a84e8a4d5c3ba702478, type: 3}
-    chance: 0.5
-    cooldown: 10
-    currentCD: 0
-  - item: {fileID: 11444902, guid: 6359513a23c16834397fa1d9a5da9605, type: 3}
-    chance: 0.5
-    cooldown: 10
-    currentCD: 0
   - item: {fileID: 11417108, guid: b7704cc083826bf4e96472ba5abe30d0, type: 3}
-    chance: 0.5
-    cooldown: 10
-    currentCD: 0
-  - item: {fileID: 11477040, guid: b4f774f35a6434d47a91e14a1b18e5e7, type: 3}
-    chance: 0.5
-    cooldown: 10
-    currentCD: 0
-  - item: {fileID: 11420194, guid: fc8b27e838294574a86918284d2fbd14, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
@@ -3682,7 +3666,7 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11447456, guid: 4e8d090e4b585324eb3f609d4ebca8d7, type: 3}
+  - item: {fileID: 11444902, guid: 44c545a75d58c0a46b60b7eaace93fbb, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
@@ -4622,27 +4606,7 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 40
     currentCD: 0
-  - item: {fileID: 11444902, guid: 4f201c45f1175a84e8a4d5c3ba702478, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
-  - item: {fileID: 11444902, guid: 6359513a23c16834397fa1d9a5da9605, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
-  - item: {fileID: 11477040, guid: b4f774f35a6434d47a91e14a1b18e5e7, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
-  - item: {fileID: 11420194, guid: fc8b27e838294574a86918284d2fbd14, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
   - item: {fileID: 11469412, guid: 376909417189eb542b1fdf05778ea0a6, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
-  - item: {fileID: 11447456, guid: 4e8d090e4b585324eb3f609d4ebca8d7, type: 3}
     chance: 0.5
     cooldown: 40
     currentCD: 0
@@ -4650,7 +4614,7 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 40
     currentCD: 0
-  - item: {fileID: 0}
+  - item: {fileID: 11444902, guid: 44c545a75d58c0a46b60b7eaace93fbb, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
@@ -5145,6 +5109,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11446944, guid: f50baf3ab52b10244b0454ff11b346b7, type: 3}
+      propertyPath: enableAutoAim
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446944, guid: f50baf3ab52b10244b0454ff11b346b7, type: 3}
+      propertyPath: turretAimMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f50baf3ab52b10244b0454ff11b346b7, type: 3}
 --- !u!4 &949556492 stripped
@@ -5215,7 +5187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 15
+  startDelay: 25
   spawnAreaList:
   - {fileID: 140765103}
   - {fileID: 1801645282}
@@ -5271,8 +5243,8 @@ MonoBehaviour:
   creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
-  spawnCD: 0.2
-  activeLimit: 15
+  spawnCD: 5
+  activeLimit: 10
   limitSpawnCount: 120
   limitSpawnTime: 120
   limitType: 1
@@ -5834,7 +5806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 60
+  startDelay: 90
   spawnAreaList:
   - {fileID: 190666971}
   - {fileID: 138098580}
@@ -5890,7 +5862,7 @@ MonoBehaviour:
   creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
-  spawnCD: 0.2
+  spawnCD: 5
   activeLimit: 6
   limitSpawnCount: 50
   limitSpawnTime: 120
@@ -5958,7 +5930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 90
+  startDelay: 120
   spawnAreaList:
   - {fileID: 471107730}
   - {fileID: 1109817356}
@@ -6014,7 +5986,7 @@ MonoBehaviour:
   creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
-  spawnCD: 0.2
+  spawnCD: 5
   activeLimit: 6
   limitSpawnCount: 50
   limitSpawnTime: 120
@@ -11150,22 +11122,14 @@ MonoBehaviour:
   startDelay: 0
   spawnCD: 10
   maxItemCount: 1
-  spawnChance: 1
+  spawnChance: 0.5
   failModifier: 0.1
   spawnItemList:
   - item: {fileID: 11444902, guid: e1f7ac2b4f54e2d439d8523d0744e7dc, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11444902, guid: 5ed0dc026583269468be2b3f12f4778d, type: 3}
-    chance: 0.5
-    cooldown: 10
-    currentCD: 0
-  - item: {fileID: 11444902, guid: 4f201c45f1175a84e8a4d5c3ba702478, type: 3}
-    chance: 0.5
-    cooldown: 10
-    currentCD: 0
-  - item: {fileID: 11444902, guid: 6359513a23c16834397fa1d9a5da9605, type: 3}
+  - item: {fileID: 11444902, guid: 44c545a75d58c0a46b60b7eaace93fbb, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
@@ -11173,23 +11137,19 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11477040, guid: b4f774f35a6434d47a91e14a1b18e5e7, type: 3}
-    chance: 0.5
-    cooldown: 10
-    currentCD: 0
-  - item: {fileID: 11420194, guid: fc8b27e838294574a86918284d2fbd14, type: 3}
-    chance: 0.5
-    cooldown: 10
-    currentCD: 0
   - item: {fileID: 11469412, guid: 376909417189eb542b1fdf05778ea0a6, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11447456, guid: 4e8d090e4b585324eb3f609d4ebca8d7, type: 3}
+  - item: {fileID: 11444902, guid: 44c545a75d58c0a46b60b7eaace93fbb, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
   - item: {fileID: 11435810, guid: 88726b9bf8f244344acaf73c9152fa00, type: 3}
+    chance: 0.5
+    cooldown: 10
+    currentCD: 0
+  - item: {fileID: 11447456, guid: 4e8d090e4b585324eb3f609d4ebca8d7, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
@@ -11256,7 +11216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 30
+  startDelay: 50
   spawnAreaList:
   - {fileID: 206046211}
   - {fileID: 698596599}
@@ -11312,8 +11272,8 @@ MonoBehaviour:
   creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
-  spawnCD: 0.2
-  activeLimit: 10
+  spawnCD: 5
+  activeLimit: 6
   limitSpawnCount: 50
   limitSpawnTime: 120
   limitType: 1

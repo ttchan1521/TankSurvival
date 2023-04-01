@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.judahperez.hsvcolorpicker": "https://github.com/judah4/HSV-Color-Picker-Unity.git?path=Packages/com.judahperez.hsvcolorpicker",
     "com.sabresaurus.playerprefseditor": "https://github.com/sabresaurus/PlayerPrefsEditor.git",
     "com.unity.collab-proxy": "1.17.7",
     "com.unity.feature.development": "1.0.1",

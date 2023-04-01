@@ -18,6 +18,8 @@ public class DemoUIMenu : MonoBehaviour
 
     public Text lbTooltip;
 
+    [SerializeField] private RectTransform colorBtn;
+
 
     void Start()
     {
@@ -25,6 +27,9 @@ public class DemoUIMenu : MonoBehaviour
 
         tooltipRectT = tooltipObj.GetComponent<RectTransform>();
         tooltipStartingPos = tooltipRectT.localPosition;
+        // var unit = FindObjectOfType<UnitPlayer>();
+        // Vector3 screenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
+        // colorBtn.localPosition = screenPos;
     }
 
 
