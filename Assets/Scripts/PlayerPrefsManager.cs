@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ParrelSync;
 using UnityEngine;
 
 public class PlayerPrefsManager
@@ -25,7 +26,7 @@ public class PlayerPrefsManager
     {
         get
         {
-            if (ColorUtility.TryParseHtmlString(PlayerPrefs.GetString(PREFS_MAIN_COLOR), out var color))
+            if (ColorUtility.TryParseHtmlString(PlayerPrefs.GetString(GetKeyClone(PREFS_MAIN_COLOR)), out var color))
             {
                 return color;
             }
@@ -33,14 +34,14 @@ public class PlayerPrefsManager
             return new Color(1, 0.5621365f, 0, 1);
         }
 
-        set => PlayerPrefs.SetString(PREFS_MAIN_COLOR, '#' + ColorUtility.ToHtmlStringRGBA(value));
+        set => PlayerPrefs.SetString(GetKeyClone(PREFS_MAIN_COLOR), '#' + ColorUtility.ToHtmlStringRGBA(value));
     }
 
     public static Color subColor
     {
         get
         {
-            if (ColorUtility.TryParseHtmlString(PlayerPrefs.GetString(PREFS_SUB_COLOR), out var color))
+            if (ColorUtility.TryParseHtmlString(PlayerPrefs.GetString(GetKeyClone(PREFS_SUB_COLOR)), out var color))
             {
                 return color;
             }
@@ -48,6 +49,13 @@ public class PlayerPrefsManager
             return new Color(0.9254902f, 0.3616368f, 0, 1);
         }
 
-        set => PlayerPrefs.SetString(PREFS_SUB_COLOR, '#' + ColorUtility.ToHtmlStringRGBA(value));
+        set => PlayerPrefs.SetString(GetKeyClone(PREFS_SUB_COLOR), '#' + ColorUtility.ToHtmlStringRGBA(value));
+    }
+
+    private static string GetKeyClone(string key)
+    {
+        if (!ClonesManager.IsClone()) return key;
+        string customArgument = ClonesManager.GetArgument();
+        return $"{customArgument}:{key}";
     }
 }
