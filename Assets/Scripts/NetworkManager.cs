@@ -37,5 +37,11 @@ namespace DefaultNamespace
             // Method 2: access through the socket
             Debug.Log("Sid through socket: " + Manager.Socket.Id);
         }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            Manager.Socket.Disconnect();
+        }
     }
 }

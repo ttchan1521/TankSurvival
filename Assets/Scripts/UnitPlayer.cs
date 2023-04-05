@@ -2,7 +2,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
-
+using DefaultNamespace;
+using pvp;
 
 public enum _MovementMode { Rigid, FreeForm }
 public enum _TurretAimMode { ScreenSpace, Raycast }
@@ -55,6 +56,7 @@ public class UnitPlayer : Unit
     public float maxPosX = Mathf.Infinity;
     public float maxPosZ = Mathf.Infinity;
 
+    private Player data = new Player();
 
 
     // Use this for initialization
@@ -104,11 +106,9 @@ public class UnitPlayer : Unit
         // if (enableAbility && GameControl.EnableAbility())
         //     AbilityManager.SetupAbility(abilityIDList, enableAllAbilities);
 
-        var _renderers = GetComponentsInChildren<Renderer>();
-        foreach (var renderer1 in _renderers)
+        if (GameControl.GetPlayer() == this)
         {
-            renderer1.material.SetColor($"_Color1", PlayerPrefsManager.mainColor);
-            renderer1.material.SetColor($"_Color2", PlayerPrefsManager.subColor);
+            SetRendererColor(PlayerPrefsManager.mainColor,  PlayerPrefsManager.subColor);
         }
 
         if (perk != null)
@@ -125,7 +125,24 @@ public class UnitPlayer : Unit
             }
         }
 
+        if (GameControl.GetInstance().pvp)
+        {
+            data.socketId = NetworkManager.Instance.Manager.Socket.Id;
+            data.roomId = PvP.GetRoom();
+        }
+
         Init();
+    }
+
+    public void SetRendererColor(Color main, Color sub)
+    {
+        var renderers = GetComponentsInChildren<Renderer>();
+        
+        foreach (var renderer1 in renderers)
+        {
+            renderer1.material.SetColor($"_Color1", main);
+            renderer1.material.SetColor($"_Color2", sub);
+        }
     }
 
 
@@ -545,7 +562,7 @@ public class UnitPlayer : Unit
             thisT.position = new Vector3(x, thisT.position.y, z);
         }
 
-        if (!GameControl.IsGamePlaying()) return;
+        if (!GameControl.IsGamePlaying() || this != GameControl.GetPlayer()) return;
         if (destroyed || IsStunned() || IsDashing()) return;
 
         base.Update();
@@ -560,6 +577,15 @@ public class UnitPlayer : Unit
         }
 
         if (!enableTurretRotate && aimAtTravelDirection && turretObj != null) turretObj.rotation = thisT.rotation;
+
+        if (GameControl.GetInstance().pvp)
+        {
+            data.SetPosition(thisT.position.x, thisT.position.y, thisT.position.z);
+            data.SetRotaion(thisT.rotation.eulerAngles.x, thisT.rotation.eulerAngles.y, thisT.rotation.eulerAngles.z);
+            data.SetTurretRotation(turretObj.rotation.eulerAngles.x, turretObj.rotation.eulerAngles.y, turretObj.rotation.eulerAngles.z);
+            NetworkManager.Instance.Manager.Socket
+                .Emit("player move", data);
+        }
     }
 
 
@@ -873,7 +899,7 @@ public class UnitPlayer : Unit
         int effectIndex = Effect_DB.GetEffectIndex(effectID);
         Ability ab = AbilityManager.GetAbility();
         if (ab.ID == abilityID) ab.ChangeEffect(effectID, effectIndex);
-        
+
     }
 
 

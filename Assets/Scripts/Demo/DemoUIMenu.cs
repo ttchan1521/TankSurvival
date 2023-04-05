@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using DefaultNamespace;
 
 #if UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
@@ -38,6 +39,9 @@ public class DemoUIMenu : MonoBehaviour
             renderer1.material.SetColor($"_Color1", PlayerPrefsManager.mainColor);
             renderer1.material.SetColor($"_Color2", PlayerPrefsManager.subColor);
         }
+
+        var picker = Resources.Load<GameObject>("Chat");
+        Instantiate(picker, GetComponentInChildren<Canvas>().transform);
     }
 
     void Update()
@@ -80,7 +84,8 @@ public class DemoUIMenu : MonoBehaviour
 
         if (butIndex == 0)
         {
-            sceneName = prefix + "ShootingRange";
+            RequestJoinRoom();
+            return;
         }
         else if (butIndex == 1)
         {
@@ -135,10 +140,17 @@ public class DemoUIMenu : MonoBehaviour
         tooltipObj.SetActive(false);
     }
 
-
-    public void OnLink()
+    private void RequestJoinRoom()
     {
-        Application.OpenURL("http://songgamedev.co.uk/");
+        NetworkManager.Instance.Manager.Socket
+            .Emit("createPvp");
+        NetworkManager.Instance.Manager.Socket.On<string, int>("joined", JoinRoom);
     }
 
+    private void JoinRoom(string roomId, int land)
+    {
+        PvP.SetRoom(roomId);
+        PvP.SetLand(land);
+        SceneManager.LoadScene("MobilePvP");
+    }
 }

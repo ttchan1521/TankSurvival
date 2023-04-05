@@ -30,6 +30,8 @@ public class GameControl : MonoBehaviour
     public bool enableTimer = false;
     public float timerDuration = 0;
     private bool timesUp = false;
+    public bool pvp = false;
+
     [HideInInspector] public float remainingDuration = 0;
 
     public static bool EnableTimer() { return instance != null ? instance.enableTimer : false; }    //called to check if timer is enabled
@@ -57,8 +59,6 @@ public class GameControl : MonoBehaviour
     private UnitPlayer player;
     public static UnitPlayer GetPlayer() { return instance == null ? null : instance.player; }
     public static void SetPlayer(UnitPlayer newPlayer) { if (instance != null) instance.player = newPlayer; }
-
-
     public bool enableAbility = false;
     public static bool EnableAbility() { return instance.enableAbility; }
 
@@ -206,7 +206,14 @@ public class GameControl : MonoBehaviour
         //Application.targetFrameRate=60;
 
         //get the unit in game
-        player = (UnitPlayer)FindObjectOfType(typeof(UnitPlayer));
+        if (pvp)
+        {
+            
+        }
+        else
+        {
+            player = (UnitPlayer)FindObjectOfType(typeof(UnitPlayer));
+        }
 
         //setup the collision rules
         Physics.IgnoreLayerCollision(TDS.GetLayerShootObject(), TDS.GetLayerShootObject(), !shootObject);
