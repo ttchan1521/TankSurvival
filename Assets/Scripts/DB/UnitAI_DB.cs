@@ -34,6 +34,22 @@ public class UnitAI_DB : ScriptableObject
         return Resources.Load("DB_TDSTK/UnitAIDB", typeof(UnitAI_DB)) as UnitAI_DB;
     }
 
+    public static UnitAI GetUnitAI(int index)
+    {
+        Init();
+        return instance.unitList[index];
+    }
+
+    public static int GetIndexUnitAI(UnitAI unit)
+    {
+        Init();
+        for (int i = 0; i < instance.unitList.Count; i++)
+        {
+            if (unit == instance.unitList[i]) return i;
+        }
+        return -1;
+    }
+
     public static List<UnitAI> Load()
     {
         Init();

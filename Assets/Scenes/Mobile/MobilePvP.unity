@@ -2338,7 +2338,6 @@ GameObject:
   m_Component:
   - component: {fileID: 322842807}
   - component: {fileID: 322842808}
-  - component: {fileID: 322842809}
   m_Layer: 0
   m_Name: UnitSpawner 0
   m_TagString: Untagged
@@ -2379,7 +2378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 0
+  startDelay: 30
   spawnAreaList:
   - {fileID: 1790627325}
   - {fileID: 1278216875}
@@ -2439,18 +2438,6 @@ MonoBehaviour:
   limitSpawnCount: 50
   limitSpawnTime: 120
   limitType: 1
---- !u!114 &322842809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 322842806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fd8d714e1a7684ab4a8a6d9dc93914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &322973010
 GameObject:
   m_ObjectHideFlags: 0
@@ -5754,7 +5741,6 @@ GameObject:
   m_Component:
   - component: {fileID: 951600490}
   - component: {fileID: 951600492}
-  - component: {fileID: 951600491}
   m_Layer: 0
   m_Name: UnitSpawner 1
   m_TagString: Untagged
@@ -5781,18 +5767,6 @@ Transform:
   m_Father: {fileID: 1311697916}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &951600491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 951600489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fd8d714e1a7684ab4a8a6d9dc93914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &951600492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5807,7 +5781,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 0
+  startDelay: 30
   spawnAreaList:
   - {fileID: 140765103}
   - {fileID: 1801645282}
@@ -6372,7 +6346,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1032200786}
   - component: {fileID: 1032200788}
-  - component: {fileID: 1032200787}
   m_Layer: 0
   m_Name: UnitSpawner 3
   m_TagString: Untagged
@@ -6399,18 +6372,6 @@ Transform:
   m_Father: {fileID: 1311697916}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1032200787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032200785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fd8d714e1a7684ab4a8a6d9dc93914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1032200788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6425,7 +6386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 0
+  startDelay: 30
   spawnAreaList:
   - {fileID: 190666971}
   - {fileID: 138098580}
@@ -6495,7 +6456,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1039166741}
   - component: {fileID: 1039166743}
-  - component: {fileID: 1039166742}
   m_Layer: 0
   m_Name: UnitSpawner 4
   m_TagString: Untagged
@@ -6522,18 +6482,6 @@ Transform:
   m_Father: {fileID: 1311697916}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1039166742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1039166740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fd8d714e1a7684ab4a8a6d9dc93914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1039166743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6548,7 +6496,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 0
+  startDelay: 30
   spawnAreaList:
   - {fileID: 471107730}
   - {fileID: 1109817356}
@@ -11008,7 +10956,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1961597944}
   - component: {fileID: 1961597946}
-  - component: {fileID: 1961597945}
   m_Layer: 0
   m_Name: UnitSpawner 2
   m_TagString: Untagged
@@ -11035,18 +10982,6 @@ Transform:
   m_Father: {fileID: 1311697916}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1961597945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1961597943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fd8d714e1a7684ab4a8a6d9dc93914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1961597946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11061,7 +10996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 0
+  startDelay: 30
   spawnAreaList:
   - {fileID: 206046211}
   - {fileID: 698596599}
@@ -11219,6 +11154,7 @@ MonoBehaviour:
   - {fileID: 160924124}
   - {fileID: 2002707305}
   - {fileID: 325378893}
+  spawnUnitObj: {fileID: 1311697915}
 --- !u!4 &1996685377 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 499104, guid: 1a42e9b1ab51fd343ab1e2cadd86c1ad, type: 3}

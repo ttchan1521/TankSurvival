@@ -12,14 +12,14 @@ public class PlayerPrefsManager
 
     public static int weaponSelectID
     {
-        get => PlayerPrefs.GetInt(PREFS_WEAPON_SELECTED, 0);
-        set => PlayerPrefs.SetInt(PREFS_WEAPON_SELECTED, value);
+        get => PlayerPrefs.GetInt(GetKeyClone(PREFS_WEAPON_SELECTED), 0);
+        set => PlayerPrefs.SetInt(GetKeyClone(PREFS_WEAPON_SELECTED), value);
     }
 
     public static int abilitySelectID
     {
-        get => PlayerPrefs.GetInt(PREFS_ABILITY_SELECTED, 0);
-        set => PlayerPrefs.SetInt(PREFS_ABILITY_SELECTED, value);
+        get => PlayerPrefs.GetInt(GetKeyClone(PREFS_ABILITY_SELECTED), 0);
+        set => PlayerPrefs.SetInt(GetKeyClone(PREFS_ABILITY_SELECTED), value);
     }
 
     public static Color mainColor

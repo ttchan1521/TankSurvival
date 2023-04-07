@@ -19,7 +19,7 @@ public class Unit : PooledObject
     [HideInInspector] public GameObject thisObj;
 
     [HideInInspector] public int prefabID = 0;
-    [HideInInspector] public int instanceID = 0;
+    [HideInInspector] public int instanceID = -1;
     public Sprite icon;
     public string unitName = "Unit";
     public string desp = "";
@@ -167,7 +167,8 @@ public class Unit : PooledObject
     public virtual void Start()
     {
         //assign a unique ID to the unit instance
-        instanceID = GameControl.GetUnitInstanceID();
+        if (instanceID <= 0)
+            instanceID = GameControl.GetUnitInstanceID();
 
         //add to UnitTracker if this is a hostile unit
         if (hostileUnit) UnitTracker.AddUnit(this);

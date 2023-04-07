@@ -2,6 +2,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
+using pvp;
 
 public enum _SpawnMode
 {
@@ -124,7 +126,7 @@ public class UnitSpawner : MonoBehaviour
 
     void Start()
     {
-        InitObjectPool();
+        //InitObjectPool();
 
         //add this spawner to tracker
         UnitSpawnerTracker.AddSpawner(this);
@@ -143,29 +145,29 @@ public class UnitSpawner : MonoBehaviour
     }
 
 
-    public void InitObjectPool()
-    {
-        if (spawnMode == _SpawnMode.FreeForm || (spawnMode == _SpawnMode.WaveBased && endlessWave))
-        {
-            for (int i = 0; i < spawnUnitList.Count; i++)
-            {
-                ObjectPoolManager.New(spawnUnitList[i].gameObject, 5);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < waveList.Count; i++)
-            {
-                for (int n = 0; n < waveList[i].subWaveList.Count; n++)
-                {
-                    if (waveList[i].subWaveList[n].unitPrefab != null)
-                        ObjectPoolManager.New(waveList[i].subWaveList[n].unitPrefab.gameObject, 5);
-                    else
-                        Debug.LogWarning("unit prefab for wave-" + i + ", subwave-" + n + " is unspecified", this);
-                }
-            }
-        }
-    }
+    // public void InitObjectPool()
+    // {
+    //     if (spawnMode == _SpawnMode.FreeForm || (spawnMode == _SpawnMode.WaveBased && endlessWave))
+    //     {
+    //         for (int i = 0; i < spawnUnitList.Count; i++)
+    //         {
+    //             ObjectPoolManager.New(spawnUnitList[i].gameObject, 5);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         for (int i = 0; i < waveList.Count; i++)
+    //         {
+    //             for (int n = 0; n < waveList[i].subWaveList.Count; n++)
+    //             {
+    //                 if (waveList[i].subWaveList[n].unitPrefab != null)
+    //                     ObjectPoolManager.New(waveList[i].subWaveList[n].unitPrefab.gameObject, 5);
+    //                 else
+    //                     Debug.LogWarning("unit prefab for wave-" + i + ", subwave-" + n + " is unspecified", this);
+    //             }
+    //         }
+    //     }
+    // }
 
 
     public void StartSpawn()
@@ -421,6 +423,24 @@ public class UnitSpawner : MonoBehaviour
 
         //override the unit default hitpoint if overrideHitPoint is enabled
         if (overrideHitPoint) unitObj.OverrideHitPoint(spawnHP, overrideHPMode);
+
+        if (GameControl.GetInstance().pvp && PvP.GetLandSpawnPlayer() == 0)
+        {
+            if (unitObj.instanceID <= 0)
+                unitObj.instanceID = GameControl.GetUnitInstanceID();
+            UnitInit dataInit = new UnitInit {
+                    roomId = PvP.GetRoom(),
+                    instanceId = unitObj.instanceID,
+                    prefabId = UnitAI_DB.GetIndexUnitAI((UnitAI)prefab),
+                    name = name,
+                    hitPointFull = unitObj.hitPointFull,
+                    position = MyExtension.ConvertToArrayFromVector3(unitObj.transform.position),
+                    rotation = MyExtension.ConvertToArrayFromQuaternion(unitObj.transform.rotation)
+                };
+            NetworkManager.Instance.Manager.Socket
+                .Emit("spawnUnit", dataInit);
+            PvPManager.instance.AddEnemiesData(dataInit, unitObj);
+        }
 
         AddUnit(unitObj);   //track unit
 

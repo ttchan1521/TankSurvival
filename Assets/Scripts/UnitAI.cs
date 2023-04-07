@@ -114,6 +114,7 @@ public class UnitAI : Unit
 
     public override void Update()
     {
+        if (GameControl.GetInstance() && GameControl.GetInstance().pvp && PvP.GetLandSpawnPlayer() > 0) return;
         if (GameControl.IsGameOver() || destroyed || IsStunned()) return;
 
         //get player as target

@@ -14,9 +14,9 @@ namespace pvp
 
         public Player()
         {
-            position = new float[] {0, 0, 0};
-            rotation = new float[] {0, 0, 0};
-            turretRotation = new float[] {0, 0, 0};
+            position = new float[] { 0, 0, 0 };
+            rotation = new float[] { 0, 0, 0 };
+            turretRotation = new float[] { 0, 0, 0 };
         }
 
         public void SetPosition(float x, float y, float z)
@@ -49,11 +49,59 @@ namespace pvp
         public float[] rotation;
         public string mainColor;
         public string subColor;
-        public PlayerInit()
+        public int weaponId;
+    }
+
+    public class UnitInit
+    {
+        public string roomId;
+        public int instanceId;
+        public int prefabId;
+        public string name;
+        public float hitPointFull;
+        public float[] position;
+        public float[] rotation;
+    }
+
+    public class UnitData
+    {
+        public int instanceID;
+        public int hitPoint;
+        public float[] position;
+        public float[] rotation;
+
+        public void SetPosition(float x, float y, float z)
         {
-            position = new float[] {0, 0, 0};
-            rotation = new float[] {0, 0, 0};
+            position[0] = x;
+            position[1] = y;
+            position[2] = z;
         }
+
+        public void SetRotation(float x, float y, float z)
+        {
+            rotation[0] = x;
+            rotation[1] = y;
+            rotation[2] = z; 
+        }
+    }
+
+    public class UnitList
+    {
+        public string roomId;
+        public UnitData[] units;
+
+        public UnitList()
+        {
+            roomId = string.Empty;
+            units = new UnitData[]{};
+        }
+    }
+
+    public class PlayerFire
+    {
+        public string socketId;
+        public string roomId;
+        public float[] turretRotation;
     }
 }
 

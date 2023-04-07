@@ -168,8 +168,11 @@ public class GameControl : MonoBehaviour
 
 
     //a unique ID for each new active unit in game, each time a value is retrieved to be given to a new unit, the number is increased
-    private int unitInstanceID = -1;
-    public static int GetUnitInstanceID() { return instance == null ? -1 : instance.unitInstanceID += 1; }
+    private int unitInstanceID = 0;
+    public static int GetUnitInstanceID()
+    {
+        return instance == null ? -1 : instance.unitInstanceID += 1; 
+    }
 
 
 
@@ -208,7 +211,7 @@ public class GameControl : MonoBehaviour
         //get the unit in game
         if (pvp)
         {
-            
+
         }
         else
         {

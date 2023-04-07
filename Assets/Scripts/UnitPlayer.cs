@@ -106,10 +106,7 @@ public class UnitPlayer : Unit
         // if (enableAbility && GameControl.EnableAbility())
         //     AbilityManager.SetupAbility(abilityIDList, enableAllAbilities);
 
-        if (GameControl.GetPlayer() == this)
-        {
-            SetRendererColor(PlayerPrefsManager.mainColor,  PlayerPrefsManager.subColor);
-        }
+
 
         if (perk != null)
         {
@@ -131,13 +128,19 @@ public class UnitPlayer : Unit
             data.roomId = PvP.GetRoom();
         }
 
-        Init();
+        if (GameControl.GetPlayer() == this)
+        {
+            SetRendererColor(PlayerPrefsManager.mainColor, PlayerPrefsManager.subColor);
+            Init(PlayerPrefsManager.weaponSelectID);
+        }
+
+
     }
 
     public void SetRendererColor(Color main, Color sub)
     {
         var renderers = GetComponentsInChildren<Renderer>();
-        
+
         foreach (var renderer1 in renderers)
         {
             renderer1.material.SetColor($"_Color1", main);
@@ -147,7 +150,7 @@ public class UnitPlayer : Unit
 
 
     private bool init = false;
-    void Init()
+    public void Init(int weaponID)
     {
         if (init) return;
         init = true;
@@ -156,7 +159,7 @@ public class UnitPlayer : Unit
 
         if (!weaponInitiated)
         {
-            weapon = Weapon_DB.GetPrefab(PlayerPrefsManager.weaponSelectID);
+            weapon = Weapon_DB.GetPrefab(weaponID);
             weaponInitiated = true;
             // for (int i = 0; i < weaponList.Count; i++)
             // {
@@ -385,29 +388,7 @@ public class UnitPlayer : Unit
         int fireState = CanFire();
         if (fireState == 0)
         {
-            if (weapon.RequireAiming())
-            {
-                Vector2 cursorPos = Input.mousePosition;
-
-                if (weapon.RandCursorForRecoil())
-                {
-                    float recoil = GameControl.GetPlayer().GetRecoil() * 4;
-                    cursorPos += new Vector2(Random.value - 0.5f, Random.value - 0.5f) * recoil;
-                }
-
-                Ray ray = Camera.main.ScreenPointToRay(cursorPos);
-                RaycastHit hit;
-                //LayerMask mask=1<<TDS.GetLayerTerrain();
-                //Physics.Raycast(ray, out hit, Mathf.Infinity, mask);
-                Physics.Raycast(ray, out hit, Mathf.Infinity);
-
-                ShootObject.AimInfo aimInfo = new ShootObject.AimInfo(hit);
-
-                StartCoroutine(ShootRoutine(aimInfo));
-            }
-            else StartCoroutine(ShootRoutine());
-
-            weapon.Fire();
+            OnFireWeapon();
 
             if (weapon.useEnergyAsAmmo)
             {
@@ -427,6 +408,44 @@ public class UnitPlayer : Unit
 
             if (GetCurrentClip() == 0 && GameControl.EnableAutoReload()) weapon.Reload();
         }
+    }
+
+    public void OnFireWeapon()
+    {
+        if (GameControl.GetInstance().pvp && GameControl.GetPlayer() == this)
+        {
+            NetworkManager.Instance.Manager.Socket
+                .Emit("playerFire", new PlayerFire
+                {
+                    socketId = NetworkManager.Instance.Manager.Socket.Id,
+                    roomId = PvP.GetRoom(),
+                    turretRotation = MyExtension.ConvertToArrayFromQuaternion(turretObj.transform.rotation)
+                });
+        }
+
+        if (weapon.RequireAiming())
+        {
+            Vector2 cursorPos = Input.mousePosition;
+
+            if (weapon.RandCursorForRecoil())
+            {
+                float recoil = GameControl.GetPlayer().GetRecoil() * 4;
+                cursorPos += new Vector2(Random.value - 0.5f, Random.value - 0.5f) * recoil;
+            }
+
+            Ray ray = Camera.main.ScreenPointToRay(cursorPos);
+            RaycastHit hit;
+            //LayerMask mask=1<<TDS.GetLayerTerrain();
+            //Physics.Raycast(ray, out hit, Mathf.Infinity, mask);
+            Physics.Raycast(ray, out hit, Mathf.Infinity);
+
+            ShootObject.AimInfo aimInfo = new ShootObject.AimInfo(hit);
+
+            StartCoroutine(ShootRoutine(aimInfo));
+        }
+        else StartCoroutine(ShootRoutine());
+
+        weapon.Fire();
     }
     //alt fire, could fire weapon alt-mode to launch selected ability
     public void FireAbility()
