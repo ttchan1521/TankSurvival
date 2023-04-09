@@ -12,17 +12,25 @@ namespace Chat
         [SerializeField] private ScrollRect scrollRect;
         [SerializeField] private InputField inputField;
         [SerializeField] private Button button;
+        [SerializeField] private Button closeButton;
         private NetworkManager _networkManager;
+        private Text _text;
         private StringBuilder _stringBuilder;
 
         private void Awake()
         {
             _networkManager = NetworkManager.Instance;
-            button.onClick.AddListener(CreateChat);
         }
 
         private IEnumerator Start()
         {
+            _text = scrollRect.content.GetComponent<Text>();
+            button.onClick.AddListener(CreateChat);
+            closeButton.onClick.AddListener(() =>
+            {
+                Destroy(gameObject);
+                Resources.UnloadUnusedAssets();
+            });
             yield return new WaitUntil(() =>
                 _networkManager.Manager != null && _networkManager.Manager.Socket.IsOpen);
             FindAllChat();
@@ -66,7 +74,7 @@ namespace Chat
         {
             _stringBuilder.AppendLine($"[{chat.createdAt.DateTime}]");
             _stringBuilder.AppendLine($"{chat.username}: {chat.message}");
-            scrollRect.content.GetComponent<Text>().text = _stringBuilder.ToString();
+            _text.text = _stringBuilder.ToString();
         }
     }
 }

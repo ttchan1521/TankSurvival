@@ -9,6 +9,7 @@ public class PlayerPrefsManager
     private const string PREFS_ABILITY_SELECTED = "ability_selected";
     private const string PREFS_MAIN_COLOR = "main_color_";
     private const string PREFS_SUB_COLOR = "sub_color_";
+    private const string PREFS_USER_ID = "user_id";
 
     public static int weaponSelectID
     {
@@ -50,6 +51,12 @@ public class PlayerPrefsManager
         }
 
         set => PlayerPrefs.SetString(GetKeyClone(PREFS_SUB_COLOR), '#' + ColorUtility.ToHtmlStringRGBA(value));
+    }
+
+    public static string UserId
+    {
+        get => PlayerPrefs.GetString(GetKeyClone(GetKeyClone(PREFS_USER_ID)), string.Empty);
+        set => PlayerPrefs.SetString(GetKeyClone(GetKeyClone(PREFS_USER_ID)), value);
     }
 
     private static string GetKeyClone(string key)

@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class DemoUIMenu : MonoBehaviour
 {
-
     public bool loadMobileScene = false;
 
     public GameObject tooltipObj;
@@ -17,11 +16,11 @@ public class DemoUIMenu : MonoBehaviour
 
     public Text lbTooltip;
 
-    private Camera cameraMain;
+    private Camera _cameraMain;
 
     private void Awake()
     {
-        cameraMain = Camera.main;
+        _cameraMain = Camera.main;
     }
 
     void Start()
@@ -40,25 +39,34 @@ public class DemoUIMenu : MonoBehaviour
             renderer1.material.SetColor($"_Color2", PlayerPrefsManager.subColor);
         }
 
-        var picker = Resources.Load<GameObject>("Chat");
-        Instantiate(picker, GetComponentInChildren<Canvas>().transform);
+        if (string.IsNullOrEmpty(PlayerPrefsManager.UserId))
+        {
+            var signup = Resources.Load<GameObject>("SignUp");
+            Instantiate(signup, GetComponentInChildren<Canvas>().transform);
+        }
+        else
+        {
+            var signup = Resources.Load<GameObject>("NetworkUI");
+            Instantiate(signup, GetComponentInChildren<Canvas>().transform);
+        }
     }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = cameraMain.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _cameraMain.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo))
             {
                 ShowColorPicker(hitInfo);
             }
         }
+
         foreach (Touch touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began)
             {
-                Ray ray = cameraMain.ScreenPointToRay(touch.position);
+                Ray ray = _cameraMain.ScreenPointToRay(touch.position);
                 if (Physics.Raycast(ray, out var hitInfo))
                 {
                     ShowColorPicker(hitInfo);
@@ -78,7 +86,6 @@ public class DemoUIMenu : MonoBehaviour
 
     public void OnButton(int butIndex)
     {
-
         string prefix = loadMobileScene ? "Mobile" : "Demo";
         string sceneName = "";
 
@@ -105,7 +112,6 @@ public class DemoUIMenu : MonoBehaviour
 #else
 			Application.LoadLevel(sceneName);
 #endif
-
     }
 
 
@@ -115,19 +121,23 @@ public class DemoUIMenu : MonoBehaviour
 
         if (butIndex == 0)
         {
-            text = "A simple level just to show case various weapon and ability supported. There no gameplay, just unlimited weapons and targets.\n\nUses a simple, passive leveling system. Gain perks and stats automatically.";
+            text =
+                "A simple level just to show case various weapon and ability supported. There no gameplay, just unlimited weapons and targets.\n\nUses a simple, passive leveling system. Gain perks and stats automatically.";
         }
         else if (butIndex == 1)
         {
-            text = "An endless side scroller shooter. shoot enemies, collect bonus and power up, then shoot more enemy.\n\nHas no leveling system.";
+            text =
+                "An endless side scroller shooter. shoot enemies, collect bonus and power up, then shoot more enemy.\n\nHas no leveling system.";
         }
         else if (butIndex == 2)
         {
-            text = "With a whole range of different weapons and abilities, try to survive for 2 minutes in this arena.\n\nUses a 'World of Warcraft' style leveling system and skill tree.";
+            text =
+                "With a whole range of different weapons and abilities, try to survive for 2 minutes in this arena.\n\nUses a 'World of Warcraft' style leveling system and skill tree.";
         }
         else if (butIndex == 3)
         {
-            text = "A complete level consists of a series of set piece. Get to the end of the level and destroy the boss to win.\n\nUses a 'Diablo' style attribute system for leveling.";
+            text =
+                "A complete level consists of a series of set piece. Get to the end of the level and destroy the boss to win.\n\nUses a 'Diablo' style attribute system for leveling.";
         }
 
         tooltipRectT.localPosition = tooltipStartingPos + new Vector3(0, -butIndex * 45, 0);
@@ -135,6 +145,7 @@ public class DemoUIMenu : MonoBehaviour
         lbTooltip.text = text;
         tooltipObj.SetActive(true);
     }
+
     public void OnExitButton(int butIndex)
     {
         tooltipObj.SetActive(false);

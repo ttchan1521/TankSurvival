@@ -8,14 +8,15 @@ namespace DefaultNamespace
 {
     public class NetworkManager : Singleton<NetworkManager>
     {
+        public const string UriString = "http://localhost:3000";
         public SocketManager Manager { get; private set; }
 
         private void Start()
         {
-            HTTPRequest request = new HTTPRequest(new Uri("http://localhost:3000/"), OnRequestFinished);
+            HTTPRequest request = new HTTPRequest(new Uri(UriString), OnRequestFinished);
             request.Send();
 
-            Manager = new SocketManager(new Uri("http://localhost:3000"));
+            Manager = new SocketManager(new Uri(UriString));
             Manager.Socket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
             Manager.Socket.On<Error>(SocketIOEventTypes.Error, error => Debug.LogError(error.message));
             Manager.Socket.On(SocketIOEventTypes.Disconnect, () => Debug.Log("disconnect"));
