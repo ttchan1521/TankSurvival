@@ -64,7 +64,7 @@ public class UnitPlayer : Unit
     {
         base.Awake();
 
-        thisObj.layer = TDS.GetLayerPlayer();
+        
 
         isPlayer = true;
 
@@ -101,6 +101,10 @@ public class UnitPlayer : Unit
     {
         cam = Camera.main;
         camT = cam.transform;
+
+        if (GameControl.GetInstance() && this != GameControl.GetPlayer())
+            thisObj.layer = TDS.GetLayerOtherPlayer();
+        else thisObj.layer = TDS.GetLayerPlayer();
         //camPivot=cam.transform.parent;
 
         // if (enableAbility && GameControl.EnableAbility())
@@ -602,6 +606,8 @@ public class UnitPlayer : Unit
             data.SetPosition(thisT.position.x, thisT.position.y, thisT.position.z);
             data.SetRotaion(thisT.rotation.eulerAngles.x, thisT.rotation.eulerAngles.y, thisT.rotation.eulerAngles.z);
             data.SetTurretRotation(turretObj.rotation.eulerAngles.x, turretObj.rotation.eulerAngles.y, turretObj.rotation.eulerAngles.z);
+            data.hp = hitPoint;
+            data.hpfull = hitPointFull;
             NetworkManager.Instance.Manager.Socket
                 .Emit("player move", data);
         }
@@ -784,7 +790,8 @@ public class UnitPlayer : Unit
     public void PlayerDestroyCallback()
     {
         //if (weapon.temporary) RemoveWeapon();
-        GameControl.PlayerDestroyed();
+        if (GameControl.GetPlayer() == this)
+            GameControl.PlayerDestroyed();
     }
 
 

@@ -25,6 +25,8 @@ namespace UI
         public Slider sliderEnergyBar;
 
         public Slider sliderExpBar;
+        public Slider opponentHPBar;
+        public Text lbOpponentHP;
         private PlayerProgression playerProgress;
 
         //public RectTransform barHP;
@@ -245,6 +247,16 @@ namespace UI
             }
 
             if (reloading) reloading = false;
+        }
+
+        public void UpdateSliderHPOpponent(float hp, float hpfull)
+        {
+            if (opponentHPBar != null)
+            {
+                opponentHPBar.maxValue = hpfull;
+                opponentHPBar.value = hp;
+                lbOpponentHP.text = Mathf.Round(hp) + "/" + hpfull;
+            }
         }
 
     }

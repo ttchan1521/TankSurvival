@@ -16,6 +16,12 @@ public class AttackInstance
     public AttackStats aStats;  //contain all the stats
 
     //create a new attackInstance, given the AttackStats (the set of stats for the attack unit or ability)
+
+    public AttackInstance()
+    {
+
+    }
+    
     public AttackInstance(Unit src = null, AttackStats aSt = null)
     {
         srcUnit = src;

@@ -435,49 +435,53 @@ public class ShootObject : PooledObject
         //if there's a attack instance (means the shootobject has a valid attacking stats and all)
         if (attInstance != null)
         {
-            float aoeRadius = attInstance.aStats.aoeRadius;
 
-            //for area of effect hit
-            if (aoeRadius > 0)
+            if (srcLayer != TDS.GetLayerOtherPlayer())
             {
-                Unit unitInstance = null;
+                float aoeRadius = attInstance.aStats.aoeRadius;
 
-                //get all the potental target in range
-                Collider[] cols = Physics.OverlapSphere(thisT.position, aoeRadius);
-                for (int i = 0; i < cols.Length; i++)
+                //for area of effect hit
+                if (aoeRadius > 0)
                 {
-                    //if the collider in question is the collider the shootobject hit in the first place, apply the full attack instance
-                    if (cols[i] == col)
+                    Unit unitInstance = null;
+
+                    //get all the potental target in range
+                    Collider[] cols = Physics.OverlapSphere(thisT.position, aoeRadius);
+                    for (int i = 0; i < cols.Length; i++)
                     {
-                        unitInstance = col.gameObject.GetComponent<Unit>();
-                        if (unitInstance != null) unitInstance.ApplyAttack(attInstance.Clone());
-                        continue;
+                        //if the collider in question is the collider the shootobject hit in the first place, apply the full attack instance
+                        if (cols[i] == col)
+                        {
+                            unitInstance = col.gameObject.GetComponent<Unit>();
+                            if (unitInstance != null) unitInstance.ApplyAttack(attInstance.Clone());
+                            continue;
+                        }
+
+                        //no friendly fire, then skip if the target is a friendly unit
+                        if (!GameControl.SOHitFriendly())
+                        {
+                            if (cols[i].gameObject.layer == srcLayer) continue;
+                        }
+
+                        unitInstance = cols[i].gameObject.GetComponent<Unit>();
+
+                        //create a new attack instance and mark it as aoe attack, so diminishing aoe can be applied if enabled
+                        AttackInstance aInstance = attInstance.Clone();
+                        aInstance.isAOE = true;
+                        aInstance.aoeDistance = Vector3.Distance(thisT.position, cols[i].transform.position);
+
+                        //apply the attack
+                        if (unitInstance != null) unitInstance.ApplyAttack(aInstance);
                     }
-
-                    //no friendly fire, then skip if the target is a friendly unit
-                    if (!GameControl.SOHitFriendly())
-                    {
-                        if (cols[i].gameObject.layer == srcLayer) continue;
-                    }
-
-                    unitInstance = cols[i].gameObject.GetComponent<Unit>();
-
-                    //create a new attack instance and mark it as aoe attack, so diminishing aoe can be applied if enabled
-                    AttackInstance aInstance = attInstance.Clone();
-                    aInstance.isAOE = true;
-                    aInstance.aoeDistance = Vector3.Distance(thisT.position, cols[i].transform.position);
-
-                    //apply the attack
-                    if (unitInstance != null) unitInstance.ApplyAttack(aInstance);
                 }
-            }
-            else
-            {
-                if (col != null)
+                else
                 {
-                    //get the unit and apply the attack
-                    Unit unitInstance = col.gameObject.GetComponent<Unit>();
-                    if (unitInstance != null) unitInstance.ApplyAttack(attInstance);
+                    if (col != null)
+                    {
+                        //get the unit and apply the attack
+                        Unit unitInstance = col.gameObject.GetComponent<Unit>();
+                        if (unitInstance != null) unitInstance.ApplyAttack(attInstance);
+                    }
                 }
             }
 

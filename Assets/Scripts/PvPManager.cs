@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
 using pvp;
+using UI;
 using UnityEngine;
 
 public class PvPManager : MonoBehaviour
@@ -11,6 +12,9 @@ public class PvPManager : MonoBehaviour
     public static PvPManager instance;
     [SerializeField] private TDSArea[] areas;
     [SerializeField] private GameObject spawnUnitObj;
+    [SerializeField] private GameObject spawnCollectibleObj;
+    [SerializeField] private GameObject destructible;
+    [SerializeField] private UIHUD uihud;
     private UnitList unitList = new UnitList();
 
     private Dictionary<string, UnitPlayer> otherPlayers = new Dictionary<string, UnitPlayer>();
@@ -43,6 +47,7 @@ public class PvPManager : MonoBehaviour
         if (PvP.GetLandSpawnPlayer() == 0)
         {
             spawnUnitObj.SetActive(true);
+            spawnCollectibleObj.SetActive(true);
             unitList.roomId = PvP.GetRoom();
             StartCoroutine(PostEnemyPosition());
         }
@@ -75,6 +80,11 @@ public class PvPManager : MonoBehaviour
 
         NetworkManager.Instance.Manager.Socket.On<Player>("other player move", OnOtherPlayerMove);
         NetworkManager.Instance.Manager.Socket.On<PlayerFire>("otherPlayerFire", OnOtherPlayerFire);
+        NetworkManager.Instance.Manager.Socket.On<UnitHealth>("OnUnitHealthChange", OnUnitHealthChange);
+        NetworkManager.Instance.Manager.Socket.On<ClearUnit>("OnUnitClear", OnUnitClear);
+        NetworkManager.Instance.Manager.Socket.On<CollectibleInit>("OnSpawnCollectible", OnSpawnCollectible);
+        NetworkManager.Instance.Manager.Socket.On<AttackPlayer>("OnAttackPlayer", OnAttackPlayer);
+        NetworkManager.Instance.Manager.Socket.On<PlayerDestroy>("OnPlayerDestroy", OnPlayerDestroy);
     }
 
     private UnitPlayer SpawnPlayer(Vector3 position, Quaternion rotation)
@@ -103,6 +113,7 @@ public class PvPManager : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(playerData.rotation[0], playerData.rotation[1], playerData.rotation[2]);
         otherPlayers[playerData.socketId].transform.position = postion;
         otherPlayers[playerData.socketId].transform.rotation = rotation;
+        uihud.UpdateSliderHPOpponent(playerData.hp, playerData.hpfull);
         otherPlayers[playerData.socketId].turretObj.rotation = Quaternion.Euler(playerData.turretRotation[0], playerData.turretRotation[1], playerData.turretRotation[2]);
     }
 
@@ -115,6 +126,7 @@ public class PvPManager : MonoBehaviour
         unitObj.gameObject.name = unitData.name;
 
         unitObj.hitPointFull = unitData.hitPointFull;
+        unitObj.instanceID = unitData.instanceId;
 
         enemies.Add(unitData.instanceId, unitObj);
     }
@@ -171,6 +183,64 @@ public class PvPManager : MonoBehaviour
     {
         otherPlayers[data.socketId].turretObj.transform.rotation = MyExtension.ConvertToQuaternion(data.turretRotation);
         otherPlayers[data.socketId].OnFireWeapon();
+    }
+
+    private void OnUnitHealthChange(UnitHealth health)
+    {
+        if (health.isEnemy)
+        {
+            enemies[health.instanceID].hitPoint = health.hitPoint;
+        }
+        else
+        {
+            Transform obj = destructible.transform.Find(health.name);
+            if (obj.gameObject.TryGetComponent<Unit>(out var component))
+            {
+                component.hitPoint = health.hitPoint;
+            }
+        }
+    }
+
+    private void OnUnitClear(ClearUnit clear)
+    {
+        if (clear.isEnemy)
+        {
+            enemies[clear.instanceID].OnPvPClearUnit();
+        }
+        else
+        {
+            Transform obj = destructible.transform.Find(clear.name);
+            if (obj.gameObject.TryGetComponent<Unit>(out var component))
+            {
+                component.OnPvPClearUnit();
+            }
+        }
+    }
+
+    private void OnSpawnCollectible(CollectibleInit data)
+    {
+        var obj = Collectible_DB.GetCollectibleAtIndex(data.collectibleIndex);
+        obj.GetPoolItem<Collectible>(MyExtension.ConvertToVector3(data.position), Quaternion.identity);
+    }
+
+    private void OnAttackPlayer(AttackPlayer attackData)
+    {
+        if (attackData.socketId == NetworkManager.Instance.Manager.Socket.Id)
+            GameControl.GetPlayer().ApplyAttack(attackData.attackInstance);
+    }
+
+    private void OnPlayerDestroy(PlayerDestroy data)
+    {
+
+        otherPlayers[data.socketId].OnPvPClearUnit();
+        otherPlayers.Remove(data.socketId);
+        if (otherPlayers.Count <= 0)
+            GameControl.GameOver(true);
+    }
+
+    public string GetIdOtherPlayer(UnitPlayer player)
+    {
+        return otherPlayers.FirstOrDefault(x => x.Value == player).Key;
     }
 
     void OnDrawGizmos()

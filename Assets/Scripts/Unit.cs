@@ -2,7 +2,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
-
+using DefaultNamespace;
+using pvp;
 
 [SelectionBase]
 [RequireComponent(typeof(Rigidbody))]
@@ -259,6 +260,18 @@ public class Unit : PooledObject
     //applies the effect of an attack
     public void ApplyAttack(AttackInstance attInstance)
     {
+        if (thisObj.layer == TDS.GetLayerOtherPlayer())
+        {
+            attInstance.srcUnit = null;
+            NetworkManager.Instance.Manager.Socket
+                .Emit("attackPlayer", new AttackPlayer
+                {
+                    socketId = PvPManager.instance.GetIdOtherPlayer((UnitPlayer)this),
+                    roomId = PvP.GetRoom(),
+                    attackInstance = attInstance
+                });
+            return;
+        }
         if (immunityCounter > 0) return;
 
         //if unit is invincible, do nothing
@@ -291,6 +304,18 @@ public class Unit : PooledObject
         if (damage > 0)
         {
             //show the overlay (for UI)
+            if (thisObj.layer != TDS.GetLayerPlayer())
+            {
+                NetworkManager.Instance.Manager.Socket
+                    .Emit("unitHealthChange", new UnitHealth 
+                    {
+                        roomId = PvP.GetRoom(),
+                        isEnemy = thisObj.layer == TDS.GetLayerAIUnit(),
+                        instanceID = instanceID,
+                        name = gameObject.name,
+                        hitPoint = hitPoint - damage
+                    });
+            }
             Vector3 offsetPos = new Vector3(0, Random.value + 0.5f, 0);
             if (!critical) new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"));
             else new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"), new Color(1f, 0.9f, 0.9f, 1f), 1.5f);
@@ -408,7 +433,26 @@ public class Unit : PooledObject
     }
 
     //called when unit is destroyed, also called by other component to take unit out of the game
-    public void ClearUnit(bool showDestroyEffect = true, float delay = 0) { StartCoroutine(_ClearUnit(showDestroyEffect, delay)); }
+    public void ClearUnit(bool showDestroyEffect = true, float delay = 0) 
+    { 
+        if (thisObj.layer != TDS.GetLayerPlayer())
+            {
+                NetworkManager.Instance.Manager.Socket
+                    .Emit("unitClear", new ClearUnit
+                    {
+                        roomId = PvP.GetRoom(),
+                        isEnemy = thisObj.layer == TDS.GetLayerAIUnit(),
+                        instanceID = instanceID,
+                        name = gameObject.name
+                    });
+            }
+        StartCoroutine(_ClearUnit(showDestroyEffect, delay)); 
+    }
+
+    public void OnPvPClearUnit()
+    {
+        StartCoroutine(_ClearUnit());
+    }
     public IEnumerator _ClearUnit(bool showDestroyEffect = true, float delay = 0)
     {
         destroyed = true;

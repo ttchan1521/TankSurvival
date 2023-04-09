@@ -49,15 +49,30 @@ namespace UI
         {
             Cursor.visible = true;
 
-            if (won)
+            if (!GameControl.GetInstance().pvp)
             {
-                lbTitle.text = "Level Cleared!";
-                butContinueObj.SetActive(true);
+                if (won)
+                {
+                    lbTitle.text = "Level Cleared!";
+                    butContinueObj.SetActive(true);
+                }
+                else
+                {
+                    lbTitle.text = "Level Lost";
+                    butContinueObj.SetActive(UIMainControl.ShowContinueButtonWhenLost());
+                }
             }
             else
             {
-                lbTitle.text = "Level Lost";
-                butContinueObj.SetActive(UIMainControl.ShowContinueButtonWhenLost());
+                if (won)
+                {
+                    lbTitle.text = "You win!";
+                }
+                else
+                {
+                    lbTitle.text = "You lost";
+                }
+                butContinueObj.SetActive(false);
             }
 
             UIMainControl.FadeIn(canvasGroup, 0.25f, thisObj);

@@ -11,6 +11,8 @@ namespace pvp
         public float[] position;
         public float[] rotation;
         public float[] turretRotation;
+        public float hp;
+        public float hpfull;
 
         public Player()
         {
@@ -66,7 +68,6 @@ namespace pvp
     public class UnitData
     {
         public int instanceID;
-        public int hitPoint;
         public float[] position;
         public float[] rotation;
 
@@ -102,6 +103,43 @@ namespace pvp
         public string socketId;
         public string roomId;
         public float[] turretRotation;
+    }
+
+    public class UnitHealth
+    {
+        public string roomId;
+        public bool isEnemy;
+        public int instanceID;
+        public string name;
+        public float hitPoint;
+    }
+
+    public class ClearUnit
+    {
+        public string roomId;
+        public bool isEnemy;
+        public int instanceID;
+        public string name;
+    }
+
+    public class CollectibleInit
+    {
+        public string roomId;
+        public int collectibleIndex;
+        public float[] position;
+    }
+
+    public class AttackPlayer
+    {
+        public string socketId;
+        public string roomId;
+        public AttackInstance attackInstance;
+    }
+
+    public class PlayerDestroy
+    {
+        public string socketId;
+        public string roomId;
     }
 }
 

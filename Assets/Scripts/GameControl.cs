@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 
 using System.Collections;
 using System.Collections.Generic;
-
+using DefaultNamespace;
+using pvp;
 
 public enum _GameState
 {
@@ -133,6 +134,15 @@ public class GameControl : MonoBehaviour
 
         if (playerLife <= 0)
         {   //playerLife's used up, game over
+            if (pvp)
+            {
+                NetworkManager.Instance.Manager.Socket
+                    .Emit("playerDestroy", new PlayerDestroy
+                    {
+                        socketId = NetworkManager.Instance.Manager.Socket.Id,
+                        roomId = PvP.GetRoom()
+                    });
+            }
             GameOver(false);
             return;
         }

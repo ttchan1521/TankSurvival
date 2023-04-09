@@ -2,6 +2,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
+using pvp;
 
 [System.Serializable]
 public class CollectibleSpawnInfo
@@ -54,7 +56,7 @@ public class CollectibleSpawner : MonoBehaviour
         // }
 
         //if spawnUponStart is enabled, start spawning
-        if (spawnUponStart) 
+        if (spawnUponStart)
             StartSpawn();
     }
 
@@ -88,7 +90,7 @@ public class CollectibleSpawner : MonoBehaviour
     void Update()
     {
         //iterate the cooldown of each spawn item
-        for (int i = 0; i < spawnItemList.Count; i++) 
+        for (int i = 0; i < spawnItemList.Count; i++)
             spawnItemList[i].currentCD -= Time.deltaTime;
     }
 
@@ -132,34 +134,45 @@ public class CollectibleSpawner : MonoBehaviour
             Collectible obj = spawnItemList[itemIndex].item.GetPoolItem<Collectible>(pos, Quaternion.identity);
             //GameObject obj=(GameObject)Instantiate(spawnItemList[ID].item.gameObject, pos, Quaternion.identity);
 
-            //refresh the item cooldown
-            spawnItemList[itemIndex].currentCD = spawnItemList[itemIndex].cooldown;
-
-            return obj;
+            if (GameControl.GetInstance().pvp)
+            {
+                NetworkManager.Instance.Manager.Socket
+                    .Emit("spawnCollectible", new CollectibleInit
+                    {
+                        roomId = PvP.GetRoom(),
+                        collectibleIndex = Collectible_DB.GetIndexCollectible(spawnItemList[itemIndex].item),
+                        position = MyExtension.ConvertToArrayFromVector3(pos)
+                    });
         }
+
+        //refresh the item cooldown
+        spawnItemList[itemIndex].currentCD = spawnItemList[itemIndex].cooldown;
+
+        return obj;
+    }
 
         return null;
     }
 
 
-    //callback function for when an item is triggered
-    public void ItemDisableCallback(Collectible obj)
+//callback function for when an item is triggered
+public void ItemDisableCallback(Collectible obj)
+{
+    existItemList.Remove(obj);
+}
+
+
+void OnDrawGizmos()
+{
+    if (gameObject.GetComponent<CollectibleDropManager>()) return;
+
+    Gizmos.DrawIcon(transform.position + new Vector3(0, 0.1f, 0), "SpawnDrop.png", TDS.scaleGizmos);
+
+    if (spawnArea != null)
     {
-        existItemList.Remove(obj);
+        Gizmos.DrawLine(transform.position, spawnArea.GetPos());
+        spawnArea.gizmoColor = new Color(1, 1f, 0f, 1);
     }
-
-
-    void OnDrawGizmos()
-    {
-        if (gameObject.GetComponent<CollectibleDropManager>()) return;
-
-        Gizmos.DrawIcon(transform.position + new Vector3(0, 0.1f, 0), "SpawnDrop.png", TDS.scaleGizmos);
-
-        if (spawnArea != null)
-        {
-            Gizmos.DrawLine(transform.position, spawnArea.GetPos());
-            spawnArea.gizmoColor = new Color(1, 1f, 0f, 1);
-        }
-    }
+}
 
 }

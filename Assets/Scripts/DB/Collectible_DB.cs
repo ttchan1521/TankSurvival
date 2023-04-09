@@ -40,6 +40,24 @@ public class Collectible_DB : ScriptableObject
         return instance.collectibleList;
     }
 
+    public static int GetIndexCollectible(Collectible c)
+    {
+        Init();
+        for (int i = 0; i < instance.collectibleList.Count; i++)
+        {
+            if (instance.collectibleList[i] == c) return i;
+        }
+        return -1;
+    }
+
+    public static Collectible GetCollectibleAtIndex(int index)
+    {
+        Init();
+        if (index < instance.collectibleList.Count)
+            return instance.collectibleList[index];
+        return null;
+    }
+
     public static bool VerifyList(bool hasUnitRemoved = false)
     {
         Init();

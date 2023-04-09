@@ -151,6 +151,7 @@ public class Collectible : PooledObject
     //when any collider trigger the collider of this collectible
     void OnTriggerEnter(Collider col)
     {
+        if (col.gameObject.layer == TDS.GetLayerOtherPlayer()) ReturnToPool();
         //only carry on if the trigger object is player
         if (col.gameObject.layer != TDS.GetLayerPlayer()) return;
 

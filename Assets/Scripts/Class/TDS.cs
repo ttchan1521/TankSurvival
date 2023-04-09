@@ -10,6 +10,7 @@ public class TDS
     public static int GetLayerCollectible() { return 11; }
     public static int GetLayerTrigger() { return 12; }
     public static int GetLayerTerrain() { return 13; }
+    public static int GetLayerOtherPlayer() { return 14; }
 
 
     public const bool scaleGizmos = true;
