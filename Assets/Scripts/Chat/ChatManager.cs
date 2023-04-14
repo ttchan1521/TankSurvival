@@ -74,6 +74,7 @@ namespace Chat
         {
             _stringBuilder.AppendLine($"[{chat.createdAt.DateTime}]");
             _stringBuilder.AppendLine($"{chat.username}: {chat.message}");
+            _stringBuilder.AppendLine();
             _text.text = _stringBuilder.ToString();
         }
     }

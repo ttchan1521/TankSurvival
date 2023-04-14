@@ -304,7 +304,7 @@ public class Unit : PooledObject
         if (damage > 0)
         {
             //show the overlay (for UI)
-            if (thisObj.layer != TDS.GetLayerPlayer())
+            if (GameControl.GetInstance().pvp && thisObj.layer != TDS.GetLayerPlayer())
             {
                 NetworkManager.Instance.Manager.Socket
                     .Emit("unitHealthChange", new UnitHealth 
@@ -435,7 +435,7 @@ public class Unit : PooledObject
     //called when unit is destroyed, also called by other component to take unit out of the game
     public void ClearUnit(bool showDestroyEffect = true, float delay = 0) 
     { 
-        if (thisObj.layer != TDS.GetLayerPlayer())
+        if (GameControl.GetInstance().pvp && thisObj.layer != TDS.GetLayerPlayer())
             {
                 NetworkManager.Instance.Manager.Socket
                     .Emit("unitClear", new ClearUnit
