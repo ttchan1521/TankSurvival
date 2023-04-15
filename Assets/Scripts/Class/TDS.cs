@@ -15,6 +15,10 @@ public class TDS
 
     public const bool scaleGizmos = true;
 
+    public delegate void SignupHandler(bool signup);
+    public static event SignupHandler onSignupE;
+    public static void OnSignUp(bool signup) { if (onSignupE != null) onSignupE(signup); }
+
 
     public delegate void GameMessageHandler(string msg);
     public static event GameMessageHandler onGameMessageE;

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using DefaultNamespace;
+using BestHTTP;
+using System;
 
 #if UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
@@ -9,14 +11,10 @@ using UnityEngine.SceneManagement;
 public class DemoUIMenu : MonoBehaviour
 {
     public bool loadMobileScene = false;
-
-    public GameObject tooltipObj;
-    private RectTransform tooltipRectT;
-    private Vector3 tooltipStartingPos;
-
-    public Text lbTooltip;
+    [SerializeField] Text username;
 
     private Camera _cameraMain;
+    private bool activeColorInput = true;
 
     private void Awake()
     {
@@ -25,10 +23,6 @@ public class DemoUIMenu : MonoBehaviour
 
     void Start()
     {
-        tooltipObj.SetActive(false);
-
-        tooltipRectT = tooltipObj.GetComponent<RectTransform>();
-        tooltipStartingPos = tooltipRectT.localPosition;
         var unit = FindObjectOfType<UnitPlayer>();
         // Vector3 screenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
         // colorBtn.localPosition = screenPos;
@@ -39,15 +33,28 @@ public class DemoUIMenu : MonoBehaviour
             renderer1.material.SetColor($"_Color2", PlayerPrefsManager.subColor);
         }
 
-        if (string.IsNullOrEmpty(PlayerPrefsManager.UserId))
+        TDS.onSignupE += OnSignUp;
+
+        TDS.OnSignUp(!string.IsNullOrEmpty(PlayerPrefsManager.UserId));
+    }
+
+    void OnDestroy()
+    {
+        TDS.onSignupE -= OnSignUp;
+    }
+
+    private void OnSignUp(bool signup)
+    {
+        if (signup)
         {
-            var signup = Resources.Load<GameObject>("SignUp");
-            Instantiate(signup, GetComponentInChildren<Canvas>().transform);
+            var panel = Resources.Load<GameObject>("NetworkUI");
+            Instantiate(panel, GetComponentInChildren<Canvas>().transform);
+            GetUser();
         }
         else
         {
-            var signup = Resources.Load<GameObject>("NetworkUI");
-            Instantiate(signup, GetComponentInChildren<Canvas>().transform);
+            var panel = Resources.Load<GameObject>("SignUp");
+            Instantiate(panel, GetComponentInChildren<Canvas>().transform);
         }
     }
 
@@ -77,11 +84,16 @@ public class DemoUIMenu : MonoBehaviour
 
     void ShowColorPicker(RaycastHit hitInfo)
     {
-        if (hitInfo.transform.TryGetComponent<UnitPlayer>(out var unit))
+        if (activeColorInput && hitInfo.transform.TryGetComponent<UnitPlayer>(out var unit))
         {
             var picker = Resources.Load<GameObject>("Picker 2.0 Variant");
             Instantiate(picker, GetComponentInChildren<Canvas>().transform);
         }
+    }
+
+    public void ActiveColorPickerInput(bool active)
+    {
+        activeColorInput = active;
     }
 
     public void OnButton(int butIndex)
@@ -91,6 +103,7 @@ public class DemoUIMenu : MonoBehaviour
 
         if (butIndex == 0)
         {
+            if (string.IsNullOrEmpty(PlayerPrefsManager.UserId)) return;
             RequestJoinRoom();
             return;
         }
@@ -114,43 +127,6 @@ public class DemoUIMenu : MonoBehaviour
 #endif
     }
 
-
-    public void OnHoverButton(int butIndex)
-    {
-        string text = "";
-
-        if (butIndex == 0)
-        {
-            text =
-                "A simple level just to show case various weapon and ability supported. There no gameplay, just unlimited weapons and targets.\n\nUses a simple, passive leveling system. Gain perks and stats automatically.";
-        }
-        else if (butIndex == 1)
-        {
-            text =
-                "An endless side scroller shooter. shoot enemies, collect bonus and power up, then shoot more enemy.\n\nHas no leveling system.";
-        }
-        else if (butIndex == 2)
-        {
-            text =
-                "With a whole range of different weapons and abilities, try to survive for 2 minutes in this arena.\n\nUses a 'World of Warcraft' style leveling system and skill tree.";
-        }
-        else if (butIndex == 3)
-        {
-            text =
-                "A complete level consists of a series of set piece. Get to the end of the level and destroy the boss to win.\n\nUses a 'Diablo' style attribute system for leveling.";
-        }
-
-        tooltipRectT.localPosition = tooltipStartingPos + new Vector3(0, -butIndex * 45, 0);
-
-        lbTooltip.text = text;
-        tooltipObj.SetActive(true);
-    }
-
-    public void OnExitButton(int butIndex)
-    {
-        tooltipObj.SetActive(false);
-    }
-
     private void RequestJoinRoom()
     {
         NetworkManager.Instance.Manager.Socket
@@ -163,5 +139,60 @@ public class DemoUIMenu : MonoBehaviour
         PvP.SetRoom(roomId);
         PvP.SetLand(land);
         SceneManager.LoadScene("MobilePvP");
+    }
+
+    private void GetUser()
+    {
+        HTTPRequest request = new HTTPRequest(new Uri($"{NetworkManager.UriString}/users/user?userId=" + PlayerPrefsManager.UserId),
+            OnRequestFinished);
+        request.Send();
+    }
+
+    private void OnRequestFinished(HTTPRequest req, HTTPResponse res)
+    {
+        switch (req.State)
+            {
+                // The request finished without any problem.
+                case HTTPRequestStates.Finished:
+                    if (res.IsSuccess)
+                    {
+                        var user = JsonUtility.FromJson<Users.Entities.User>(res.DataAsText);
+                        if (user != null)
+                            username.text = user.username;
+                    }
+                    else
+                    {
+                        Debug.LogWarning(string.Format(
+                            "Request finished Successfully, but the server sent an error. Status Code: {0}-{1} Message: {2}",
+                            res.StatusCode,
+                            res.Message,
+                            res.DataAsText));
+                       
+                    }
+
+                    break;
+
+                // The request finished with an unexpected error. The request's Exception property may contain more info about the error.
+                case HTTPRequestStates.Error:
+                    Debug.LogError("Request Finished with Error! " + (req.Exception != null
+                        ? (req.Exception.Message + "\n" + req.Exception.StackTrace)
+                        : "No Exception"));
+                    break;
+
+                // The request aborted, initiated by the user.
+                case HTTPRequestStates.Aborted:
+                    Debug.LogWarning("Request Aborted!");
+                    break;
+
+                // Connecting to the server is timed out.
+                case HTTPRequestStates.ConnectionTimedOut:
+                    Debug.LogError("Connection Timed Out!");
+                    break;
+
+                // The request didn't finished in the given time.
+                case HTTPRequestStates.TimedOut:
+                    Debug.LogError("Processing the request Timed Out!");
+                    break;
+            }
     }
 }

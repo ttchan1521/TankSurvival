@@ -62,6 +62,7 @@ namespace Users
                         status.color = Color.green;
                         PlayerPrefsManager.UserId = JsonUtility.FromJson<Entities.User>(resp.DataAsText)._id;
                         StartCoroutine(DestroyYield(3));
+                        
                     }
                     else
                     {
@@ -117,6 +118,7 @@ namespace Users
         {
             yield return new WaitForSeconds(seconds);
             Destroy(gameObject);
+            TDS.OnSignUp(true);
         }
     }
 }
