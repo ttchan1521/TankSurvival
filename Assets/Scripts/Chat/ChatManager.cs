@@ -65,7 +65,7 @@ namespace Chat
                 })
                 .Emit("createChat", new CreateChat()
                 {
-                    username = _networkManager.Manager.Socket.Id,
+                    username = PlayerPrefsManager.Username,
                     message = inputField.text
                 });
         }

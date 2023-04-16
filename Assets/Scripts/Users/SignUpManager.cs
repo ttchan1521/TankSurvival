@@ -60,7 +60,9 @@ namespace Users
                         Debug.Log(resp.DataAsText);
                         status.text = "Successfully";
                         status.color = Color.green;
-                        PlayerPrefsManager.UserId = JsonUtility.FromJson<Entities.User>(resp.DataAsText)._id;
+                        var user = JsonUtility.FromJson<Entities.User>(resp.DataAsText);
+                        PlayerPrefsManager.UserId = user._id;
+                        PlayerPrefsManager.Username = user.username;
                         StartCoroutine(DestroyYield(3));
                         
                     }
