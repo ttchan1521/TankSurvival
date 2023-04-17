@@ -427,27 +427,28 @@ public class UnitPlayer : Unit
                 });
         }
 
-        if (weapon.RequireAiming())
-        {
-            Vector2 cursorPos = Input.mousePosition;
+        // if (weapon.RequireAiming()) //nếu nhắm bắn
+        // {
+        //     Vector2 cursorPos = Input.mousePosition;
 
-            if (weapon.RandCursorForRecoil())
-            {
-                float recoil = GameControl.GetPlayer().GetRecoil() * 4;
-                cursorPos += new Vector2(Random.value - 0.5f, Random.value - 0.5f) * recoil;
-            }
+        //     if (weapon.RandCursorForRecoil())
+        //     {
+        //         float recoil = GameControl.GetPlayer().GetRecoil() * 4;
+        //         cursorPos += new Vector2(Random.value - 0.5f, Random.value - 0.5f) * recoil;
+        //     }
 
-            Ray ray = Camera.main.ScreenPointToRay(cursorPos);
-            RaycastHit hit;
-            //LayerMask mask=1<<TDS.GetLayerTerrain();
-            //Physics.Raycast(ray, out hit, Mathf.Infinity, mask);
-            Physics.Raycast(ray, out hit, Mathf.Infinity);
+        //     Ray ray = Camera.main.ScreenPointToRay(cursorPos);
+        //     RaycastHit hit;
+        //     //LayerMask mask=1<<TDS.GetLayerTerrain();
+        //     //Physics.Raycast(ray, out hit, Mathf.Infinity, mask);
+        //     Physics.Raycast(ray, out hit, Mathf.Infinity);
 
-            ShootObject.AimInfo aimInfo = new ShootObject.AimInfo(hit);
+        //     ShootObject.AimInfo aimInfo = new ShootObject.AimInfo(hit);
 
-            StartCoroutine(ShootRoutine(aimInfo));
-        }
-        else StartCoroutine(ShootRoutine());
+        //     StartCoroutine(ShootRoutine(aimInfo));
+        // }
+        // else 
+        StartCoroutine(ShootRoutine());
 
         weapon.Fire();
     }

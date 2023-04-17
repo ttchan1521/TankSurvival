@@ -48,7 +48,7 @@ public class Weapon : MonoBehaviour
 
     public float recoilCamShake = 0;
 
-    public int spread = 0;
+    public int spread = 0; //số viên đạn bắn ra trong một lần
     public float spreadAngle = 15;
 
     public AttackStats aStats = new AttackStats();
@@ -94,8 +94,9 @@ public class Weapon : MonoBehaviour
     public void InitShootObject()
     {
         ShootObject so = shootObject.GetComponent<ShootObject>();
-        requireAiming = (so.type == _SOType.Homing || so.type == _SOType.Point);
-        randCursorForRecoil = so.type == _SOType.Point;
+        //requireAiming = (so.type == _SOType.Homing || so.type == _SOType.Point);
+        requireAiming = so.type == _SOType.Homing;
+        //randCursorForRecoil = so.type == _SOType.Point;
     }
 
     //stop reloading when the weapon is disabled (when it's deselect, the weapon gameObject will be deactivated)
@@ -227,8 +228,8 @@ public class Weapon : MonoBehaviour
     private bool requireAiming = false; //set to true if the shoot-object used require aiming (missile or point)
     public bool RequireAiming() { return requireAiming; }
 
-    public bool randCursorForRecoil = false;
-    public bool RandCursorForRecoil() { return randCursorForRecoil; }
+    //public bool randCursorForRecoil = false;
+    //public bool RandCursorForRecoil() { return randCursorForRecoil; }
 
 
 

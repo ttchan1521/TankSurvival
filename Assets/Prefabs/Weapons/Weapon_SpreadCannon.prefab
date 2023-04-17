@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 471524}
   - {fileID: 479164}
@@ -56,9 +57,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -70,6 +74,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -82,6 +87,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &105430
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,6 +115,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 452138}
   m_Father: {fileID: 0}
@@ -127,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 8
-  icon: {fileID: 21300000, guid: 83bba2fef1811af4ea93e067de6e54c2, type: 3}
+  icon: {fileID: 21300000, guid: eb4044bda0332b648bf3f00551809198, type: 3}
   weaponName: SpreadCannon
   desp: 
   shootObject: {fileID: 150996, guid: 1d3ba96de52a8394abefc1bf07108b91, type: 3}
@@ -138,17 +145,14 @@ MonoBehaviour:
   - {fileID: 443532}
   - {fileID: 468654}
   shootPointDelay: 0
-  continousFire: 1
   range: 40
   cooldown: 0.5
   currentCD: 0
-  useEnergyAsAmmo: 0
-  energyCost: 2
   clipSize: 30
   currentClip: 30
-  ammoCap: 0
+  ammoCap: 300
   ammo: 300
-  reloadDuration: 0
+  reloadDuration: 1
   currentReload: 0
   recoilMagnitude: 0
   recoil: 1
@@ -203,7 +207,6 @@ MonoBehaviour:
     autoDestroyLaunchObj: 1
     launchObjActiveDuration: 2
     launchSFX: {fileID: 0}
-  randCursorForRecoil: 0
 --- !u!1 &120136
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +233,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0.130526, z: 0, w: 0.9914449}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 452138}
   m_RootOrder: 1
@@ -260,6 +264,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 452138}
   m_RootOrder: 0
@@ -290,6 +295,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0.2588187, z: 0, w: 0.96592593}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 452138}
   m_RootOrder: 4
@@ -320,6 +326,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0.13052647, z: 0, w: 0.9914448}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 452138}
   m_RootOrder: 2
@@ -350,6 +357,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0.25881913, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 452138}
   m_RootOrder: 3

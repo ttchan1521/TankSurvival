@@ -76,7 +76,7 @@ namespace UI
 
                 weaponItemList[i].imgIcon.sprite = weapons[i].icon;
                 weaponItemList[i].label.text = weapons[i].weaponName;
-                weaponItemList[i].labelAlt.text = weapons[i].clipSize + "/" + weapons[i].ammo;
+                weaponItemList[i].labelAlt.text = weapons[i].clipSize + "/" + (weapons[i].ammoCap < 0 ? "∞" : weapons[i].ammoCap);
                 weaponItemList[i].button.onClick.RemoveAllListeners();
                 int index = i;
                 weaponItemList[i].button.onClick.AddListener(() => OnSelectWeapon(index));

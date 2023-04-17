@@ -137,12 +137,9 @@ MonoBehaviour:
   shootPointList:
   - {fileID: 437088}
   shootPointDelay: 0.05
-  continousFire: 1
   range: 40
   cooldown: 0.1
   currentCD: 0
-  useEnergyAsAmmo: 0
-  energyCost: 1
   clipSize: 30
   currentClip: 30
   ammoCap: 300

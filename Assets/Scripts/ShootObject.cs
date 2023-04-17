@@ -9,7 +9,6 @@ public enum _SOType
     Simple,
     Homing,
     Beam,
-    Point,
 }
 
 public class ShootObject : PooledObject
@@ -251,10 +250,10 @@ public class ShootObject : PooledObject
             //ObjectPoolManager.Unspawn(thisObj, beamDuration-.01f);
             ReturnToPool(beamDuration - .01f);
         }
-        else if (type == _SOType.Point)
-        {
-            StartCoroutine(PointRoutine(aimInfo));
-        }
+        // else if (type == _SOType.Point)
+        // {
+        //     StartCoroutine(PointRoutine(aimInfo));
+        // }
 
         thisCollider.enabled = true;    //a fail safe
 
@@ -388,14 +387,14 @@ public class ShootObject : PooledObject
     }
 
     //for 'point' shootobject, which hits the target poins immediately (after a frame)
-    IEnumerator PointRoutine(AimInfo aimInfo)
-    {
-        yield return null;
+    // IEnumerator PointRoutine(AimInfo aimInfo)
+    // {
+    //     yield return null;
 
-        thisT.position = aimInfo.hitPoint;  //move the shootobject to hitpoint
+    //     thisT.position = aimInfo.hitPoint;  //move the shootobject to hitpoint
 
-        OnTriggerEnter(aimInfo.collider);
-    }
+    //     OnTriggerEnter(aimInfo.collider);
+    // }
 
 
     //called when shootobject hit something
@@ -511,11 +510,11 @@ public class ShootObject : PooledObject
 
             if (Time.time - shootTime > destroyTime || travelledDistance > srcRange) ProjectileHitDelay();
         }
-        else if (type == _SOType.Point)
-        {
-            HitEffect(thisT.position + new Vector3(0, 0.2f, 0));
-            ReturnToPool();
-        }
+        // else if (type == _SOType.Point)
+        // {
+        //     HitEffect(thisT.position + new Vector3(0, 0.2f, 0));
+        //     ReturnToPool();
+        // }
     }
 
 
