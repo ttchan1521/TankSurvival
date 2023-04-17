@@ -188,7 +188,8 @@ namespace UI
                     else player.AimTurretMouse(Input.mousePosition);
 
                     //fire
-                    bool continousFire = player.ContinousFire() & (Input.GetMouseButton(0) || Input.GetButton("Fire1"));
+                    //bool continousFire = player.ContinousFire() & (Input.GetMouseButton(0) || Input.GetButton("Fire1"));
+                    bool continousFire = Input.GetMouseButton(0) || Input.GetButton("Fire1");
                     if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1") || continousFire) player.FireWeapon();
 
                     //alt fire, could fire weapon alt-mode to launch selected ability

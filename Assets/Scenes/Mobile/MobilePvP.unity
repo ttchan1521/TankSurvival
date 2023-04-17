@@ -189,7 +189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &13880323
 Transform:
   m_ObjectHideFlags: 0
@@ -8994,7 +8994,6 @@ MonoBehaviour:
   score: 0
   enableAbility: 1
   enableAltFire: 0
-  enableContinousFire: 1
   enableAutoReload: 1
   friendly: 0
   shootObject: 0

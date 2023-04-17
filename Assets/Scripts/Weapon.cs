@@ -19,19 +19,19 @@ public class Weapon : MonoBehaviour
     [Space(10)]
     public GameObject shootObject;
     public List<Transform> shootPointList = new List<Transform>();
-    public float shootPointDelay = 0.05f;
+    public float shootPointDelay = 0.05f; // delay giữa các điểm bắn
 
-    [Space(10)]
-    public bool continousFire = true;
+    // [Space(10)]
+    // public bool continousFire = true;
 
     [Header("Base Stats")]
-    public float range = 20;
-    public float cooldown = 0.15f;
+    public float range = 20; //khoảng cách đạn có thể bay
+    public float cooldown = 0.15f; //thời gian giữa 2 lần bắn đạn
     [HideInInspector] public float currentCD = 0.25f;
     //public float GetCurrentCD(){ return currentCD; }
 
-    public bool useEnergyAsAmmo = false;
-    public float energyCost = 1;
+    // public bool useEnergyAsAmmo = false;
+    // public float energyCost = 1;
 
     public int clipSize = 30;
     public int currentClip = 30;
@@ -120,7 +120,7 @@ public class Weapon : MonoBehaviour
         AudioManager.PlaySound(shootSFX);
 
         //for weapon with finite clip
-        if (!useEnergyAsAmmo || currentClip > 0)
+        if (/**!useEnergyAsAmmo  || */ currentClip > 0)
         {
             currentClip -= 1;
             if (currentClip <= 0)

@@ -149,13 +149,13 @@ namespace UI
 
             if (!reloading)
             {
-                if (!player.UseEnergyAsAmmo())
-                {
+                // if (!player.UseEnergyAsAmmo())
+                // {
                     string clip = player.GetCurrentClip() < 0 ? "∞" : player.GetCurrentClip().ToString();
                     string ammo = player.GetAmmo() < 0 ? "∞" : player.GetAmmo().ToString();
                     uiButtonWeapon.labelAlt.text = clip + "/" + ammo;
-                }
-                else uiButtonWeapon.labelAlt.text = "Use Energy";
+                // }
+                // else uiButtonWeapon.labelAlt.text = "Use Energy";
             }
 
 

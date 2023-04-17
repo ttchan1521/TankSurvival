@@ -6,7 +6,7 @@ namespace pvp
 {
     public class Player
     {
-        public string socketId;
+        public string username;
         public string roomId;
         public float[] position;
         public float[] rotation;
@@ -45,7 +45,7 @@ namespace pvp
 
     public class PlayerInit
     {
-        public string socketId;
+        public string username;
         public string roomId;
         public float[] position;
         public float[] rotation;
@@ -100,7 +100,7 @@ namespace pvp
 
     public class PlayerFire
     {
-        public string socketId;
+        public string username;
         public string roomId;
         public float[] turretRotation;
     }
@@ -131,14 +131,14 @@ namespace pvp
 
     public class AttackPlayer
     {
-        public string socketId;
+        public string username;
         public string roomId;
         public AttackInstance attackInstance;
     }
 
     public class PlayerDestroy
     {
-        public string socketId;
+        public string username;
         public string roomId;
     }
 }

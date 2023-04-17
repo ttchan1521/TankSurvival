@@ -71,7 +71,7 @@ public class Unit : PooledObject
     public bool smoothTurretRotation = true;
     public float turretTrackingSpeed = 90;      //in degree per second
 
-    public float range = 30;
+    public float range = 30; // khoảng cách đạn bay
     public float cooldown = 5f;
     protected float currentCD = 0.25f;
     public AttackStats attackStats;
@@ -266,7 +266,7 @@ public class Unit : PooledObject
             NetworkManager.Instance.Manager.Socket
                 .Emit("attackPlayer", new AttackPlayer
                 {
-                    socketId = PvPManager.instance.GetIdOtherPlayer((UnitPlayer)this),
+                    username = PvPManager.instance.GetIdOtherPlayer((UnitPlayer)this),
                     roomId = PvP.GetRoom(),
                     attackInstance = attInstance
                 });

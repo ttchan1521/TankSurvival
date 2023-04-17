@@ -20,6 +20,8 @@ public class PvPManager : MonoBehaviour
     private Dictionary<string, UnitPlayer> otherPlayers = new Dictionary<string, UnitPlayer>();
     private Dictionary<int, UnitAI> enemies = new Dictionary<int, UnitAI>();
 
+    private NetworkManager _networkManager;
+
     private Vector3 SpawnAtIndex(int index)
     {
         if (index >= areas.Length)
@@ -35,10 +37,12 @@ public class PvPManager : MonoBehaviour
         }
         instance = this;
 
+        _networkManager = NetworkManager.Instance;
+
         var myPlayer = SpawnPlayer(SpawnAtIndex(PvP.GetLandSpawnPlayer()), Quaternion.identity);
         GameControl.SetPlayer(myPlayer);
 
-        NetworkManager.Instance.Manager.Socket.On<PlayerInit>("other player play", OnPlayerJoin);
+        _networkManager.Manager.Socket.On<PlayerInit>("other player play", OnPlayerJoin);
     }
 
     void Start()
@@ -53,13 +57,13 @@ public class PvPManager : MonoBehaviour
         }
         else
         {
-            NetworkManager.Instance.Manager.Socket.On<UnitInit>("OnSpawnUnit", OnSpawnUnit);
-            NetworkManager.Instance.Manager.Socket.On<UnitList>("OnEnemyMove", OnEnemyMove);
+           _networkManager.Manager.Socket.On<UnitInit>("OnSpawnUnit", OnSpawnUnit);
+           _networkManager.Manager.Socket.On<UnitList>("OnEnemyMove", OnEnemyMove);
         }
-        NetworkManager.Instance.Manager.Socket
+       _networkManager.Manager.Socket
             .Emit("player play", new PlayerInit
             {
-                socketId = NetworkManager.Instance.Manager.Socket.Id,
+                username = PlayerPrefsManager.Username,
                 roomId = PvP.GetRoom(),
                 position = new float[]
                 {
@@ -78,13 +82,13 @@ public class PvPManager : MonoBehaviour
                 weaponId = PlayerPrefsManager.weaponSelectID
             });
 
-        NetworkManager.Instance.Manager.Socket.On<Player>("other player move", OnOtherPlayerMove);
-        NetworkManager.Instance.Manager.Socket.On<PlayerFire>("otherPlayerFire", OnOtherPlayerFire);
-        NetworkManager.Instance.Manager.Socket.On<UnitHealth>("OnUnitHealthChange", OnUnitHealthChange);
-        NetworkManager.Instance.Manager.Socket.On<ClearUnit>("OnUnitClear", OnUnitClear);
-        NetworkManager.Instance.Manager.Socket.On<CollectibleInit>("OnSpawnCollectible", OnSpawnCollectible);
-        NetworkManager.Instance.Manager.Socket.On<AttackPlayer>("OnAttackPlayer", OnAttackPlayer);
-        NetworkManager.Instance.Manager.Socket.On<PlayerDestroy>("OnPlayerDestroy", OnPlayerDestroy);
+       _networkManager.Manager.Socket.On<Player>("other player move", OnOtherPlayerMove);
+       _networkManager.Manager.Socket.On<PlayerFire>("otherPlayerFire", OnOtherPlayerFire);
+       _networkManager.Manager.Socket.On<UnitHealth>("OnUnitHealthChange", OnUnitHealthChange);
+       _networkManager.Manager.Socket.On<ClearUnit>("OnUnitClear", OnUnitClear);
+       _networkManager.Manager.Socket.On<CollectibleInit>("OnSpawnCollectible", OnSpawnCollectible);
+       _networkManager.Manager.Socket.On<AttackPlayer>("OnAttackPlayer", OnAttackPlayer);
+       _networkManager.Manager.Socket.On<PlayerDestroy>("OnPlayerDestroy", OnPlayerDestroy);
     }
 
     private UnitPlayer SpawnPlayer(Vector3 position, Quaternion rotation)
@@ -104,17 +108,17 @@ public class PvPManager : MonoBehaviour
             _otherPlayer.SetRendererColor(main, sub);
         }
         _otherPlayer.Init(playerData.weaponId);
-        otherPlayers.Add(playerData.socketId, _otherPlayer);
+        otherPlayers.Add(playerData.username, _otherPlayer);
     }
 
     private void OnOtherPlayerMove(Player playerData)
     {
         Vector3 postion = new Vector3(playerData.position[0], playerData.position[1], playerData.position[2]);
         Quaternion rotation = Quaternion.Euler(playerData.rotation[0], playerData.rotation[1], playerData.rotation[2]);
-        otherPlayers[playerData.socketId].transform.position = postion;
-        otherPlayers[playerData.socketId].transform.rotation = rotation;
+        otherPlayers[playerData.username].transform.position = postion;
+        otherPlayers[playerData.username].transform.rotation = rotation;
         uihud.UpdateSliderHPOpponent(playerData.hp, playerData.hpfull);
-        otherPlayers[playerData.socketId].turretObj.rotation = Quaternion.Euler(playerData.turretRotation[0], playerData.turretRotation[1], playerData.turretRotation[2]);
+        otherPlayers[playerData.username].turretObj.rotation = Quaternion.Euler(playerData.turretRotation[0], playerData.turretRotation[1], playerData.turretRotation[2]);
     }
 
     private void OnSpawnUnit(UnitInit unitData)
@@ -147,7 +151,7 @@ public class PvPManager : MonoBehaviour
                 e.SetPosition(trans.position.x, trans.position.y, trans.position.z);
                 e.SetRotation(trans.rotation.eulerAngles.x, trans.rotation.eulerAngles.y, trans.rotation.eulerAngles.z);
             }
-            NetworkManager.Instance.Manager.Socket
+           _networkManager.Manager.Socket
                 .Emit("enemyMove", unitList);
             yield return null;
         }
@@ -181,8 +185,8 @@ public class PvPManager : MonoBehaviour
     
     private void OnOtherPlayerFire(PlayerFire data)
     {
-        otherPlayers[data.socketId].turretObj.transform.rotation = MyExtension.ConvertToQuaternion(data.turretRotation);
-        otherPlayers[data.socketId].OnFireWeapon();
+        otherPlayers[data.username].turretObj.transform.rotation = MyExtension.ConvertToQuaternion(data.turretRotation);
+        otherPlayers[data.username].OnFireWeapon();
     }
 
     private void OnUnitHealthChange(UnitHealth health)
@@ -225,15 +229,15 @@ public class PvPManager : MonoBehaviour
 
     private void OnAttackPlayer(AttackPlayer attackData)
     {
-        if (attackData.socketId == NetworkManager.Instance.Manager.Socket.Id)
+        if (attackData.username == PlayerPrefsManager.Username)
             GameControl.GetPlayer().ApplyAttack(attackData.attackInstance);
     }
 
     private void OnPlayerDestroy(PlayerDestroy data)
     {
 
-        otherPlayers[data.socketId].OnPvPClearUnit();
-        otherPlayers.Remove(data.socketId);
+        otherPlayers[data.username].OnPvPClearUnit();
+        otherPlayers.Remove(data.username);
         if (otherPlayers.Count <= 0)
             GameControl.GameOver(true);
     }

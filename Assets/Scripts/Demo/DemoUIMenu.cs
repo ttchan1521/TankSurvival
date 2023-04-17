@@ -12,6 +12,9 @@ public class DemoUIMenu : MonoBehaviour
 {
     public bool loadMobileScene = false;
     [SerializeField] Text username;
+    [SerializeField] Button pvpButton;
+    [SerializeField] Button chatButton;
+    [SerializeField] Button leaderboardButton;
 
     private Camera _cameraMain;
     private bool activeColorInput = true;
@@ -47,12 +50,16 @@ public class DemoUIMenu : MonoBehaviour
     {
         if (signup)
         {
-            var panel = Resources.Load<GameObject>("NetworkUI");
-            Instantiate(panel, GetComponentInChildren<Canvas>().transform);
-            GetUser();
+            username.text = PlayerPrefsManager.Username;
+            pvpButton.gameObject.SetActive(true);
+            chatButton.gameObject.SetActive(true);
+            leaderboardButton.gameObject.SetActive(true);
         }
         else
         {
+            pvpButton.gameObject.SetActive(false);
+            chatButton.gameObject.SetActive(false);
+            leaderboardButton.gameObject.SetActive(false);
             var panel = Resources.Load<GameObject>("SignUp");
             Instantiate(panel, GetComponentInChildren<Canvas>().transform);
         }
@@ -119,6 +126,18 @@ public class DemoUIMenu : MonoBehaviour
         {
             sceneName = prefix + "Gauntlet";
         }
+        else if (butIndex == 4)
+        {
+            var chat = Resources.Load<GameObject>("Chat");
+            Instantiate(chat, GetComponentInChildren<Canvas>().transform);
+            return;
+        }
+        else if (butIndex == 5)
+        {
+            var leaderboard = Resources.Load<GameObject>("Leaderboard");
+            Instantiate(leaderboard, GetComponentInChildren<Canvas>().transform);
+            return;
+        }
 
 #if UNITY_5_3_OR_NEWER
         SceneManager.LoadScene(sceneName);
@@ -139,60 +158,5 @@ public class DemoUIMenu : MonoBehaviour
         PvP.SetRoom(roomId);
         PvP.SetLand(land);
         SceneManager.LoadScene("MobilePvP");
-    }
-
-    private void GetUser()
-    {
-        HTTPRequest request = new HTTPRequest(new Uri($"{NetworkManager.UriString}/users/user?userId=" + PlayerPrefsManager.UserId),
-            OnRequestFinished);
-        request.Send();
-    }
-
-    private void OnRequestFinished(HTTPRequest req, HTTPResponse res)
-    {
-        switch (req.State)
-            {
-                // The request finished without any problem.
-                case HTTPRequestStates.Finished:
-                    if (res.IsSuccess)
-                    {
-                        var user = JsonUtility.FromJson<Users.Entities.User>(res.DataAsText);
-                        if (user != null)
-                            username.text = user.username;
-                    }
-                    else
-                    {
-                        Debug.LogWarning(string.Format(
-                            "Request finished Successfully, but the server sent an error. Status Code: {0}-{1} Message: {2}",
-                            res.StatusCode,
-                            res.Message,
-                            res.DataAsText));
-                       
-                    }
-
-                    break;
-
-                // The request finished with an unexpected error. The request's Exception property may contain more info about the error.
-                case HTTPRequestStates.Error:
-                    Debug.LogError("Request Finished with Error! " + (req.Exception != null
-                        ? (req.Exception.Message + "\n" + req.Exception.StackTrace)
-                        : "No Exception"));
-                    break;
-
-                // The request aborted, initiated by the user.
-                case HTTPRequestStates.Aborted:
-                    Debug.LogWarning("Request Aborted!");
-                    break;
-
-                // Connecting to the server is timed out.
-                case HTTPRequestStates.ConnectionTimedOut:
-                    Debug.LogError("Connection Timed Out!");
-                    break;
-
-                // The request didn't finished in the given time.
-                case HTTPRequestStates.TimedOut:
-                    Debug.LogError("Processing the request Timed Out!");
-                    break;
-            }
     }
 }

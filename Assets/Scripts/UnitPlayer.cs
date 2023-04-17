@@ -128,7 +128,7 @@ public class UnitPlayer : Unit
 
         if (GameControl.GetInstance().pvp)
         {
-            data.socketId = NetworkManager.Instance.Manager.Socket.Id;
+            data.username = PlayerPrefsManager.Username;
             data.roomId = PvP.GetRoom();
         }
 
@@ -394,10 +394,10 @@ public class UnitPlayer : Unit
         {
             OnFireWeapon();
 
-            if (weapon.useEnergyAsAmmo)
-            {
-                energy -= weapon.energyCost;
-            }
+            // if (weapon.useEnergyAsAmmo)
+            // {
+            //     energy -= weapon.energyCost;
+            // }
         }
         else
         {
@@ -421,7 +421,7 @@ public class UnitPlayer : Unit
             NetworkManager.Instance.Manager.Socket
                 .Emit("playerFire", new PlayerFire
                 {
-                    socketId = NetworkManager.Instance.Manager.Socket.Id,
+                    username = PlayerPrefsManager.Username,
                     roomId = PvP.GetRoom(),
                     turretRotation = MyExtension.ConvertToArrayFromQuaternion(turretObj.transform.rotation)
                 });
@@ -741,18 +741,18 @@ public class UnitPlayer : Unit
         if (weapon.OnCoolDown()) return 2;
         if (weapon.OutOfAmmo()) return 3;
         if (weapon.Reloading()) return 4;
-        if (weapon.useEnergyAsAmmo && energy < weapon.energyCost) return 5;
+        //if (weapon.useEnergyAsAmmo && energy < weapon.energyCost) return 5;
         return 0;
     }
 
-    public bool ContinousFire() { return GameControl.EnableContinousFire() & weapon.continousFire; }
+    //public bool ContinousFire() { return GameControl.EnableContinousFire() & weapon.continousFire; }
 
     public override float GetRange() { return weapon.GetRange(); }
 
     private float recoilSignTH = 0.5f;
     public float GetRecoil() { return weapon.GetRecoilMagnitude(); }
 
-    public bool UseEnergyAsAmmo() { return weapon.useEnergyAsAmmo; }
+    //public bool UseEnergyAsAmmo() { return weapon.useEnergyAsAmmo; }
 
     public bool Reloading() { return weapon.Reloading(); }
     public float GetReloadDuration() { return weapon.GetReloadDuration(); }

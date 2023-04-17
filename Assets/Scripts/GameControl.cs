@@ -10,6 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using pvp;
+using Users.Entities;
+using BestHTTP;
 
 public enum _GameState
 {
@@ -66,8 +68,8 @@ public class GameControl : MonoBehaviour
     public bool enableAltFire = false;
     public static bool EnableAltFire() { return instance.enableAltFire; }
 
-    public bool enableContinousFire = true;
-    public static bool EnableContinousFire() { return instance.enableContinousFire; }
+    // public bool enableContinousFire = true;
+    // public static bool EnableContinousFire() { return instance.enableContinousFire; }
 
     public bool enableAutoReload = true;
     public static bool EnableAutoReload() { return instance.enableAutoReload; }
@@ -139,7 +141,7 @@ public class GameControl : MonoBehaviour
                 NetworkManager.Instance.Manager.Socket
                     .Emit("playerDestroy", new PlayerDestroy
                     {
-                        socketId = NetworkManager.Instance.Manager.Socket.Id,
+                        username = PlayerPrefsManager.Username,
                         roomId = PvP.GetRoom()
                     });
             }
@@ -181,7 +183,7 @@ public class GameControl : MonoBehaviour
     private int unitInstanceID = 0;
     public static int GetUnitInstanceID()
     {
-        return instance == null ? -1 : instance.unitInstanceID += 1; 
+        return instance == null ? -1 : instance.unitInstanceID += 1;
     }
 
 
@@ -281,6 +283,38 @@ public class GameControl : MonoBehaviour
     {   //static function to end the game
         if (!instance.gameObject.activeInHierarchy) return;
         instance.StartCoroutine(instance._GameOver(won));
+
+        if (string.IsNullOrEmpty(PlayerPrefsManager.UserId))
+            return;
+
+        if (instance.pvp && !won) return;
+
+        var scoreInfo = new UpdateScore
+        {
+            userId = PlayerPrefsManager.UserId,
+            op = "incr"
+        };
+        if (instance.pvp)
+        {
+            scoreInfo.score = 25;
+            scoreInfo.mode = "pvp";
+        }
+        else
+        {
+            scoreInfo.score = GetScore();
+            scoreInfo.mode = "campaign";
+        }
+
+        HTTPRequest request = new HTTPRequest(new System.Uri($"{NetworkManager.UriString}/users"), HTTPMethods.Patch,
+            OnRequestFinished);
+        request.SetHeader("Content-Type", "application/json; charset=UTF-8");
+        request.RawData = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(scoreInfo));
+        request.Send();
+    }
+
+    private static void OnRequestFinished(HTTPRequest req, HTTPResponse res)
+    {
+        
     }
     public IEnumerator _GameOver(bool won)
     {
