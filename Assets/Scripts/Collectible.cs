@@ -24,7 +24,7 @@ public class Collectible : PooledObject
 
 
     [Header("Self")]
-    public int life = 0;
+    //public int life = 0;
 
     public float hitPoint = 0;
     public float energy = 0;
@@ -33,7 +33,7 @@ public class Collectible : PooledObject
     public int score = 0;
 
     public int ammo = 0;        //-1 to fully refilled
-    public int ammoID = -1;     //-1 for all weapons, else for weapon index
+    //public int ammoID = -1;     //-1 for all weapons, else for weapon index
 
     public int exp = 0;
     public int perkCurrency = 0;
@@ -42,19 +42,19 @@ public class Collectible : PooledObject
     [HideInInspector] private int effectIdx = -1;   //effect's index to effectlist in DB during runtime
                                                     //[HideInInspector] public Effect effect;
 
-    public bool gainWeapon = false;
-    public bool randomWeapon = true;
-    public bool enableAllWeapon = true;
-    public List<Weapon> weaponList = new List<Weapon>();
-    public bool discardWhenOutOfAmmo = true;
-    public bool replaceCurrentWeapon = false;
+    // public bool gainWeapon = false;
+    // public bool randomWeapon = true;
+    // public bool enableAllWeapon = true;
+    // public List<Weapon> weaponList = new List<Weapon>();
+    // public bool discardWhenOutOfAmmo = true;
+    // public bool replaceCurrentWeapon = false;
 
-    public enum _WeaponType { Add, Replacement, Temporary };
-    public _WeaponType weaponType = _WeaponType.Replacement;
-    public float tempWeapDuration = 10;
+    // public enum _WeaponType { Add, Replacement, Temporary };
+    // public _WeaponType weaponType = _WeaponType.Replacement;
+    // public float tempWeapDuration = 10;
 
 
-    public int abilityID = 0;
+    // public int abilityID = 0;
 
 
     [Header("Common")]
@@ -82,17 +82,17 @@ public class Collectible : PooledObject
         gameObject.GetComponent<Collider>().isTrigger = true;
         gameObject.layer = TDS.GetLayerCollectible();
 
-        if (type == _CollectType.Self)
-        {
-            //initiate the weapon list to contain all weapon if the condition is checked
-            if (gainWeapon && randomWeapon && enableAllWeapon) weaponList = new List<Weapon>(Weapon_DB.Load());
+        // if (type == _CollectType.Self)
+        // {
+        //     //initiate the weapon list to contain all weapon if the condition is checked
+        //     if (gainWeapon && randomWeapon && enableAllWeapon) weaponList = new List<Weapon>(Weapon_DB.Load());
 
-            //make sure none of the element in weaponList is null
-            for (int i = 0; i < weaponList.Count; i++)
-            {
-                if (weaponList[i] == null) { weaponList.RemoveAt(i); i -= 1; }
-            }
-        }
+        //     //make sure none of the element in weaponList is null
+        //     for (int i = 0; i < weaponList.Count; i++)
+        //     {
+        //         if (weaponList[i] == null) { weaponList.RemoveAt(i); i -= 1; }
+        //     }
+        // }
 
         //effect=EffectDB.CloneItem(effectID);
         effectIdx = Effect_DB.GetEffectIndex(effectID);
@@ -168,10 +168,10 @@ public class Collectible : PooledObject
         {       //apply effect to all hostile
             ApplyEffectAll();
         }
-        else if (type == _CollectType.Ability)
-        {
-            AbilityManager.TriggerAbility(abilityID);
-        }
+        // else if (type == _CollectType.Ability)
+        // {
+        //     AbilityManager.TriggerAbility(abilityID);
+        // }
 
         GameControl.ColletibleCollected(this);
 
@@ -233,7 +233,7 @@ public class Collectible : PooledObject
     {
 
         //gain life
-        if (life > 0) GameControl.GainLife();
+        //if (life > 0) GameControl.GainLife();
 
         //gain hit-point
         if (hitPoint > 0)

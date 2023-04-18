@@ -785,11 +785,11 @@ MonoBehaviour:
   spawnChance: 0.1
   failModifier: 0
   spawnItemList:
-  - item: {fileID: 11444902, guid: 147e3053ee6a30f49b4904875df90c7f, type: 3}
-    chance: 1
+  - item: {fileID: 11447202, guid: d68757f6afc5dc04190430b456c1831f, type: 3}
+    chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 0}
+  - item: {fileID: 11444902, guid: f4facc18b46516b449deae6dc7e69081, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0

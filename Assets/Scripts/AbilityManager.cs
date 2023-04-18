@@ -105,12 +105,12 @@ public class AbilityManager : MonoBehaviour
     }
 
 
-    public static void TriggerAbility(int ID)
-    {   //for trigger and collectible that activate an ability
-        if (instance == null) return;
+    // public static void TriggerAbility(int ID)
+    // {   //for trigger and collectible that activate an ability
+    //     if (instance == null) return;
 
-        LaunchAbility(Ability_DB.CloneItem(ID), false);
-    }
+    //     LaunchAbility(Ability_DB.CloneItem(ID), false);
+    // }
 
 
     //function call to launch an ability, based on the passed index

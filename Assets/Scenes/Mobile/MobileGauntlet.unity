@@ -43830,37 +43830,13 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 40
     currentCD: 0
-  - item: {fileID: 11444902, guid: 4f201c45f1175a84e8a4d5c3ba702478, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
-  - item: {fileID: 11444902, guid: 6359513a23c16834397fa1d9a5da9605, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
-  - item: {fileID: 11477040, guid: b4f774f35a6434d47a91e14a1b18e5e7, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
-  - item: {fileID: 11420194, guid: fc8b27e838294574a86918284d2fbd14, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
   - item: {fileID: 11469412, guid: 376909417189eb542b1fdf05778ea0a6, type: 3}
-    chance: 0.5
-    cooldown: 40
-    currentCD: 0
-  - item: {fileID: 11447456, guid: 4e8d090e4b585324eb3f609d4ebca8d7, type: 3}
     chance: 0.5
     cooldown: 40
     currentCD: 0
   - item: {fileID: 11435810, guid: 88726b9bf8f244344acaf73c9152fa00, type: 3}
     chance: 0.5
     cooldown: 40
-    currentCD: 0
-  - item: {fileID: 0}
-    chance: 0.5
-    cooldown: 10
     currentCD: 0
 --- !u!114 &912127839
 MonoBehaviour:

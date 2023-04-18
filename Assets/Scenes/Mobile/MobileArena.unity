@@ -3654,7 +3654,7 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11444902, guid: 5ed0dc026583269468be2b3f12f4778d, type: 3}
+  - item: {fileID: 11444902, guid: f4facc18b46516b449deae6dc7e69081, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
@@ -11136,7 +11136,7 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11447456, guid: 4e8d090e4b585324eb3f609d4ebca8d7, type: 3}
+  - item: {fileID: 11447202, guid: d68757f6afc5dc04190430b456c1831f, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
