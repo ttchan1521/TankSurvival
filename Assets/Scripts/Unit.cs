@@ -298,7 +298,7 @@ public class Unit : PooledObject
         if (critical) damage *= aStats.critMultiplier;
 
         //modify the damage based on damage and armor type
-        damage *= DamageTable.GetModifier(armorType, aStats.damageType);
+        //damage *= DamageTable.GetModifier(armorType, aStats.damageType);
 
         //if damage is valid, modify the hit point
         if (damage > 0)

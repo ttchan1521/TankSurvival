@@ -20,7 +20,6 @@ public enum _GameState
     GameOver,   //when game is over
 }
 
-[RequireComponent(typeof(DamageTable))]
 public class GameControl : MonoBehaviour
 {
 

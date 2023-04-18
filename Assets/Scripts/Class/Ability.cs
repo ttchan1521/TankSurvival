@@ -38,7 +38,7 @@ public class Ability : Item
 
     public AttackStats aStats = new AttackStats();
 
-    public float range = 20;
+    public float range = 20; //khoảng cách tối đa có thể di chuyển
     public GameObject shootObject;
     public Vector3 shootPosOffset = new Vector3(0, 1, 0);
 
@@ -142,7 +142,8 @@ public class Ability : Item
             Transform srcT = GetShootObjectSrcTransform();
             Vector3 shootPos = srcT.TransformPoint(shootPosOffset);
             pos.y = shootPos.y;
-            Quaternion shootRot = Quaternion.LookRotation(pos - shootPos);
+            //Quaternion shootRot = Quaternion.LookRotation(pos - shootPos);
+            Quaternion shootRot = GameControl.GetPlayer().turretObj.rotation;
 
             //create the AttackInstance
             AttackInstance aInstance = new AttackInstance(GameControl.GetPlayer(), GetRuntimeAttackStats());

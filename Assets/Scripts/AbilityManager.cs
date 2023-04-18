@@ -142,7 +142,7 @@ public class AbilityManager : MonoBehaviour
     public static void LaunchAbility(Ability _ability, bool useCostNCD = true)
     {
         bool teleport = _ability.type == _AbilityType.Movement & _ability.moveType == _MoveType.Teleport;
-        if (_ability.type == _AbilityType.AOE || _ability.type == _AbilityType.Shoot || teleport)
+        if (_ability.type == _AbilityType.AOE || teleport)
         {
             //get the hit point and activate the ability on that particular spot
             Ray ray = CameraControl.GetMainCamera().ScreenPointToRay(Input.mousePosition);

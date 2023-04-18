@@ -141,7 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootObject: {fileID: 11457876, guid: 945a1acfbfad1ca47bca0cebe1a6f9ec, type: 3}
   spinObject: {fileID: 486524}
-  damage: 10
+  damage: 7
   range: 30
   spinSpeed: 60
   rounds: 5
