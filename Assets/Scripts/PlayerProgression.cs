@@ -195,8 +195,8 @@ public class PlayerProgression : MonoBehaviour
     public float GetEnergyRegenGain() { return (level - 1) * stats.energyRegenGain; }
     public float GetSpeedMulGain() { return (level - 1) * stats.speedMulGain; }
     public float GetDamageMulGain() { return (level - 1) * stats.dmgMulGain; }
-    public float GetCritChanceMulGain() { return (level - 1) * stats.critChanceMulGain; }
-    public float GetCritMultiplierMulGain() { return (level - 1) * stats.critMultiplierMulGain; }
+    // public float GetCritChanceMulGain() { return (level - 1) * stats.critChanceMulGain; }
+    // public float GetCritMultiplierMulGain() { return (level - 1) * stats.critMultiplierMulGain; }
 
 
 

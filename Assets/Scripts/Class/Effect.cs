@@ -24,8 +24,8 @@ public class Effect : Item
     [Header("Multipliers on target's stats")]
     public float damageMul = 1;
 
-    public float critChanceMul = 1;
-    public float critMultiplierMul = 1;
+    // public float critChanceMul = 1;
+    // public float critMultiplierMul = 1;
 
     [HideInInspector] public bool expired = false;  //set to true when target is destroyed or the effect has been override
 
@@ -58,8 +58,8 @@ public class Effect : Item
 
         eff.damageMul = damageMul;
 
-        eff.critChanceMul = critChanceMul;
-        eff.critMultiplierMul = critMultiplierMul;
+        // eff.critChanceMul = critChanceMul;
+        // eff.critMultiplierMul = critMultiplierMul;
 
         eff.duration = duration;
 

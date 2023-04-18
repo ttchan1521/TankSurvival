@@ -294,8 +294,8 @@ public class Unit : PooledObject
 
 
         //check for cirtical and modify the damage based on critical multiplier
-        bool critical = Random.value < aStats.critChance;
-        if (critical) damage *= aStats.critMultiplier;
+        // bool critical = Random.value < aStats.critChance;
+        // if (critical) damage *= aStats.critMultiplier;
 
         //modify the damage based on damage and armor type
         //damage *= DamageTable.GetModifier(armorType, aStats.damageType);
@@ -317,8 +317,9 @@ public class Unit : PooledObject
                     });
             }
             Vector3 offsetPos = new Vector3(0, Random.value + 0.5f, 0);
-            if (!critical) new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"));
-            else new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"), new Color(1f, 0.9f, 0.9f, 1f), 1.5f);
+            // if (!critical) new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"));
+            // else 
+            new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"), new Color(1f, 0.9f, 0.9f, 1f), 1.5f);
 
             //if the unit is player, fire event to inform UI
             if (thisObj.layer == TDS.GetLayerPlayer()) TDS.PlayerDamaged(damage);
@@ -598,8 +599,8 @@ public class Unit : PooledObject
 
             activeEffect.damageMul *= effectList[i].damageMul;
 
-            activeEffect.critChanceMul *= effectList[i].critChanceMul;
-            activeEffect.critMultiplierMul *= effectList[i].critMultiplierMul;
+            // activeEffect.critChanceMul *= effectList[i].critChanceMul;
+            // activeEffect.critMultiplierMul *= effectList[i].critMultiplierMul;
         }
     }
 
@@ -609,8 +610,8 @@ public class Unit : PooledObject
         aStats.damageMin *= activeEffect.damageMul;
         aStats.damageMax *= activeEffect.damageMul;
 
-        aStats.critChance *= activeEffect.critChanceMul;
-        aStats.critMultiplier *= activeEffect.critMultiplierMul;
+        // aStats.critChance *= activeEffect.critChanceMul;
+        // aStats.critMultiplier *= activeEffect.critMultiplierMul;
 
         return aStats;
     }

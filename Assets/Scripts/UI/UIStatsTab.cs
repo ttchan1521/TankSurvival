@@ -82,8 +82,8 @@ namespace UI
             statsText += player.GetEnergyRegen().ToString("f1") + "/sec\n";
             statsText += "\n";
             statsText += "x" + player.GetDamageMultiplier().ToString("f1") + "\n";
-            statsText += "x" + player.GetCritChanceMultiplier().ToString("f1") + "\n";
-            statsText += "x" + player.GetCritMulMultiplier().ToString("f1") + "\n";
+            // statsText += "x" + player.GetCritChanceMultiplier().ToString("f1") + "\n";
+            // statsText += "x" + player.GetCritMulMultiplier().ToString("f1") + "\n";
             statsText += "x" + player.GetSpeedMultiplier().ToString("f1") + "\n";
 
             lbStats.text = statsText;

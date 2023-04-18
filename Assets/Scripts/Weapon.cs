@@ -253,8 +253,8 @@ public class Weapon : MonoBehaviour
         aStats.damageMin *= (1 + perk.GetWeaponDamageMul(ID));
         aStats.damageMax *= (1 + perk.GetWeaponDamageMul(ID));
 
-        aStats.critChance *= (1 + perk.GetWeaponCritMul(ID));
-        aStats.critMultiplier *= (1 + perk.GetWeaponCritMulMul(ID));
+        // aStats.critChance *= (1 + perk.GetWeaponCritMul(ID));
+        // aStats.critMultiplier *= (1 + perk.GetWeaponCritMulMul(ID));
 
         aStats.aoeRadius *= (1 + perk.GetWeaponAOEMul(ID));
 

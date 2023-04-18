@@ -33,8 +33,8 @@ public class LevelProgressionStats
     public float energyRegenGain = 0;
     public float speedMulGain = 0;
     public float dmgMulGain = 0.1f;
-    public float critChanceMulGain = 0;
-    public float critMultiplierMulGain = 0;
+    // public float critChanceMulGain = 0;
+    // public float critMultiplierMulGain = 0;
 
     public int perkCurrencyGain = 1;
     //end per level gain
@@ -98,8 +98,8 @@ public class LevelProgressionStats
         newStats.energyRegenGain = energyRegenGain;
         newStats.speedMulGain = speedMulGain;
         newStats.dmgMulGain = dmgMulGain;
-        newStats.critChanceMulGain = critChanceMulGain;
-        newStats.critMultiplierMulGain = critMultiplierMulGain;
+        // newStats.critChanceMulGain = critChanceMulGain;
+        // newStats.critMultiplierMulGain = critMultiplierMulGain;
 
         newStats.perkCurrencyGain = perkCurrencyGain;
 

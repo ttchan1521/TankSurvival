@@ -661,8 +661,8 @@ public class UnitPlayer : Unit
         aStats.damageMin *= dmgMul;
         aStats.damageMax *= dmgMul;
 
-        aStats.critChance *= GetCritChanceMultiplier();
-        aStats.critMultiplier *= GetCritMulMultiplier();
+        // aStats.critChance *= GetCritChanceMultiplier();
+        // aStats.critMultiplier *= GetCritMulMultiplier();
 
         return aStats;
     }
@@ -856,8 +856,8 @@ public class UnitPlayer : Unit
     public override float GetEnergyRegen() { return energyRate + GetLevelEnergyRegen() + GetPerkEnergyRegen(); }
 
     public float GetDamageMultiplier() { return 1 + GetLevelDamageMul() + GetPerkDamageMul(); }
-    public float GetCritChanceMultiplier() { return 1 + GetLevelCritMul() + GetPerkCritMul(); }
-    public float GetCritMulMultiplier() { return 1 + GetLevelCritMulMul() + GetPerkCritMulMul(); }
+    // public float GetCritChanceMultiplier() { return 1 + GetLevelCritMul() + GetPerkCritMul(); }
+    // public float GetCritMulMultiplier() { return 1 + GetLevelCritMulMul() + GetPerkCritMulMul(); }
     public override float GetSpeedMultiplier() { return 1 + GetLevelSpeedMul() + GetPerkSpeedMul(); }
 
 
@@ -872,8 +872,8 @@ public class UnitPlayer : Unit
     public float GetLevelEnergyRegen() { return progress != null ? progress.GetEnergyRegenGain() : 0; }
 
     public float GetLevelDamageMul() { return progress != null ? progress.GetDamageMulGain() : 0; }
-    public float GetLevelCritMul() { return progress != null ? progress.GetCritChanceMulGain() : 0; }
-    public float GetLevelCritMulMul() { return progress != null ? progress.GetCritMultiplierMulGain() : 0; }
+    // public float GetLevelCritMul() { return progress != null ? progress.GetCritChanceMulGain() : 0; }
+    // public float GetLevelCritMulMul() { return progress != null ? progress.GetCritMultiplierMulGain() : 0; }
     public float GetLevelSpeedMul() { return progress != null ? progress.GetSpeedMulGain() : 0; }
 
 

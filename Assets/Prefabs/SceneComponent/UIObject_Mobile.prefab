@@ -6463,7 +6463,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11464542}
   m_HandleRect: {fileID: 22452780}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9879,10 +9879,6 @@ MonoBehaviour:
 
     1/sec
 
-
-    x1.5
-
-    20%
 
     x1.5
 
@@ -17064,8 +17060,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11472674}
   m_HandleRect: {fileID: 22438838}
   m_Direction: 2
-  m_Value: 1.0000035
-  m_Size: 0.8571424
+  m_Value: 1.0000012
+  m_Size: 0.8571427
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -27833,12 +27829,8 @@ MonoBehaviour:
 
     Damage Multiplier:
 
-    Critical
-    Chance:
-
-    Critical Bonus:
-
-    Speed Multiplier:'
+    Speed
+    Multiplier:'
 --- !u!1 &165642
 GameObject:
   m_ObjectHideFlags: 0
@@ -37888,6 +37880,8 @@ MonoBehaviour:
   sliderHPBar: {fileID: 11492640}
   sliderEnergyBar: {fileID: 11436124}
   sliderExpBar: {fileID: 11488894}
+  opponentHPBar: {fileID: 0}
+  lbOpponentHP: {fileID: 0}
   uiButtonWeapon:
     rootObj: {fileID: 133670}
     rectT: {fileID: 0}

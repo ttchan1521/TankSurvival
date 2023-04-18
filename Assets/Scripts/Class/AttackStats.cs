@@ -15,8 +15,8 @@ public class AttackStats
     //public bool dimishingAOE=true;
     public bool diminishingAOE = true;
 
-    public float critChance = 0;
-    public float critMultiplier = 2;
+    // public float critChance = 0;
+    // public float critMultiplier = 2;
 
     [Header("Physics")]
     public float impactForce = 0;
@@ -47,17 +47,17 @@ public class AttackStats
         int sign = disparity > 0 ? 1 : -1;
 
         float baseDmgModifier = 0.05f;
-        float baseCritModifier = 0.1f;
+        //float baseCritModifier = 0.1f;
 
         float multiplierDmg = 1f;
-        float multiplierCrit = 1f;
+        //float multiplierCrit = 1f;
 
         for (int i = 0; i < Mathf.Abs(disparity); i++) multiplierDmg *= 1 + (sign * baseDmgModifier);
-        for (int i = 0; i < Mathf.Abs(disparity); i++) multiplierCrit *= 1 + (sign * baseCritModifier);
+        //for (int i = 0; i < Mathf.Abs(disparity); i++) multiplierCrit *= 1 + (sign * baseCritModifier);
 
         damageMin *= multiplierDmg;
         damageMax *= multiplierDmg;
-        critChance *= multiplierCrit;
+        //critChance *= multiplierCrit;
     }
 
 
@@ -72,8 +72,8 @@ public class AttackStats
         //stats.dimishingAOE=dimishingAOE;
         stats.diminishingAOE = diminishingAOE;
 
-        stats.critChance = critChance;
-        stats.critMultiplier = critMultiplier;
+        // stats.critChance = critChance;
+        // stats.critMultiplier = critMultiplier;
 
         stats.impactForce = impactForce;
         stats.explosionRadius = explosionRadius;

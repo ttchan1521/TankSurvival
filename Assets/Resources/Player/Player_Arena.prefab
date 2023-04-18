@@ -433,11 +433,11 @@ MonoBehaviour:
   hitPointFull: 50
   hitPoint: 0
   startHitPointAtFull: 1
-  hpRegenRate: 0
+  hpRegenRate: 0.05
   hpRegenStagger: 5
   energyFull: 10
   energy: 0
-  energyRate: 0.5
+  energyRate: 0.1
   startEnergyAtFull: 1
   armorType: 0
   anchorDown: 0
@@ -461,8 +461,6 @@ MonoBehaviour:
     damageMax: 4
     aoeRadius: 0
     diminishingAOE: 1
-    critChance: 0.15
-    critMultiplier: 2
     impactForce: 2
     explosionRadius: 2.5
     explosionForce: 5
@@ -477,8 +475,6 @@ MonoBehaviour:
     damageMax: 4
     aoeRadius: 0
     diminishingAOE: 1
-    critChance: 0.15
-    critMultiplier: 2
     impactForce: 2
     explosionRadius: 2.5
     explosionForce: 5
@@ -517,23 +513,10 @@ MonoBehaviour:
     stun: 0
     invincible: 0
     damageMul: 1
-    critChanceMul: 1
-    critMultiplierMul: 1
     expired: 0
   weaponMountPoint: {fileID: 474164}
-  enableAllWeapons: 0
-  weaponList:
-  - {fileID: 11456444, guid: fd09f1a85fedd2d4aa40fff4d2e91afd, type: 3}
-  - {fileID: 11456444, guid: a85dbdccbeb36534dbb3994655a793ae, type: 3}
-  - {fileID: 11456444, guid: 65fb4da8a72f83d4ca978cbce2f8fe62, type: 3}
-  - {fileID: 11459320, guid: ea78b65e7d62f284e80f8d825d4acd38, type: 3}
-  - {fileID: 11456444, guid: 41c22df3e93bf144bb8937bab3502ba6, type: 3}
-  - {fileID: 11456444, guid: 65fc4684c1d58fb43b140b08624d5fea, type: 3}
-  weaponID: 0
+  weapon: {fileID: 0}
   weaponInitiated: 0
-  enableAbility: 1
-  enableAllAbilities: 0
-  abilityIDList: 0000000002000000040000000500000006000000
   enableTurretRotate: 1
   turretAimMode: 0
   castMask:
@@ -570,8 +553,6 @@ MonoBehaviour:
     stun: 0
     invincible: 0
     damageMul: 1
-    critChanceMul: 1
-    critMultiplierMul: 1
     expired: 0
   playerID: 0
   loadProgress: 0
@@ -692,8 +673,6 @@ MonoBehaviour:
     energyRegenGain: 0.025
     speedMulGain: 0
     dmgMulGain: 0.1
-    critChanceMulGain: 0
-    critMultiplierMulGain: 0
     perkCurrencyGain: 1
     sumRecursively: 1
     expTHM: 3

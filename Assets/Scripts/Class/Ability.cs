@@ -239,8 +239,8 @@ public class Ability : Item
         aStats.damageMin *= (1 + perk.GetAbilityDamageMul(ID));
         aStats.damageMax *= (1 + perk.GetAbilityDamageMul(ID));
 
-        aStats.critChance *= (1 + perk.GetAbilityCritMul(ID));
-        aStats.critMultiplier *= (1 + perk.GetAbilityCritMulMul(ID));
+        // aStats.critChance *= (1 + perk.GetAbilityCritMul(ID));
+        // aStats.critMultiplier *= (1 + perk.GetAbilityCritMulMul(ID));
 
         aStats.aoeRadius *= (1 + perk.GetAbilityAOEMul(ID));
 
