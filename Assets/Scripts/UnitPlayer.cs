@@ -837,7 +837,7 @@ public class UnitPlayer : Unit
 
     public int GetLevel() { return progress != null ? progress.GetLevel() : level; }
     public int GetPerkCurrency() { return perk != null ? perk.GetPerkCurrency() : 0; }
-    public int GetPerkPoint() { return perk != null ? perk.GetPerkPoint() : 0; }
+    //public int GetPerkPoint() { return perk != null ? perk.GetPerkPoint() : 0; }
     public List<Perk> GetPerkList() { return perk != null ? perk.GetPerkList() : new List<Perk>(); }
 
     private float hitPointBase = 0;
@@ -886,8 +886,8 @@ public class UnitPlayer : Unit
     public float GetPerkSpeedMul() { return perk != null ? perk.GetMoveSpeedMul() : 0; }
 
     public float GetPerkDamageMul() { return perk != null ? perk.GetDamageMul() : 0; }
-    public float GetPerkCritMul() { return perk != null ? perk.GetCritMul() : 0; }
-    public float GetPerkCritMulMul() { return perk != null ? perk.GetCirtMulMul() : 0; }
+    // public float GetPerkCritMul() { return perk != null ? perk.GetCritMul() : 0; }
+    // public float GetPerkCritMulMul() { return perk != null ? perk.GetCirtMulMul() : 0; }
 
 
     //for perk that modify the weapon attack effect
@@ -915,19 +915,19 @@ public class UnitPlayer : Unit
     // }
 
     //for perk that modify the ability attack effect
-    public void ChangeAllAbilityEffect(int effectID)
-    {
-        int effectIndex = Effect_DB.GetEffectIndex(effectID);
-        Ability ab = AbilityManager.GetAbility();
-        ab.ChangeEffect(effectID, effectIndex);
-    }
-    public void ChangeAbilityEffect(int abilityID, int effectID)
-    {
-        int effectIndex = Effect_DB.GetEffectIndex(effectID);
-        Ability ab = AbilityManager.GetAbility();
-        if (ab.ID == abilityID) ab.ChangeEffect(effectID, effectIndex);
+    // public void ChangeAllAbilityEffect(int effectID)
+    // {
+    //     int effectIndex = Effect_DB.GetEffectIndex(effectID);
+    //     Ability ab = AbilityManager.GetAbility();
+    //     ab.ChangeEffect(effectID, effectIndex);
+    // }
+    // public void ChangeAbilityEffect(int abilityID, int effectID)
+    // {
+    //     int effectIndex = Effect_DB.GetEffectIndex(effectID);
+    //     Ability ab = AbilityManager.GetAbility();
+    //     if (ab.ID == abilityID) ab.ChangeEffect(effectID, effectIndex);
 
-    }
+    // }
 
 
 
@@ -972,13 +972,13 @@ public class UnitPlayer : Unit
 
     public override float GainHitPoint(float value)
     {
-        float multiplier = 1 + (perk != null ? perk.GetHitPointGainMul() : 0);
-        return base.GainHitPoint(value * multiplier);
+        // float multiplier = 1 + (perk != null ? perk.GetHitPointGainMul() : 0);
+        return base.GainHitPoint(value);
     }
     public override float GainEnergy(float value)
     {
-        float multiplier = 1 + (perk != null ? perk.GetEnergyGainMul() : 0);
-        return base.GainEnergy(value * multiplier);
+        //float multiplier = 1 + (perk != null ? perk.GetEnergyGainMul() : 0);
+        return base.GainEnergy(value);
     }
 
 

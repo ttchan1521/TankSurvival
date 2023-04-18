@@ -29,7 +29,7 @@ public class Collectible : PooledObject
     public float hitPoint = 0;
     public float energy = 0;
 
-    public int credit = 0;
+    //public int credit = 0;
     public int score = 0;
 
     public int ammo = 0;        //-1 to fully refilled
@@ -254,13 +254,13 @@ public class Collectible : PooledObject
         }
 
         //not in used
-        if (credit > 0)
-        {
-            GameControl.GainCredits(credit);
+        // if (credit > 0)
+        // {
+        //     GameControl.GainCredits(credit);
 
-            Vector3 offsetPos = new Vector3(0, Random.value + 0.5f, 0);
-            new TextOverlay(transform.position + offsetPos, "+$" + credit.ToString("f0"), new Color(.5f, .75f, 1, 1));
-        }
+        //     Vector3 offsetPos = new Vector3(0, Random.value + 0.5f, 0);
+        //     new TextOverlay(transform.position + offsetPos, "+$" + credit.ToString("f0"), new Color(.5f, .75f, 1, 1));
+        // }
 
         //gain score
         if (score > 0)

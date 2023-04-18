@@ -227,22 +227,22 @@ public class Ability : Item
     public void SetPlayerPerk(PlayerPerk pPerk) { perk = pPerk; }
 
 
-    public float GetCost() { return cost * (1 + (perk != null ? perk.GetAbilityCostMul(ID) : 0)); }
-    public float GetCooldown() { return cooldown * (1 + (perk != null ? perk.GetAbilityCooldownMul(ID) : 0)); }
-    public float GetRange() { return range * (1 + (perk != null ? perk.GetAbilityRangeMul(ID) : 0)); }
-    public float GetAOERadius() { return aStats.aoeRadius * (1 + (perk != null ? perk.GetAbilityAOEMul(ID) : 0)); }
+    public float GetCost() { return cost * (1 + (perk != null ? perk.GetAbilityCostMul() : 0)); }
+    public float GetCooldown() { return cooldown * (1 + (perk != null ? perk.GetAbilityCooldownMul() : 0)); }
+    public float GetRange() { return range * (1 + (perk != null ? perk.GetAbilityRangeMul() : 0)); }
+    public float GetAOERadius() { return aStats.aoeRadius * (1 + (perk != null ? perk.GetAbilityAOEMul() : 0)); }
 
     public AttackStats GetRuntimeAttackStats()
     {
         if (perk == null) return aStats.Clone();
 
-        aStats.damageMin *= (1 + perk.GetAbilityDamageMul(ID));
-        aStats.damageMax *= (1 + perk.GetAbilityDamageMul(ID));
+        aStats.damageMin *= (1 + perk.GetAbilityDamageMul());
+        aStats.damageMax *= (1 + perk.GetAbilityDamageMul());
 
         // aStats.critChance *= (1 + perk.GetAbilityCritMul(ID));
         // aStats.critMultiplier *= (1 + perk.GetAbilityCritMulMul(ID));
 
-        aStats.aoeRadius *= (1 + perk.GetAbilityAOEMul(ID));
+        aStats.aoeRadius *= (1 + perk.GetAbilityAOEMul());
 
         return aStats;
     }

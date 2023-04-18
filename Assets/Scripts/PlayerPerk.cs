@@ -13,8 +13,8 @@ public class PlayerPerk : MonoBehaviour
 
 
     public int perkCurrency = 0;
-    [HideInInspector] public int perkPoint = 0;
-    public int GetPerkPoint() { return perkPoint; }
+    // [HideInInspector] public int perkPoint = 0;
+    // public int GetPerkPoint() { return perkPoint; }
 
 
     //[HideInInspector]
@@ -220,7 +220,7 @@ public class PlayerPerk : MonoBehaviour
 
         if (perk.type == _PerkType.ModifyGeneralStats)
         {
-            perkCurrency += perk.perkCurrencyGain;
+            //perkCurrency += perk.perkCurrencyGain;
 
             hitPointCap += perk.hitPointCap;
             energyCap += perk.energyCap;
@@ -234,14 +234,14 @@ public class PlayerPerk : MonoBehaviour
             moveSpeedMul += perk.moveSpeedMul;
 
             damageMul += perk.dmgMul;
-            critMul += perk.critChanceMul;
-            critMulMul += perk.CritMultiplierMul;
+            // critMul += perk.critChanceMul;
+            // critMulMul += perk.CritMultiplierMul;
 
             expGainMul += perk.expGainMul;
-            creditGainMul += perk.creditGainMul;
+            //creditGainMul += perk.creditGainMul;
             scoreGainMul += perk.scoreGainMul;
-            hitPointGainMul += perk.hitPointGainMul;
-            energyGainMul += perk.energyGainMul;
+            // hitPointGainMul += perk.hitPointGainMul;
+            // energyGainMul += perk.energyGainMul;
         }
         // else if (perk.type == _PerkType.AddWeapon && perk.newWeaponID >= 0)
         // {
@@ -308,57 +308,57 @@ public class PlayerPerk : MonoBehaviour
         // }
         else if (perk.type == _PerkType.ModifyWeapon)
         {
-            if (perk.appliedToAllWeapon)
-            {
+            // if (perk.appliedToAllWeapon)
+            // {
                 weapStatG.ModifyWithPerk(perk);
                 // if (perk.weapEffectID >= 0) player.ChangeAllWeaponEffect(perk.weapEffectID);
                 // if (perk.weapAbilityID >= 0) player.ChangeAllWeaponAbility(perk.weapAbilityID);
-            }
-            else
-            {
-                for (int i = 0; i < perk.weaponIDList.Count; i++)
-                {
-                    WeaponStatMultiplier item = GetWeaponStatMul(perk.weaponIDList[i]);
+            // }
+            // else
+            // {
+            //     for (int i = 0; i < perk.weaponIDList.Count; i++)
+            //     {
+            //         WeaponStatMultiplier item = GetWeaponStatMul(perk.weaponIDList[i]);
 
-                    if (item == null)
-                    {
-                        item = new WeaponStatMultiplier();
-                        item.prefabID = perk.weaponIDList[i];
-                        weapStatList.Add(item);
-                    }
+            //         if (item == null)
+            //         {
+            //             item = new WeaponStatMultiplier();
+            //             item.prefabID = perk.weaponIDList[i];
+            //             weapStatList.Add(item);
+            //         }
 
-                    item.ModifyWithPerk(perk);
+            //         item.ModifyWithPerk(perk);
 
-                    // if (perk.weapEffectID >= 0) player.ChangeWeaponEffect(perk.weaponIDList[i], perk.weapEffectID);
-                    // if (perk.weapAbilityID >= 0) player.ChangeWeaponAbility(perk.weaponIDList[i], perk.weapAbilityID);
-                }
-            }
+            //         // if (perk.weapEffectID >= 0) player.ChangeWeaponEffect(perk.weaponIDList[i], perk.weapEffectID);
+            //         // if (perk.weapAbilityID >= 0) player.ChangeWeaponAbility(perk.weaponIDList[i], perk.weapAbilityID);
+            //     }
+            // }
         }
         else if (perk.type == _PerkType.ModifyAbility)
         {
-            if (perk.appliedToAllAbility)
-            {
+            // if (perk.appliedToAllAbility)
+            // {
                 abilityStatG.ModifyWithPerk(perk);
-                if (perk.weapEffectID >= 0) player.ChangeAllAbilityEffect(perk.weapEffectID);
-            }
-            else
-            {
-                for (int i = 0; i < perk.abilityIDList.Count; i++)
-                {
-                    AbilityStatMultiplier item = GetAbilityStatMul(perk.abilityIDList[i]);
+                //if (perk.weapEffectID >= 0) player.ChangeAllAbilityEffect(perk.weapEffectID);
+            // }
+            // else
+            // {
+            //     for (int i = 0; i < perk.abilityIDList.Count; i++)
+            //     {
+            //         AbilityStatMultiplier item = GetAbilityStatMul(perk.abilityIDList[i]);
 
-                    if (item == null)
-                    {
-                        item = new AbilityStatMultiplier();
-                        item.prefabID = perk.abilityIDList[i];
-                        abilityStatList.Add(item);
-                    }
+            //         if (item == null)
+            //         {
+            //             item = new AbilityStatMultiplier();
+            //             item.prefabID = perk.abilityIDList[i];
+            //             abilityStatList.Add(item);
+            //         }
 
-                    item.ModifyWithPerk(perk);
+            //         item.ModifyWithPerk(perk);
 
-                    if (perk.abEffectID >= 0) player.ChangeAbilityEffect(perk.abilityIDList[i], perk.abEffectID);
-                }
-            }
+            //         if (perk.abEffectID >= 0) player.ChangeAbilityEffect(perk.abilityIDList[i], perk.abEffectID);
+            //     }
+            // }
         }
         else if (perk.type == _PerkType.Custom)
         {
@@ -392,24 +392,24 @@ public class PlayerPerk : MonoBehaviour
 
 
     public float damageMul = 0;
-    public float critMul = 0;
-    public float critMulMul = 0;
+    // public float critMul = 0;
+    // public float critMulMul = 0;
     public float GetDamageMul() { return damageMul; }
-    public float GetCritMul() { return critMul; }
-    public float GetCirtMulMul() { return critMulMul; }
+    // public float GetCritMul() { return critMul; }
+    // public float GetCirtMulMul() { return critMulMul; }
 
 
     public float expGainMul = 0;        //experience
-    public float creditGainMul = 0;
+    //public float creditGainMul = 0;
     public float scoreGainMul = 0;
-    public float hitPointGainMul = 0;
-    public float energyGainMul = 0;
+    // public float hitPointGainMul = 0;
+    // public float energyGainMul = 0;
 
     public float GetExpGainMul() { return expGainMul; }
-    public float GetCreditGainMul() { return creditGainMul; }
+    //public float GetCreditGainMul() { return creditGainMul; }
     public float GetScoreGainMul() { return scoreGainMul; }
-    public float GetHitPointGainMul() { return hitPointGainMul; }
-    public float GetEnergyGainMul() { return energyGainMul; }
+    // public float GetHitPointGainMul() { return hitPointGainMul; }
+    // public float GetEnergyGainMul() { return energyGainMul; }
 
 
 
@@ -418,40 +418,40 @@ public class PlayerPerk : MonoBehaviour
 
     [Header("Weapons Multiplier")]
     public WeaponStatMultiplier weapStatG = new WeaponStatMultiplier();
-    public List<WeaponStatMultiplier> weapStatList = new List<WeaponStatMultiplier>();
+    //public List<WeaponStatMultiplier> weapStatList = new List<WeaponStatMultiplier>();
 
-    public float GetWeaponDamageMul(int ID) { return weapStatG.dmg + GetWeaponStatMul_Damage(ID); }
-    public float GetWeaponCritMul(int ID) { return weapStatG.crit + GetWeaponStatMul_Crit(ID); }
-    public float GetWeaponCritMulMul(int ID) { return weapStatG.critMul + GetWeaponStatMul_CritMul(ID); }
-    public float GetWeaponAOEMul(int ID) { return weapStatG.aoe + GetWeaponStatMul_AOE(ID); }
-    public float GetWeaponRangeMul(int ID) { return weapStatG.range + GetWeaponStatMul_Range(ID); }
-    public float GetWeaponCDMul(int ID) { return weapStatG.cooldown + GetWeaponStatMul_CD(ID); }
-    public float GetWeaponClipSizeMul(int ID) { return weapStatG.clipSize + GetWeaponStatMul_Clip(ID); }
-    public float GetWeaponAmmoCapMul(int ID) { return weapStatG.ammoCap + GetWeaponStatMul_AmmoCap(ID); }
-    public float GetWeaponReloadDurMul(int ID) { return weapStatG.reloadDuration + GetWeaponStatMul_ReloadDur(ID); }
-    public float GetWeaponRecoilMagMul(int ID) { return weapStatG.recoilMagnitude + GetWeaponStatMul_RecoilMag(ID); }
+    public float GetWeaponDamageMul() { return weapStatG.dmg; }
+    // public float GetWeaponCritMul(int ID) { return weapStatG.crit; }
+    // public float GetWeaponCritMulMul(int ID) { return weapStatG.critMul; }
+    public float GetWeaponAOEMul() { return weapStatG.aoe; }
+    public float GetWeaponRangeMul() { return weapStatG.range; }
+    public float GetWeaponCDMul() { return weapStatG.cooldown; }
+    public float GetWeaponClipSizeMul() { return weapStatG.clipSize; }
+    public float GetWeaponAmmoCapMul() { return weapStatG.ammoCap; }
+    public float GetWeaponReloadDurMul() { return weapStatG.reloadDuration; }
+    public float GetWeaponRecoilMagMul() { return weapStatG.recoilMagnitude; }
 
-    public float GetWeaponStatMul_Damage(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.dmg : 0; }
-    public float GetWeaponStatMul_Crit(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.crit : 0; }
-    public float GetWeaponStatMul_CritMul(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.critMul : 0; }
-    public float GetWeaponStatMul_AOE(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.aoe : 0; }
-    public float GetWeaponStatMul_Range(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.range : 0; }
-    public float GetWeaponStatMul_CD(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.cooldown : 0; }
-    public float GetWeaponStatMul_Clip(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.clipSize : 0; }
-    public float GetWeaponStatMul_AmmoCap(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.ammoCap : 0; }
-    public float GetWeaponStatMul_ReloadDur(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.reloadDuration : 0; }
-    public float GetWeaponStatMul_RecoilMag(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.recoilMagnitude : 0; }
+    // public float GetWeaponStatMul_Damage(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.dmg : 0; }
+    // public float GetWeaponStatMul_Crit(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.crit : 0; }
+    // public float GetWeaponStatMul_CritMul(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.critMul : 0; }
+    // public float GetWeaponStatMul_AOE(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.aoe : 0; }
+    // public float GetWeaponStatMul_Range(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.range : 0; }
+    // public float GetWeaponStatMul_CD(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.cooldown : 0; }
+    // public float GetWeaponStatMul_Clip(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.clipSize : 0; }
+    // public float GetWeaponStatMul_AmmoCap(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.ammoCap : 0; }
+    // public float GetWeaponStatMul_ReloadDur(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.reloadDuration : 0; }
+    // public float GetWeaponStatMul_RecoilMag(int ID) { return (GetWeaponStatMul(ID) != null) ? tempWItem.recoilMagnitude : 0; }
 
-    private WeaponStatMultiplier tempWItem;
-    public WeaponStatMultiplier GetWeaponStatMul(int ID)
-    {
-        tempWItem = null;
-        for (int i = 0; i < weapStatList.Count; i++)
-        {
-            if (weapStatList[i].prefabID == ID) { tempWItem = weapStatList[i]; break; }
-        }
-        return tempWItem;
-    }
+    // private WeaponStatMultiplier tempWItem;
+    // public WeaponStatMultiplier GetWeaponStatMul(int ID)
+    // {
+    //     tempWItem = null;
+    //     for (int i = 0; i < weapStatList.Count; i++)
+    //     {
+    //         if (weapStatList[i].prefabID == ID) { tempWItem = weapStatList[i]; break; }
+    //     }
+    //     return tempWItem;
+    // }
 
 
 
@@ -460,34 +460,34 @@ public class PlayerPerk : MonoBehaviour
 
     [Header("Abilities Multiplier")]
     public AbilityStatMultiplier abilityStatG = new AbilityStatMultiplier();
-    public List<AbilityStatMultiplier> abilityStatList = new List<AbilityStatMultiplier>();
+    // public List<AbilityStatMultiplier> abilityStatList = new List<AbilityStatMultiplier>();
 
-    public float GetAbilityCostMul(int ID) { return abilityStatG.abCost + GetAbilityStatMul_Cost(ID); }
-    public float GetAbilityCooldownMul(int ID) { return abilityStatG.abCooldown + GetAbilityStatMul_Cooldown(ID); }
-    public float GetAbilityRangeMul(int ID) { return abilityStatG.abRange + GetAbilityStatMul_Range(ID); }
-    public float GetAbilityDamageMul(int ID) { return abilityStatG.abDmg + GetAbilityStatMul_Damage(ID); }
-    public float GetAbilityCritMul(int ID) { return abilityStatG.abCrit + GetAbilityStatMul_Crit(ID); }
-    public float GetAbilityCritMulMul(int ID) { return abilityStatG.abCritMul + GetAbilityStatMul_CritMul(ID); }
-    public float GetAbilityAOEMul(int ID) { return abilityStatG.abAOE + GetAbilityStatMul_AOE(ID); }
+    public float GetAbilityCostMul() { return abilityStatG.abCost; }
+    public float GetAbilityCooldownMul() { return abilityStatG.abCooldown; }
+    public float GetAbilityRangeMul() { return abilityStatG.abRange; }
+    public float GetAbilityDamageMul() { return abilityStatG.abDmg; }
+    // public float GetAbilityCritMul(int ID) { return abilityStatG.abCrit; }
+    // public float GetAbilityCritMulMul(int ID) { return abilityStatG.abCritMul; }
+    public float GetAbilityAOEMul() { return abilityStatG.abAOE; }
 
-    public float GetAbilityStatMul_Cost(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abCost : 0; }
-    public float GetAbilityStatMul_Cooldown(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abCooldown : 0; }
-    public float GetAbilityStatMul_Range(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abRange : 0; }
-    public float GetAbilityStatMul_Damage(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abDmg : 0; }
-    public float GetAbilityStatMul_Crit(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abCrit : 0; }
-    public float GetAbilityStatMul_CritMul(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abCritMul : 0; }
-    public float GetAbilityStatMul_AOE(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abAOE : 0; }
+    // public float GetAbilityStatMul_Cost(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abCost : 0; }
+    // public float GetAbilityStatMul_Cooldown(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abCooldown : 0; }
+    // public float GetAbilityStatMul_Range(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abRange : 0; }
+    // public float GetAbilityStatMul_Damage(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abDmg : 0; }
+    // public float GetAbilityStatMul_Crit(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abCrit : 0; }
+    // public float GetAbilityStatMul_CritMul(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abCritMul : 0; }
+    // public float GetAbilityStatMul_AOE(int ID) { return (GetAbilityStatMul(ID) != null) ? tempABItem.abAOE : 0; }
 
-    private AbilityStatMultiplier tempABItem;
-    public AbilityStatMultiplier GetAbilityStatMul(int ID)
-    {
-        tempABItem = null;
-        for (int i = 0; i < abilityStatList.Count; i++)
-        {
-            if (abilityStatList[i].prefabID == ID) { tempABItem = abilityStatList[i]; break; }
-        }
-        return tempABItem;
-    }
+    // private AbilityStatMultiplier tempABItem;
+    // public AbilityStatMultiplier GetAbilityStatMul(int ID)
+    // {
+    //     tempABItem = null;
+    //     for (int i = 0; i < abilityStatList.Count; i++)
+    //     {
+    //         if (abilityStatList[i].prefabID == ID) { tempABItem = abilityStatList[i]; break; }
+    //     }
+    //     return tempABItem;
+    // }
 
 
 
@@ -497,8 +497,8 @@ public class PlayerPerk : MonoBehaviour
     {
         public int prefabID = 0;
         public float dmg = 0;
-        public float crit = 0;
-        public float critMul = 0;
+        // public float crit = 0;
+        // public float critMul = 0;
         public float aoe = 0;
         public float range = 0;
         public float cooldown = 0;
@@ -510,8 +510,8 @@ public class PlayerPerk : MonoBehaviour
         public void ModifyWithPerk(Perk perk)
         {
             dmg += perk.weapDmg;
-            crit += perk.weapCrit;
-            critMul += perk.weapCritMul;
+            // crit += perk.weapCrit;
+            // critMul += perk.weapCritMul;
             aoe += perk.weapAOE;
             range += perk.weapRange;
             cooldown += perk.weapCooldown;
@@ -530,8 +530,8 @@ public class PlayerPerk : MonoBehaviour
         public float abCooldown;
         public float abRange = 0;
         public float abDmg = 0;
-        public float abCrit = 0;
-        public float abCritMul = 0;
+        // public float abCrit = 0;
+        // public float abCritMul = 0;
         public float abAOE = 0;
 
 
@@ -541,8 +541,8 @@ public class PlayerPerk : MonoBehaviour
             abCooldown += perk.abCooldown;
             abRange += perk.abRange;
             abDmg += perk.abDmg;
-            abCrit += perk.abCrit;
-            abCritMul += perk.abCritMul;
+            // abCrit += perk.abCrit;
+            // abCritMul += perk.abCritMul;
             abAOE += perk.abAOE;
         }
     }

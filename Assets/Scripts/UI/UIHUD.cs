@@ -42,7 +42,7 @@ namespace UI
 
 
 
-        private int credit = 0;
+        //private int credit = 0;
         private int score = 0;
         private float minUpdateSpeed = 0.05f;
         private float updateSpeed = 0f;
@@ -64,7 +64,7 @@ namespace UI
             if (!GameControl.EnableAltFire()) uiButtonAltFire.rootObj.SetActive(false);
             if (!GameControl.EnableAbility()) abilityButtonObj.SetActive(false);
 
-            credit = GameControl.GetCredits();
+            //credit = GameControl.GetCredits();
             score = GameControl.GetScore();
 
             UnitPlayer player = GameControl.GetPlayer();
@@ -170,12 +170,12 @@ namespace UI
             }
 
 
-            int creditTgt = GameControl.GetCredits();
-            if (credit != creditTgt)
-            {
-                updateSpeed = Mathf.Max(minUpdateSpeed, Mathf.Abs(1f / (float)(creditTgt - credit)));
-                credit = (int)Mathf.Round(Mathf.Lerp(credit, creditTgt, updateSpeed));
-            }
+            // int creditTgt = GameControl.GetCredits();
+            // if (credit != creditTgt)
+            // {
+            //     updateSpeed = Mathf.Max(minUpdateSpeed, Mathf.Abs(1f / (float)(creditTgt - credit)));
+            //     credit = (int)Mathf.Round(Mathf.Lerp(credit, creditTgt, updateSpeed));
+            // }
 
             int scoreTgt = GameControl.GetScore();
             if (score != scoreTgt)

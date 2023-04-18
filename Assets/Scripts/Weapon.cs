@@ -239,24 +239,24 @@ public class Weapon : MonoBehaviour
     private PlayerPerk perk;
     public void SetPlayerPerk(PlayerPerk pPerk) { perk = pPerk; }
 
-    public float GetRange() { return range * (1 + (perk != null ? perk.GetWeaponRangeMul(ID) : 0)); }
-    public float GetCoolDown() { return cooldown * (1 + (perk != null ? perk.GetWeaponCDMul(ID) : 0)); }
-    public int GetClipSize() { return (int)(clipSize * (1 + (perk != null ? perk.GetWeaponClipSizeMul(ID) : 0))); }
-    public int GetAmmoCap() { return (int)(ammoCap * (1 + (perk != null ? perk.GetWeaponAmmoCapMul(ID) : 0))); }
-    public float GetReloadDuration() { return reloadDuration * (1 + (perk != null ? perk.GetWeaponReloadDurMul(ID) : 0)); }
-    public float GetRecoilMagnitude() { return recoilMagnitude * (1 + (perk != null ? perk.GetWeaponRecoilMagMul(ID) : 0)); }
+    public float GetRange() { return range * (1 + (perk != null ? perk.GetWeaponRangeMul() : 0)); }
+    public float GetCoolDown() { return cooldown * (1 + (perk != null ? perk.GetWeaponCDMul() : 0)); }
+    public int GetClipSize() { return (int)(clipSize * (1 + (perk != null ? perk.GetWeaponClipSizeMul() : 0))); }
+    public int GetAmmoCap() { return (int)(ammoCap * (1 + (perk != null ? perk.GetWeaponAmmoCapMul() : 0))); }
+    public float GetReloadDuration() { return reloadDuration * (1 + (perk != null ? perk.GetWeaponReloadDurMul() : 0)); }
+    public float GetRecoilMagnitude() { return recoilMagnitude * (1 + (perk != null ? perk.GetWeaponRecoilMagMul() : 0)); }
 
     public AttackStats ModifyAttackStatsToPerk(AttackStats aStats)
     {   //
         if (perk == null) return aStats;
 
-        aStats.damageMin *= (1 + perk.GetWeaponDamageMul(ID));
-        aStats.damageMax *= (1 + perk.GetWeaponDamageMul(ID));
+        aStats.damageMin *= (1 + perk.GetWeaponDamageMul());
+        aStats.damageMax *= (1 + perk.GetWeaponDamageMul());
 
         // aStats.critChance *= (1 + perk.GetWeaponCritMul(ID));
         // aStats.critMultiplier *= (1 + perk.GetWeaponCritMulMul(ID));
 
-        aStats.aoeRadius *= (1 + perk.GetWeaponAOEMul(ID));
+        aStats.aoeRadius *= (1 + perk.GetWeaponAOEMul());
 
         return aStats;
     }

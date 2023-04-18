@@ -33,10 +33,10 @@ public class Perk : Item
     public int purchased = 0;   //0 is not purchased, 1 is purchased, >1 is for repeatable perk specify how many time they have been purchased
     public bool Purchased() { return purchased > 0; }
 
-    public float energyCost = 0;
+    //public float energyCost = 0;
     public int cost = 1;
     public int minLevel = 1;                                //min level to reach before becoming available (check GameControl.levelID)
-    public int minPerkPoint = 0;                        //min perk point 
+    //public int minPerkPoint = 0;                        //min perk point 
     public List<int> prereq = new List<int>();  //prerequisite perk before becoming available, element is removed as the perk is unlocked in runtime
 
     public UnitPlayer player;
@@ -50,9 +50,9 @@ public class Perk : Item
         if (purchased > 0 && !repeatable) return "Purchased";
         if (repeatable && limit > 0 && purchased >= limit) return "Limit reached";
         if (player.GetLevel() < minLevel) return "Require level - " + minLevel;
-        if (player.energy < energyCost) return "Insufficient energy";
+        //if (player.energy < energyCost) return "Insufficient energy";
         if (player.GetPerkCurrency() < cost) return "Insufficient currency. Require " + cost;
-        if (player.GetPerkPoint() < minPerkPoint) return "Insufficient perk point. Require " + minPerkPoint;
+        //if (player.GetPerkPoint() < minPerkPoint) return "Insufficient perk point. Require " + minPerkPoint;
         if (prereq.Count > 0)
         {
             string text = "Require: ";
@@ -82,11 +82,11 @@ public class Perk : Item
 
         if (repeatable && limit > 0 && purchased >= limit) return "Limit reached";
 
-        if (energyCost > 0 && player != null)
-        {
-            if (player.energy < energyCost) return "Insufficient energy";
-            player.energy -= energyCost;
-        }
+        // if (energyCost > 0 && player != null)
+        // {
+        //     if (player.energy < energyCost) return "Insufficient energy";
+        //     player.energy -= energyCost;
+        // }
 
         if (usePerkCurrency && playerPerk != null)
         {
@@ -102,7 +102,7 @@ public class Perk : Item
 
 
     //perk point gain
-    public int perkCurrencyGain = 0;
+    //public int perkCurrencyGain = 0;
 
     //ModifyHitPoint,
     public float hitPoint = 0;
@@ -119,28 +119,28 @@ public class Perk : Item
 
     //ModifyAttack
     public float dmgMul = 0;
-    public float critChanceMul = 0;
-    public float CritMultiplierMul = 0;
+    // public float critChanceMul = 0;
+    // public float CritMultiplierMul = 0;
 
     //ModifyGain
     public float expGainMul = 0;        //experience
-    public float creditGainMul = 0;
+    //public float creditGainMul = 0;
     public float scoreGainMul = 0;
-    public float hitPointGainMul = 0;
-    public float energyGainMul = 0;
+    // public float hitPointGainMul = 0;
+    // public float energyGainMul = 0;
 
     //AddWeapon,
-    public int newWeaponID = -1;
-    public bool replaceExisting = false;
-    public int replaceWeaponID = -1;
+    // public int newWeaponID = -1;
+    // public bool replaceExisting = false;
+    // public int replaceWeaponID = -1;
 
     //ModifyWeapon	all these are multiplier
-    public bool appliedToAllWeapon = false;
-    public List<int> weaponIDList = new List<int>();
+    // public bool appliedToAllWeapon = false;
+    // public List<int> weaponIDList = new List<int>();
 
     public float weapDmg = 0;
-    public float weapCrit = 0;
-    public float weapCritMul = 0;
+    // public float weapCrit = 0;
+    // public float weapCritMul = 0;
     public float weapAOE = 0;
     public float weapRange = 0;
     public float weapCooldown = 0;
@@ -149,28 +149,28 @@ public class Perk : Item
     public float weapReloadDuration = 0;
     public float weapRecoilMagnitude = 0;
 
-    public int weapEffectID = -1;
-    public int weapAbilityID = -1;
+    // public int weapEffectID = -1;
+    // public int weapAbilityID = -1;
 
 
     //AddAbility, 
-    public int newAbilityID = -1;
-    public int replaceAbilityID = -1;
+    // public int newAbilityID = -1;
+    // public int replaceAbilityID = -1;
 
     //ModifyAbility,
-    public bool appliedToAllAbility = true;
-    public List<int> abilityIDList = new List<int>();
+    // public bool appliedToAllAbility = true;
+    // public List<int> abilityIDList = new List<int>();
 
     public float abCost;
     public float abCooldown;
     public float abRange = 0;
 
     public float abDmg = 0;
-    public float abCrit = 0;
-    public float abCritMul = 0;
+    // public float abCrit = 0;
+    // public float abCritMul = 0;
     public float abAOE = 0;
 
-    public int abEffectID = -1;
+    //public int abEffectID = -1;
 
 
     //Custom
@@ -193,14 +193,14 @@ public class Perk : Item
 
         perk.purchased = purchased;
 
-        perk.energyCost = energyCost;
+        //perk.energyCost = energyCost;
         perk.cost = cost;
         perk.minLevel = minLevel;
-        perk.minPerkPoint = minPerkPoint;
+        //perk.minPerkPoint = minPerkPoint;
         perk.prereq = new List<int>(prereq);
 
 
-        perk.perkCurrencyGain = perkCurrencyGain;
+        //perk.perkCurrencyGain = perkCurrencyGain;
 
         //generic multiplier
         perk.hitPoint = hitPoint;
@@ -214,32 +214,32 @@ public class Perk : Item
         perk.moveSpeedMul = moveSpeedMul;
 
         perk.dmgMul = dmgMul;
-        perk.critChanceMul = critChanceMul;
-        perk.CritMultiplierMul = CritMultiplierMul;
+        // perk.critChanceMul = critChanceMul;
+        // perk.CritMultiplierMul = CritMultiplierMul;
 
         perk.expGainMul = expGainMul;
-        perk.creditGainMul = creditGainMul;
+        //perk.creditGainMul = creditGainMul;
         perk.scoreGainMul = scoreGainMul;
-        perk.hitPointGainMul = hitPointGainMul;
-        perk.energyGainMul = energyGainMul;
+        // perk.hitPointGainMul = hitPointGainMul;
+        // perk.energyGainMul = energyGainMul;
 
         //add new weapon
-        perk.newWeaponID = newWeaponID;
-        perk.replaceExisting = replaceExisting;
-        perk.replaceWeaponID = replaceWeaponID;
+        // perk.newWeaponID = newWeaponID;
+        // perk.replaceExisting = replaceExisting;
+        // perk.replaceWeaponID = replaceWeaponID;
 
         //add new ability
-        perk.newAbilityID = newAbilityID;
-        perk.replaceAbilityID = replaceAbilityID;
+        // perk.newAbilityID = newAbilityID;
+        // perk.replaceAbilityID = replaceAbilityID;
 
 
         //modify weapon
-        perk.appliedToAllWeapon = appliedToAllWeapon;
-        perk.weaponIDList = new List<int>(weaponIDList);
+        // perk.appliedToAllWeapon = appliedToAllWeapon;
+        // perk.weaponIDList = new List<int>(weaponIDList);
 
         perk.weapDmg = weapDmg;
-        perk.weapCrit = weapCrit;
-        perk.weapCritMul = weapCritMul;
+        // perk.weapCrit = weapCrit;
+        // perk.weapCritMul = weapCritMul;
         perk.weapAOE = weapAOE;
         perk.weapRange = weapRange;
         perk.weapCooldown = weapCooldown;
@@ -247,23 +247,23 @@ public class Perk : Item
         perk.weapAmmoCap = weapAmmoCap;
         perk.weapReloadDuration = weapReloadDuration;
         perk.weapRecoilMagnitude = weapRecoilMagnitude;
-        perk.weapEffectID = weapEffectID;
-        perk.weapAbilityID = weapAbilityID;
+        // perk.weapEffectID = weapEffectID;
+        // perk.weapAbilityID = weapAbilityID;
 
 
         //modify ability
-        perk.appliedToAllAbility = appliedToAllAbility;
-        perk.abilityIDList = new List<int>(abilityIDList);
+        // perk.appliedToAllAbility = appliedToAllAbility;
+        // perk.abilityIDList = new List<int>(abilityIDList);
 
         perk.abCost = abCost;
         perk.abCooldown = abCooldown;
         perk.abRange = abRange;
 
         perk.abDmg = abDmg;
-        perk.abCrit = abCrit;
-        perk.abCritMul = abCritMul;
+        // perk.abCrit = abCrit;
+        // perk.abCritMul = abCritMul;
         perk.abAOE = abAOE;
-        perk.abEffectID = abEffectID;
+        //perk.abEffectID = abEffectID;
 
 
         //custom

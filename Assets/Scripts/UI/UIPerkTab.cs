@@ -177,7 +177,7 @@ namespace UI
 
             if (playerPerk == null) return;
 
-            if (lbPerkPoint != null) lbPerkPoint.text = playerPerk.GetPerkPoint().ToString();
+            //if (lbPerkPoint != null) lbPerkPoint.text = playerPerk.GetPerkPoint().ToString();
             if (lbPerkRsc != null) lbPerkRsc.text = "Currency: " + playerPerk.GetPerkCurrency().ToString();
 
             for (int i = 0; i < perkItemList.Count; i++)

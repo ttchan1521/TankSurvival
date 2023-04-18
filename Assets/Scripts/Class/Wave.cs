@@ -23,7 +23,7 @@ public class Wave
     [HideInInspector] public int waveID = -1;
     public List<SubWave> subWaveList = new List<SubWave>();
 
-    public int creditGain = 0;
+    //public int creditGain = 0;
     public int scoreGain = 0;
 
     public TDSArea spawnArea;
@@ -45,7 +45,7 @@ public class Wave
     public void Completed()
     {
         cleared = true;
-        GameControl.GainCredits(creditGain);
+        //GameControl.GainCredits(creditGain);
         GameControl.GainScore(scoreGain);
     }
 }

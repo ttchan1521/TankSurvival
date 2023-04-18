@@ -59,8 +59,8 @@ public class UnitSpawner : MonoBehaviour
     public int unitCountInc = 4;
     private Wave waveE = null;  //the current wave used in endless mode
 
-    public int startingCredit = 10;
-    public int creditIncrement = 10;
+    // public int startingCredit = 10;
+    // public int creditIncrement = 10;
 
     public int startingScore = 10;
     public int scoreIncrement = 10;
@@ -482,7 +482,7 @@ public class UnitSpawner : MonoBehaviour
         wave.waveID = waveIDX;
         wave.spawnArea = spawnAreaList[Random.Range(0, spawnAreaList.Count)];
 
-        wave.creditGain = startingCredit + creditIncrement * waveIDX;
+        //wave.creditGain = startingCredit + creditIncrement * waveIDX;
         wave.scoreGain = startingScore + scoreIncrement * waveIDX;
 
         int subWaveCount = Random.Range(1, waveIDX);

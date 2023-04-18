@@ -41,10 +41,10 @@ public class GameControl : MonoBehaviour
     public static float GetRemainingDuration() { return instance != null ? instance.remainingDuration : 0; }    //get remaining time
 
     //credit is not in used atm
-    [HideInInspector] public int credits = 0;
-    public static int GetCredits() { return instance.credits; }
-    public static void GainCredits(int value) { instance.credits += value; }
-    public static void SpendCredits(int value) { instance.credits = Mathf.Max(0, instance.credits - value); }
+    // [HideInInspector] public int credits = 0;
+    // public static int GetCredits() { return instance.credits; }
+    // public static void GainCredits(int value) { instance.credits += value; }
+    // public static void SpendCredits(int value) { instance.credits = Mathf.Max(0, instance.credits - value); }
 
     [HideInInspector] public int score = 0;
     public static int GetScore() { return instance.score; }
