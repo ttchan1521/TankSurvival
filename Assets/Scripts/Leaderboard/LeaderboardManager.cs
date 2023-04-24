@@ -132,7 +132,7 @@ namespace Leaderboard
         private void FillContent(int index, User user)
         {
             var item = GetItem(index);
-            item.UpdateView(user.rank.ToString(), user.username, user.score.ToString());
+            item.UpdateView((index + 1).ToString(), user.username, user.score.ToString());
         }
 
         private LeaderboardItem GetItem(int index)

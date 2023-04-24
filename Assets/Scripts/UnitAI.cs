@@ -119,6 +119,11 @@ public class UnitAI : Unit
 
         //get player as target
         target = GameControl.GetPlayer();
+
+        if (GameControl.GetInstance().pvp)
+        {
+            target = PvPManager.instance.GetPlayerNearest(thisT.position);
+        }
         if (target != null && !target.thisObj.activeInHierarchy) target = null;
 
         //reduce the attack cooldown

@@ -109,6 +109,7 @@ public class PvPManager : MonoBehaviour
         }
         _otherPlayer.Init(playerData.weaponId);
         otherPlayers.Add(playerData.username, _otherPlayer);
+        uihud.UpdateOpponentName(playerData.username);
     }
 
     private void OnOtherPlayerMove(Player playerData)
@@ -245,6 +246,22 @@ public class PvPManager : MonoBehaviour
     public string GetIdOtherPlayer(UnitPlayer player)
     {
         return otherPlayers.FirstOrDefault(x => x.Value == player).Key;
+    }
+
+    public Unit GetPlayerNearest(Vector3 position)
+    {
+        Unit u = GameControl.GetPlayer();
+        float currentDistance = Vector3.Distance(position, u.transform.position);
+        foreach(var kvp in otherPlayers)
+        {
+            var newDistance = Vector3.Distance(position, kvp.Value.transform.position);
+            if (newDistance < currentDistance)
+            {
+                currentDistance = newDistance;
+                u = kvp.Value;
+            }
+        }
+        return u;
     }
 
     void OnDrawGizmos()

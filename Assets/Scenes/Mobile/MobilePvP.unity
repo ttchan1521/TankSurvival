@@ -1169,6 +1169,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 131624, guid: 1dc4475e3d7f6fa4fbcf9495b4df2321, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 138420, guid: 1dc4475e3d7f6fa4fbcf9495b4df2321, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1237,6 +1241,10 @@ PrefabInstance:
       propertyPath: opponentHPBar
       value: 
       objectReference: {fileID: 1601167336}
+    - target: {fileID: 11445796, guid: 1dc4475e3d7f6fa4fbcf9495b4df2321, type: 3}
+      propertyPath: opponentUsername
+      value: 
+      objectReference: {fileID: 678818240}
     - target: {fileID: 11470688, guid: 1dc4475e3d7f6fa4fbcf9495b4df2321, type: 3}
       propertyPath: m_Padding.m_Top
       value: 75
@@ -2520,7 +2528,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -2531,8 +2538,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 0.5
@@ -4349,12 +4354,12 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
-    m_FontSize: 23
-    m_FontStyle: 2
+    m_FontSize: 20
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -4445,7 +4450,7 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11444902, guid: 5ed0dc026583269468be2b3f12f4778d, type: 3}
+  - item: {fileID: 11444902, guid: f4facc18b46516b449deae6dc7e69081, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
@@ -5975,7 +5980,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -5986,8 +5990,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 0.2
@@ -6580,7 +6582,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -6591,8 +6592,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 0.2
@@ -6690,7 +6689,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -6701,8 +6699,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 0.2
@@ -8957,11 +8953,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c3cdf5155463d47b60cf1660b55f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableTimer: 1
+  enableTimer: 0
   timerDuration: 120
   pvp: 1
   remainingDuration: 0
-  credits: 0
   score: 0
   enableAbility: 1
   enableAltFire: 0
@@ -11373,7 +11368,7 @@ MonoBehaviour:
     chance: 0.5
     cooldown: 10
     currentCD: 0
-  - item: {fileID: 11444902, guid: 5ed0dc026583269468be2b3f12f4778d, type: 3}
+  - item: {fileID: 11444902, guid: f4facc18b46516b449deae6dc7e69081, type: 3}
     chance: 0.5
     cooldown: 10
     currentCD: 0
@@ -11483,7 +11478,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -11494,8 +11488,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 0.2

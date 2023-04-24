@@ -27,6 +27,7 @@ namespace UI
         public Slider sliderExpBar;
         public Slider opponentHPBar;
         public Text lbOpponentHP;
+        public Text opponentUsername;
         private PlayerProgression playerProgress;
 
         //public RectTransform barHP;
@@ -257,6 +258,11 @@ namespace UI
                 opponentHPBar.value = hp;
                 lbOpponentHP.text = Mathf.Round(hp) + "/" + hpfull;
             }
+        }
+
+        public void UpdateOpponentName(string name)
+        {
+            opponentUsername.text = name;
         }
 
     }
