@@ -19,9 +19,12 @@ public class DemoUIMenu : MonoBehaviour
     private Camera _cameraMain;
     private bool activeColorInput = true;
 
+    NetworkManager networkManager;
+
     private void Awake()
     {
         _cameraMain = Camera.main;
+        networkManager = NetworkManager.Instance;
     }
 
     void Start()
@@ -148,9 +151,9 @@ public class DemoUIMenu : MonoBehaviour
 
     private void RequestJoinRoom()
     {
-        NetworkManager.Instance.Manager.Socket
+        networkManager.Manager.Socket
             .Emit("createPvp");
-        NetworkManager.Instance.Manager.Socket.On<string, int>("joined", JoinRoom);
+        networkManager.Manager.Socket.On<string, int>("joined", JoinRoom);
     }
 
     private void JoinRoom(string roomId, int land)

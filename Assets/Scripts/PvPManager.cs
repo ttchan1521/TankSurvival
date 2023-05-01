@@ -118,6 +118,7 @@ public class PvPManager : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(playerData.rotation[0], playerData.rotation[1], playerData.rotation[2]);
         otherPlayers[playerData.username].transform.position = postion;
         otherPlayers[playerData.username].transform.rotation = rotation;
+        otherPlayers[playerData.username].GetComponent<Rigidbody>().velocity = MyExtension.ConvertToVector3(playerData.velocity);
         uihud.UpdateSliderHPOpponent(playerData.hp, playerData.hpfull);
         otherPlayers[playerData.username].turretObj.rotation = Quaternion.Euler(playerData.turretRotation[0], playerData.turretRotation[1], playerData.turretRotation[2]);
     }

@@ -604,9 +604,11 @@ public class UnitPlayer : Unit
 
         if (GameControl.GetInstance().pvp)
         {
+            Vector3 vecloc = GetComponent<Rigidbody>().velocity;
             data.SetPosition(thisT.position.x, thisT.position.y, thisT.position.z);
             data.SetRotaion(thisT.rotation.eulerAngles.x, thisT.rotation.eulerAngles.y, thisT.rotation.eulerAngles.z);
             data.SetTurretRotation(turretObj.rotation.eulerAngles.x, turretObj.rotation.eulerAngles.y, turretObj.rotation.eulerAngles.z);
+            data.SetVelocity(vecloc.x, vecloc.y, vecloc.z);
             data.hp = hitPoint;
             data.hpfull = hitPointFull;
             NetworkManager.Instance.Manager.Socket

@@ -11,6 +11,7 @@ namespace pvp
         public float[] position;
         public float[] rotation;
         public float[] turretRotation;
+        public float[] velocity;
         public float hp;
         public float hpfull;
 
@@ -19,6 +20,7 @@ namespace pvp
             position = new float[] { 0, 0, 0 };
             rotation = new float[] { 0, 0, 0 };
             turretRotation = new float[] { 0, 0, 0 };
+            velocity = new float[] { 0, 0, 0 };
         }
 
         public void SetPosition(float x, float y, float z)
@@ -40,6 +42,13 @@ namespace pvp
             turretRotation[0] = x;
             turretRotation[1] = y;
             turretRotation[2] = z;
+        }
+
+        public void SetVelocity(float x, float y, float z)
+        {
+            velocity[0] = x;
+            velocity[1] = y;
+            velocity[2] = z;
         }
     }
 
