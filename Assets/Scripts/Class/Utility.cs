@@ -9,7 +9,7 @@ public class TDSUtility : MonoBehaviour
         return origin + dir * Random.Range(0, radius);
     }
 
-    public static void DestroyColliderRecursively(Transform root)
+    public static void DestroyColliderRecursively(Transform root) //destroy đệ quy
     {
         foreach (Transform child in root)
         {
@@ -21,7 +21,7 @@ public class TDSUtility : MonoBehaviour
         }
     }
 
-    public static Unit GetUnitOfParentTransform(Transform root)
+    public static Unit GetUnitOfParentTransform(Transform root) //get unit từ parent
     {
         Unit unit = root.GetComponent<Unit>();
         if (unit == null)

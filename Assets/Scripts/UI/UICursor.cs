@@ -11,7 +11,6 @@ namespace UI
 
         public RectTransform cursorT;
 
-        public Text lbAmmo;
         public GameObject defaultCursorObj;
         public GameObject reloadingCursorObj;
         public Image imgReloading;
@@ -26,19 +25,19 @@ namespace UI
             rectDefaultCursor = defaultCursorObj.GetComponent<RectTransform>();
             cursorDefaultSize = rectDefaultCursor.sizeDelta;
 
-            StartCoroutine(Loop());
+            //StartCoroutine(Loop());
         }
 
-        private int dotCounter = 0;
-        IEnumerator Loop()
-        {
-            while (true)
-            {
-                dotCounter += 1;
-                if (dotCounter > 3) dotCounter = 0;
-                yield return new WaitForSeconds(0.25f);
-            }
-        }
+        // private int dotCounter = 0;
+        // IEnumerator Loop()
+        // {
+        //     while (true)
+        //     {
+        //         dotCounter += 1;
+        //         if (dotCounter > 3) dotCounter = 0;
+        //         yield return new WaitForSeconds(0.25f);
+        //     }
+        // }
 
         void Update()
         {

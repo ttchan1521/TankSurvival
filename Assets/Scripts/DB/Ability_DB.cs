@@ -66,7 +66,6 @@ public class Ability_DB : ScriptableObject
     }
 
 
-    //[HideInInspector] 
     [Space(10)] public bool copied = false;
     public static void CopyFromOldDB()
     {

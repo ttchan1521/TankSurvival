@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 
+//rotate unit
 public class UnitPartRotate : MonoBehaviour
 {
 
@@ -21,7 +22,7 @@ public class UnitPartRotate : MonoBehaviour
         unit = TDSUtility.GetUnitOfParentTransform(thisT);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (unit != null && unit.IsStunned()) return;

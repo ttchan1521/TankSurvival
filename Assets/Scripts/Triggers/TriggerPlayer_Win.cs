@@ -3,15 +3,8 @@ using System.Collections;
 
 public class TriggerPlayer_Win : Trigger
 {
-
-    [Space(5)]
-    [Tooltip("Check to have player unit save any progress made in leveling and perks")]
     public bool triggerSave = false;
 
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nThe level is considered cleared when player hit this trigger";
-    }
 
     public override void OnTriggerEnter(Collider collider)
     {

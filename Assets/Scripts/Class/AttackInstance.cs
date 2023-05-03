@@ -1,7 +1,4 @@
-﻿//class containing information about a particular attack
-//each attack on a particular unit will contain an attack instance (even ability)
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 
@@ -10,12 +7,9 @@ public class AttackInstance
 {
     public Unit srcUnit;
 
-    public bool isAOE = false;      //marked if the attack is AOE
-    public float aoeDistance = 0;   //the distance from the origin of the aoe attack to the target
-
-    public AttackStats aStats;  //contain all the stats
-
-    //create a new attackInstance, given the AttackStats (the set of stats for the attack unit or ability)
+    public bool isAOE = false;
+    public float aoeDistance = 0;   //khoảng cách từ tâm AOE đến mục tiêu
+    public AttackStats aStats;
 
     public AttackInstance()
     {

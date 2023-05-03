@@ -1,9 +1,7 @@
-﻿//used for collectible
-//to make sure the sprite face the camera as well as oscillate the scale to animate it
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
+//xoay collectible hướng về camera
 public class CollectibleProps : MonoBehaviour
 {
 

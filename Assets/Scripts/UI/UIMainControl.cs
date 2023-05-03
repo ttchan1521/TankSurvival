@@ -14,49 +14,21 @@ namespace UI
 
         private static UIMainControl instance;
 
-        [Tooltip("Check to enable mouse and keyboard input")]
         public bool enableMouseNKeyInput = true;
 
-        [Space(10)]
-        [Tooltip("Check to show hit-point overlay on top of each unit")]
         public bool enableHPOverlay = true;
         public static bool EnableHPOverlay() { return instance.enableHPOverlay; }
 
-        [Tooltip("Check to show damage overlay of each attack when hitting a target")]
-        public bool enableTextOverlay = true;
+        public bool enableTextOverlay = true; //show damage mỗi khi trúng đạn
         public static bool EnableTextOverlay() { return instance.enableTextOverlay; }
 
-        [Space(10)]
-        [Tooltip("Check to have the HUD list all the ability available to the player, if there's any")]
-        public bool listAllAbility = true;
-        public static bool ListAllAbility() { return instance.listAllAbility; }
-
-        [Space(10)]
-        [Tooltip("Check to enable the weapon and ability select tab, which can be bought up by holding TAB key")]
-        public bool enableItemSelectTab = true;
-        public static bool EnableItemSelectTab() { return instance.enableItemSelectTab; }
-
-        [Space(10)]
-        [Tooltip("Check to show continue button to the next level on game-over menu even when the level is lost")]
         public bool showContinueButtonWhenLost = false;
         public static bool ShowContinueButtonWhenLost() { return instance.showContinueButtonWhenLost; }
 
-        [Space(10)]
-        [Tooltip("The blur image effect component on the main ui camera (optional)")]
-        public BlurOptimized uiBlurEffect;
+        public BlurOptimized uiBlurEffect; //làm mờ
 
-        //~ [Tooltip("The CanvasScaler component of the main canvas. Required to have the overlay appear in the right screen position")]
-        //~ public CanvasScaler scaler;
-        //~ public static float GetScaleFactor(){ 
-        //~ if(instance.scaler==null) return 1;
-        //~ return (float)instance.scaler.referenceResolution.x/(float)Screen.width;
-        //~ }
+        public bool limitScale = true; //scale ui theo màn hình
 
-        [Space(10)]
-        [Tooltip("Check to disable auto scale up of UIElement when the screen resolution exceed reference resolution specified in CanvasScaler/nRecommended to have this set to false when building for mobile")]
-        public bool limitScale = true;
-
-        [Tooltip("The CanvasScaler components of all the canvas. Required to have the floating UI elements appear in the right screen position")]
         public List<CanvasScaler> scalerList = new List<CanvasScaler>();
         public static float GetScaleFactor()
         {
@@ -142,41 +114,27 @@ namespace UI
             {
                 _TogglePause();
             }
-            //if(Input.GetKeyDown(KeyCode.C) && !GameControl.IsGameOver()) ToggleLevelPerkMenu();
 
-            /*
-			if(Input.GetKeyDown(KeyCode.Q)){
-				Debug.Log("Paused for screen shot. Fire from UIMainControl");
-				if(Time.timeScale==1) Time.timeScale=0;
-				else Time.timeScale=1;
-			}
-			*/
 
             if (GameControl.IsGamePlaying())
             {
                 UnitPlayer player = GameControl.GetPlayer();
                 if (player != null && !player.IsDestroyed() && Input.touchCount == 0)
                 {
-                    //Debug.Log("Fire!!  "+Time.time);
 
                     //movement
                     bool boost = Input.GetKey(KeyCode.LeftShift);
                     if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
                         player.Move(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")), boost);
 
-                    //brake
+                    //phanh
                     if (Input.GetKey(KeyCode.Space)) player.Brake();
 
-                    //switch weapon
-                    // if (Input.GetAxisRaw("Mouse ScrollWheel") != 0 && scrollCD <= 0)
-                    // {
-                    //     player.ScrollWeapon(Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1);
-                    //     scrollCD = 0.15f;
-                    // }
+               
                     scrollCD -= Time.deltaTime;
 
-                    //string[] names = Input.GetJoystickNames();
-                    bool hasJoystick = false;//names.Length>0 ? true : false ;
+
+                    bool hasJoystick = false;
 
                     //turret facing
                     if (hasJoystick)
@@ -188,29 +146,22 @@ namespace UI
                     else player.AimTurretMouse(Input.mousePosition);
 
                     //fire
-                    //bool continousFire = player.ContinousFire() & (Input.GetMouseButton(0) || Input.GetButton("Fire1"));
                     bool continousFire = Input.GetMouseButton(0) || Input.GetButton("Fire1");
                     if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1") || continousFire) player.FireWeapon();
 
-                    //alt fire, could fire weapon alt-mode to launch selected ability
                     if (Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2")) player.FireAbility();
 
-                    //launch ability
                     if (Input.GetMouseButtonDown(2) || Input.GetButtonDown("Fire3")) player.FireAbilityAlt();
 
                     //reload
                     if (Input.GetKeyDown(KeyCode.R) || Input.GetButtonDown("Jump")) player.Reload();
 
-                    //bring up the chracter & perk menu
+                    //hiển thị level perk
                     if (UILevelPerkMenu.Enabled() && Input.GetKeyDown(KeyCode.C)) ToggleLevelPerkMenu();
                 }
             }
 
         }
-
-
-        // public void PrevWeapon() { GameControl.GetPlayer().ScrollWeapon(-1); }
-        // public void NextWeapon() { GameControl.GetPlayer().ScrollWeapon(1); }
 
 
         public static void ToggleLevelPerkMenu() { instance._ToggleLevelPerkMenu(); }
@@ -225,7 +176,7 @@ namespace UI
         {
             CameraControl.FadeBlur(uiBlurEffect, 0, 2);
             CameraControl.TurnBlurOn();
-            GameControl.PauseGame();    //Telling GameControl to paause the game
+            GameControl.PauseGame();
             UILevelPerkMenu.Show();
 
             TDSTouchInput.Hide();
@@ -244,7 +195,7 @@ namespace UI
             yield return StartCoroutine(WaitForRealSeconds(0.25f));
 
             Time.timeScale = 1;
-            GameControl.ResumeGame();   //Telling GameControl to resume the game
+            GameControl.ResumeGame();
         }
 
 
@@ -262,7 +213,7 @@ namespace UI
         {
             CameraControl.FadeBlur(uiBlurEffect, 0, 2);
             CameraControl.TurnBlurOn();
-            GameControl.PauseGame();    //Telling GameControl to paause the game
+            GameControl.PauseGame(); 
             UIPauseMenu.Show();
 
             TDSTouchInput.Hide();
@@ -274,7 +225,7 @@ namespace UI
         {
             CameraControl.FadeBlur(uiBlurEffect, 2, 0);
             CameraControl.TurnBlurOff();
-            GameControl.ResumeGame();   //Telling GameControl to resume the game
+            GameControl.ResumeGame();
             UIPauseMenu.Hide();
 
             TDSTouchInput.Show();

@@ -87,57 +87,7 @@ namespace UI
             inited = true;
         }
 
-        // void OnEnable()
-        // {
-        //     TDS.onNewWeaponE += OnNewWeapon;
-        //     TDS.onNewAbilityE += OnNewAbility;
-        // }
-        // void OnDisable()
-        // {
-        //     TDS.onNewWeaponE -= OnNewWeapon;
-        //     TDS.onNewAbilityE -= OnNewAbility;
-        // }
-
-
-        // void OnNewWeapon(Weapon weapon, int replaceIndex = -1)
-        // {
-        //     if (replaceIndex >= 0)
-        //     {
-        //         weaponItemList[replaceIndex].imgIcon.sprite = weapon.icon;
-        //         weaponItemList[replaceIndex].label.text = weapon.weaponName;
-        //     }
-        //     else
-        //     {
-        //         int index = weaponItemList.Count;
-        //         weaponItemList.Add(UISelectItem.Clone(weaponItemList[0].rootObj, "Item" + (index)));
-
-        //         weaponItemList[index].imgIcon.sprite = weapon.icon;
-        //         weaponItemList[index].label.text = weapon.weaponName;
-
-        //         weaponItemList[index].rootObj.SetActive(true);
-        //         weaponItemList[index].selectHighlight.SetActive(false);
-        //     }
-        // }
-        // void OnNewAbility(Ability ability, int replaceIndex = -1)
-        // {
-        //     if (replaceIndex >= 0)
-        //     {
-        //         abilityItemList[replaceIndex].imgIcon.sprite = ability.icon;
-        //         abilityItemList[replaceIndex].label.text = ability.name;
-        //     }
-        //     else
-        //     {
-        //         int index = abilityItemList.Count;
-        //         abilityItemList.Add(UISelectItem.Clone(abilityItemList[0].rootObj, "Item" + (index)));
-
-        //         abilityItemList[index].imgIcon.sprite = ability.icon;
-        //         abilityItemList[index].label.text = ability.name;
-
-        //         abilityItemList[index].rootObj.SetActive(true);
-        //         abilityItemList[index].selectHighlight.SetActive(false);
-        //     }
-        // }
-
+       
 
 
         void UpdateTab()
@@ -217,7 +167,6 @@ namespace UI
 
             TDSTouchInput.Hide();
 
-            //GameControl.GetPlayer().DisableFire();
             UpdateTab();
             tabObject.SetActive(true);
         }
@@ -231,7 +180,7 @@ namespace UI
 
             TDSTouchInput.Show();
 
-            //GameControl.GetPlayer().EnableFire();
+
             tabObject.SetActive(false);
         }
 

@@ -1,9 +1,7 @@
-﻿//scroll the texture offset of the renderer material
-//used in side scroller level
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
+//scroll texture
 public class TextureScroll : MonoBehaviour
 {
 

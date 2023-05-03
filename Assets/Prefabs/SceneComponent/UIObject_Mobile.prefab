@@ -3580,8 +3580,6 @@ MonoBehaviour:
   enableMouseNKeyInput: 0
   enableHPOverlay: 1
   enableTextOverlay: 1
-  listAllAbility: 1
-  enableItemSelectTab: 1
   showContinueButtonWhenLost: 0
   uiBlurEffect: {fileID: 11449332}
   limitScale: 0
@@ -6463,7 +6461,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11464542}
   m_HandleRect: {fileID: 22452780}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11014,10 +11012,10 @@ RectTransform:
   m_Father: {fileID: 22432692}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 177.5, y: -30}
+  m_SizeDelta: {x: 335, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &22269680
 CanvasRenderer:
@@ -14856,7 +14854,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorT: {fileID: 22452630}
-  lbAmmo: {fileID: 11413546}
   defaultCursorObj: {fileID: 158436}
   reloadingCursorObj: {fileID: 190676}
   imgReloading: {fileID: 11451500}
@@ -17060,8 +17057,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11472674}
   m_HandleRect: {fileID: 22438838}
   m_Direction: 2
-  m_Value: 1.0000012
-  m_Size: 0.8571427
+  m_Value: 1.0000031
+  m_Size: 0.8571423
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -20111,7 +20108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &22446750
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24289,7 +24286,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -24384,7 +24381,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorT: {fileID: 22439954}
-  lbAmmo: {fileID: 11413546}
   defaultCursorObj: {fileID: 189726}
   reloadingCursorObj: {fileID: 104154}
   imgReloading: {fileID: 11498722}
@@ -27954,10 +27950,10 @@ RectTransform:
   m_Father: {fileID: 22472684}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 185, y: -30}
+  m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &22249672
 CanvasRenderer:
@@ -28525,7 +28521,6 @@ MonoBehaviour:
     unavailableHighlight: {fileID: 0}
     connector: {fileID: 0}
     connectorBG: {fileID: 0}
-  lbPerkPoint: {fileID: 11421508}
   lbPerkRsc: {fileID: 11448918}
   lbPerkName: {fileID: 11466844}
   lbPerkDesp: {fileID: 11403670}
@@ -35453,7 +35448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &22498798
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37846,6 +37841,7 @@ MonoBehaviour:
   sliderExpBar: {fileID: 11488894}
   opponentHPBar: {fileID: 0}
   lbOpponentHP: {fileID: 0}
+  opponentUsername: {fileID: 0}
   uiButtonWeapon:
     rootObj: {fileID: 133670}
     rectT: {fileID: 0}

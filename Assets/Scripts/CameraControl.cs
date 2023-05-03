@@ -32,8 +32,8 @@ public class CameraControl : MonoBehaviour
     public float defaultZoomOrtho;
 
      //camera shake
-    public float shakeMultiplier = 0.5f;        //check the inspector
-    private float camShakeMagnitude = 0;    //current active shake magnitude
+    public float shakeMultiplier = 0.5f;
+    private float camShakeMagnitude = 0;
 
     void Awake()
     {
@@ -70,7 +70,6 @@ public class CameraControl : MonoBehaviour
         TDS.onCameraShakeE -= CameraShake;
     }
 
-    // Update is called once per frame
     void Update()
     {
         Shake();
@@ -86,22 +85,22 @@ public class CameraControl : MonoBehaviour
 
             Vector3 targetPos = player.thisT.position + posOffset;
 
-            //if enabled limit is enabled, clamp the position so it wont go out of bound
+            //nếu player gần biên, không di chuyển camera
             if (enableLimit)
             {
                 targetPos.x = Mathf.Clamp(targetPos.x, minPosX, maxPosX);
                 targetPos.z = Mathf.Clamp(targetPos.z, minPosZ, maxPosZ);
             }
 
-            //lerp to target's position
+            //di chuyển theo player
             transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * trackSpeed);
 
-            //adjust wanted zoom level based on player speed
+            //điều chỉnh zoom
             wantedZoom = defaultZoom * (1 + (player.GetVelocity() / zoomNormalizeFactor));
             wantedZoomOrtho = defaultZoomOrtho * (1 + (player.GetVelocity() / zoomNormalizeFactor));
         }
 
-        //if dynamicZoom is enabled, adjust the zoom acording to wanted zoom level
+        //điều chỉnh zoom camera theo tham số trên
         if (enableDynamicZoom)
         {
             cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, cam.transform.localPosition.y, Mathf.Lerp(cam.transform.localPosition.z, wantedZoom, Time.deltaTime * zoomSpeed));
@@ -109,28 +108,27 @@ public class CameraControl : MonoBehaviour
         }
     }
 
-    //delagates of TDS.onCameraShakeE
+    //thay đổi shakeMagnitude
     public void CameraShake(float magnitude = 1)
     {
         if (magnitude == 0) return;
         instance.camShakeMagnitude = magnitude * 0.5f;
     }
-    //called from Update()
+
+    //call in update, giảm dần magnitude
     public void Shake()
     {
-        if (Time.timeScale == 0 || camShakeMagnitude <= 0) return;    //dont execute if the game is paused
+        if (Time.timeScale == 0 || camShakeMagnitude <= 0) return;    //paused game
         
-        //randomize the camera transform x and y local position, create a shaking effect
         float x = 2 * (Random.value - 0.5f) * camShakeMagnitude * shakeMultiplier;
         float y = 2 * (Random.value - 0.5f) * camShakeMagnitude * shakeMultiplier;
         cam.transform.localPosition = new Vector3(x, y, cam.transform.localPosition.z);
 
-        //reduce the shake magnitude overtime
         camShakeMagnitude *= (1 - Time.deltaTime * 5);
     }
 
 
-    //called by the UI during game paused or game over to turn the bluring effect on/off
+    //paused game or game over
     public static void TurnBlurOn()
     {
         if (instance == null || instance.blurEffect == null) return;
@@ -147,7 +145,7 @@ public class CameraControl : MonoBehaviour
         if (blurEff == null && instance == null) return;
         instance.StartCoroutine(instance.FadeBlurRoutine(blurEff, startValue, targetValue));
     }
-    //change the blur component blur size from startValue to targetValue over 0.25 second
+    //làm mở từ từ
     IEnumerator FadeBlurRoutine(BlurOptimized blurEff, float startValue = 0, float targetValue = 0)
     {
         blurEff.enabled = true;
@@ -157,7 +155,7 @@ public class CameraControl : MonoBehaviour
         {
             float value = Mathf.Lerp(startValue, targetValue, duration);
             blurEff.blurSize = value;
-            duration += Time.unscaledDeltaTime * 4f;    //multiply by 4 so it only take 1/4 of a second
+            duration += Time.unscaledDeltaTime * 4f;
             yield return null;
         }
         blurEff.blurSize = targetValue;

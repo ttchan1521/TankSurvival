@@ -1,9 +1,7 @@
-﻿//to stop a particle system from playing/emiting after a certain time
-//used in various timed effect 
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
+//dừng particle
 public class DelayStopParticle : MonoBehaviour
 {
 
@@ -11,7 +9,6 @@ public class DelayStopParticle : MonoBehaviour
 
     public float delay = 0.5f;
 
-    // Use this for initialization
     void Awake()
     {
         pSystem = gameObject.GetComponent<ParticleSystem>();

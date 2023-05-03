@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 using UI;
 
-
+//hiển thị số damage nhận
 public class UITextOverlay : MonoBehaviour
 {
 

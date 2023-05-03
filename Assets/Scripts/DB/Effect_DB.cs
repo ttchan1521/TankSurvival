@@ -14,14 +14,13 @@ public class Effect_DB : ScriptableObject
 
     public List<Effect> effectList = new List<Effect>();
 
-    //called during game initiation to assign correct index to each corresponding effect ID
     public static int GetEffectIndex(int ID)
     {
         Init();
         for (int i = 0; i < instance.effectList.Count; i++) { if (instance.effectList[i].ID == ID) return i; }
         return -1;
     }
-    //called during runtime when an effect is actually needed (item now only store effect ID and index);
+
     public static Effect CloneItem(int idx)
     {
         Init();

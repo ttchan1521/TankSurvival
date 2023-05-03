@@ -1,11 +1,9 @@
-﻿//a class that handle all the physics
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class TDSPhysics
 {
-    //for applying force from 1 shootobject to its impact target
+    //apply lực đẩy lên đối tượng bị bắn
     public static void ApplyAttackForce(Vector3 impactPoint, Vector3 impactDir, GameObject hitObj, AttackStats aStats)
     {
         float impactForce = aStats.impactForce * 10;
@@ -20,7 +18,7 @@ public class TDSPhysics
         ApplyExplosionForce(impactPoint, aStats);
     }
 
-    //for explosion
+    //tạo lực đẩy xung quanh
     public static void ApplyExplosionForce(Vector3 impactPoint, AttackStats aStats, bool ignorePlayer = false)
     {
         float explosionForce = aStats.explosionForce * 10;

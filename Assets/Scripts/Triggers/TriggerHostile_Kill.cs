@@ -3,19 +3,8 @@ using System.Collections;
 
 public class TriggerHostile_Kill : Trigger
 {
-
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for hostile unit\nAny hostile unit hitting this trigger will be destroyed immediately";
-    }
-
-    [Space(10)]
-    [Tooltip("check if the unit should show their respective destroy effect")]
     public bool showDestroyEffect = true;
 
-    //public int creditGain=1;
-
-    [Tooltip("Score bonus for player if a unit enter this trigger")]
     public int scoreGain = 1;
 
 
@@ -30,7 +19,6 @@ public class TriggerHostile_Kill : Trigger
         }
 
         unit.ClearUnit(showDestroyEffect);
-        //GameControl.GainCredits(creditGain);
         GameControl.GainScore(scoreGain);
 
         Triggered();

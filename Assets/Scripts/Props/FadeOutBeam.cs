@@ -1,14 +1,11 @@
-﻿//for LineRenderer on beam shoot-object
-//reduce the width of the line over a fixed duration
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-
+//đạn laser
 public class FadeOutBeam : MonoBehaviour
 {
 
-    public float fadeDuration = .5f;
+    public float fadeDuration = .5f; //thời gian tồn tại
     public float startingWidth = .5f;
 
     void OnEnable()

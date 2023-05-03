@@ -1,16 +1,13 @@
-﻿//for muzzle effect on the machine gun
-//turn the renderer on and off for a fliker effect
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
+//tạo hiệu ứng nhấp nháy cho súng
 public class GunShotMuzzle : MonoBehaviour
 {
 
     private LineRenderer rend;
     public float blinkDuration = 0.02f;
 
-    // Use this for initialization
     void Awake()
     {
         rend = gameObject.GetComponent<LineRenderer>();

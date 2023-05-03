@@ -36,26 +36,14 @@ public class CollectibleSpawner : MonoBehaviour
 
     void Awake()
     {
-        //if no spawn area has been assigned, create one
+        //nếu k có area, create one
         if (spawnArea == null) spawnArea = gameObject.AddComponent<TDSArea>();
     }
 
     void Start()
     {
-        // for (int i = 0; i < spawnItemList.Count; i++)
-        // {
-        //     if (spawnItemList[i].item == null)
-        //     {
-        //         spawnItemList.RemoveAt(i);
-        //         i--;
-        //         continue;
-        //     }
 
-        //     Debug.Log(i+"   "+spawnItemList[i].item);
-        //     ObjectPoolManager.New(spawnItemList[i].item.gameObject, 1);
-        // }
-
-        //if spawnUponStart is enabled, start spawning
+        //nếu tự động spawn
         if (spawnUponStart)
             StartSpawn();
     }
@@ -72,24 +60,22 @@ public class CollectibleSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(startDelay);
 
-        //keep on looping
         while (true)
         {
             Collectible newObj = SpawnItem(spawnArea.GetRandomPosition());
             if (newObj != null)
             {
-                newObj.SetTriggerCallback(ItemDisableCallback);  //set callback function for the collectible (which clear the item in existingItemList)
-                existItemList.Add(newObj);   //add the new item to existingItemList
+                newObj.SetTriggerCallback(ItemDisableCallback);  //set callback function, clear item trong exist list
+                existItemList.Add(newObj);
             }
 
-            //wait for spawnCD before attempting next spawn
+
             yield return new WaitForSeconds(spawnCD);
         }
     }
 
     void Update()
     {
-        //iterate the cooldown of each spawn item
         for (int i = 0; i < spawnItemList.Count; i++)
             spawnItemList[i].currentCD -= Time.deltaTime;
     }
@@ -102,7 +88,6 @@ public class CollectibleSpawner : MonoBehaviour
 
         float chance = spawnChance + (unSpawnCount * failModifier);
 
-        //check the chance, if this doesnt pass, dont spawn
         if (Random.value > chance)
         {
             unSpawnCount++;
@@ -111,10 +96,8 @@ public class CollectibleSpawner : MonoBehaviour
 
         unSpawnCount = 0;
 
-        //a list of potential item available for spawn
         List<int> avaiableItemList = new List<int>();
 
-        //loop through all item, add the available item to potential list
         for (int i = 0; i < spawnItemList.Count; i++)
         {
             if (spawnItemList[i].item == null) continue;
@@ -124,10 +107,10 @@ public class CollectibleSpawner : MonoBehaviour
             avaiableItemList.Add(i);
         }
 
-        //if there's item available to spawn
+
         if (avaiableItemList.Count > 0)
         {
-            //select an random item from the list and spawn it
+
             int rand = Random.Range(0, avaiableItemList.Count);
             int itemIndex = avaiableItemList[rand];
             //GameObject obj=ObjectPoolManager.Spawn(spawnItemList[ID].item.gameObject, pos, Quaternion.identity);
@@ -145,7 +128,7 @@ public class CollectibleSpawner : MonoBehaviour
                     });
         }
 
-        //refresh the item cooldown
+
         spawnItemList[itemIndex].currentCD = spawnItemList[itemIndex].cooldown;
 
         return obj;
@@ -155,7 +138,6 @@ public class CollectibleSpawner : MonoBehaviour
     }
 
 
-//callback function for when an item is triggered
 public void ItemDisableCallback(Collectible obj)
 {
     existItemList.Remove(obj);

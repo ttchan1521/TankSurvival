@@ -6,14 +6,6 @@ using System.Collections.Generic;
 public class TriggerPlayer_CollectibleSpawner : Trigger
 {
 
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nThe spawner listed will start spawning when player hit this trigger";
-    }
-
-
-    [Space(10)]
-    [Tooltip("The CollectibleSpawner to start spawning when this trigger is triggered")]
     public List<CollectibleSpawner> spawnerList = new List<CollectibleSpawner>();
 
     public override void OnTriggerEnter(Collider collider)

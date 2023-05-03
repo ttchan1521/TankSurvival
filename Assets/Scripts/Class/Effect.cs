@@ -1,6 +1,4 @@
-﻿//effect class are effect that applied to unit for a fixed amount of time
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 
@@ -8,9 +6,8 @@ using System.Collections;
 public class Effect : Item
 {
     public string desp = "";
-    public bool showOnUI = true;    //only applies when effect is on player
+    public bool showOnUI = true;  
 
-    public float hitChance = 1;     //odds for effect to be apply successfully on target
     public float duration = 2.5f;
 
     [Header("Direct effect on target")]
@@ -34,7 +31,6 @@ public class Effect : Item
     public bool Applicable()
     {
         if (ID < 0) return false;
-        if (hitChance <= 0) return false;
         if (duration <= 0) return false;
         return true;
     }

@@ -1,6 +1,4 @@
-﻿//wave class defination used for unit spawner
-
-using UnityEngine;
+﻿using UnityEngine;
 
 using System.Collections;
 using System.Collections.Generic;
@@ -23,19 +21,16 @@ public class Wave
     [HideInInspector] public int waveID = -1;
     public List<SubWave> subWaveList = new List<SubWave>();
 
-    //public int creditGain = 0;
     public int scoreGain = 0;
 
     public TDSArea spawnArea;
 
-    [HideInInspector] public int activeUnitCount = 0;   //only used in runtime
+    [HideInInspector] public int activeUnitCount = 0;   //số lượng unit hiện tại
 
-    [HideInInspector] public int subWaveSpawned = 0;
+    [HideInInspector] public int subWaveSpawned = 0; //subWave đã spawn
 
-    [HideInInspector] public bool spawned = false; //flag indicating weather all unit in the wave have been spawn, only used in runtime
-    [HideInInspector] public bool cleared = false;  //flag indicating weather the wave has been cleared, only used in runtime
-
-    //public float duration=10;						//duration until next wave
+    [HideInInspector] public bool spawned = false; //tất cả unit đã spawn
+    [HideInInspector] public bool cleared = false;  //wave cleared
 
     public Wave()
     {
@@ -45,7 +40,7 @@ public class Wave
     public void Completed()
     {
         cleared = true;
-        //GameControl.GainCredits(creditGain);
+  
         GameControl.GainScore(scoreGain);
     }
 }

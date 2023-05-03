@@ -10,8 +10,6 @@ using System.Collections.Generic;
 public class EffectDB : MonoBehaviour
 {
 
-    //private static bool initiated=false;
-    //private static List<Effect> allEffectList=new List<Effect>();	//for storing all effect during runtime
 
     public static EffectDB instance;
     public static void Init()
@@ -20,14 +18,13 @@ public class EffectDB : MonoBehaviour
         instance = LoadDB1();
     }
 
-    //called during game initiation to assign correct index to each corresponding effect ID
     public static int GetEffectIndex1(int ID)
     {
         Init();
         for (int i = 0; i < instance.effectList.Count; i++) { if (instance.effectList[i].ID == ID) return i; }
         return -1;
     }
-    //called during runtime when an effect is actually needed (item now only store effect ID and index);
+
     public static Effect CloneItem1(int idx)
     {
         Init();

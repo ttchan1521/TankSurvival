@@ -536,9 +536,6 @@ public class Unit : PooledObject
     {
         if (effect == null || !effect.Applicable()) return false;
 
-        //if the effect missed
-        if (Random.value > effect.hitChance) return false;
-
         //add the effect to the list and update the active effect
         effectList.Add(effect);
         UpdateActiveEffect();

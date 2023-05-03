@@ -26,7 +26,6 @@ namespace UI
 
 
 
-        // Use this for initialization
         public void Init()
         {
             SetPlayer(GameControl.GetPlayer());

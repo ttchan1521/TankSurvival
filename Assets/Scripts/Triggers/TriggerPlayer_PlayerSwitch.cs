@@ -4,21 +4,11 @@ using System.Collections;
 public class TriggerPlayer_PlayerSwitch : Trigger
 {
 
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nHitting this trigger will teleport player to a specific location";
-    }
+    public UnitPlayer targetPrefab; //prefab replace player unit 
 
-    [Space(5)]
-    [Tooltip("The player prefab to replace the existing player unit")]
-    public UnitPlayer targetPrefab;
-
-    [Tooltip("Check to have the trigger works only when the active player unit is a different prefab than the target one")]
     public bool differentPrefabOnly = false;
 
-    [Space(5)]
-    [Tooltip("The transform which mark the position where the player should be teleport to")]
-    public Transform targetTransform;
+    public Transform targetTransform; //vị trí mới
 
 
     public override bool UseAltTriggerEffectObj() { return true; }

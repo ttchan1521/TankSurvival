@@ -13,14 +13,14 @@ public class ProgressionStatsDB : MonoBehaviour
 
     public LevelProgressionStats stats;
 
-    private static ProgressionStatsDB instance; //for runtime
+    private static ProgressionStatsDB instance;
 
     public static void Init()
     {
         if (instance != null) return;
         instance = LoadDB1();
     }
-    //only used in runtime to load db data to runtime PlayerProgression
+
     public static void CopyStats1(PlayerProgression progress)
     {
         Init();

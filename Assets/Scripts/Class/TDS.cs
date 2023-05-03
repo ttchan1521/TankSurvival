@@ -30,13 +30,7 @@ public class TDS
     public static event GameOverHandler onEndGame;
     public static void EndGame(bool won) { if (onEndGame != null) onEndGame(won); }
 
-
-    //public delegate void GainLifeHandler();
-    //public static event GainLifeHandler onTimeUpE;
-    //public static void TimeUp(){ if(onTimeUpE!=null) onTimeUpE(); }
-
-
-    public delegate void NewUnitHandler(Unit unit); //fired when a new unit is added to the game
+    public delegate void NewUnitHandler(Unit unit);
     public static event NewUnitHandler onNewUnitE;
     public static void NewUnit(Unit unit) { if (onNewUnitE != null) onNewUnitE(unit); }
 

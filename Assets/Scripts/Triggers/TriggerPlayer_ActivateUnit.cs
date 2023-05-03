@@ -7,13 +7,6 @@ using System.Collections.Generic;
 public class TriggerPlayer_ActivateUnit : Trigger
 {
 
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nThe unit listed in unit list will become active (by enabling the UnitAI component)";
-    }
-
-    [Space(10)]
-    [Tooltip("The unit to activate when this trigger is triggered")]
     public List<UnitAI> unitList = new List<UnitAI>();
 
     public override void OnTriggerEnter(Collider collider)

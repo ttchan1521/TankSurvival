@@ -61,29 +61,3 @@ public class TDSJoystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         return value.magnitude;
     }
 }
-
-
-
-
-/*
-//for using screen space canvas
-
-		void Start () {
-			startPos=transform.position;
-		}
-
-		public void OnDrag(PointerEventData data){
-			Vector2 delta=data.position-new Vector2(startPos.x, startPos.y);
-			if(delta.magnitude>limit) delta=delta.normalized*limit;
-			
-			value=delta;
-			
-			thisT.position = startPos+new Vector3(delta.x, delta.y, 0);
-		}
-
-		public void OnPointerUp(PointerEventData data){
-			thisT.position = startPos;
-			value=Vector3.zero;
-		}
-
-*/

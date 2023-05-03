@@ -4,10 +4,6 @@ using System.Collections;
 public class TriggerPlayer_Objective : Trigger
 {
 
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nIt's to be act as one of the criteria for a the objective tracker component";
-    }
 
     public override void OnTriggerEnter(Collider collider)
     {

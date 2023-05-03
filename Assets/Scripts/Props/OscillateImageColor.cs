@@ -1,11 +1,9 @@
-﻿//for oscillating an UI image between 2 colors
-//used for PlayerHitOverlay in UI
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 using System.Collections;
 
+//điều chỉnh màu của thanh máu
 public class OscillateImageColor : MonoBehaviour
 {
 

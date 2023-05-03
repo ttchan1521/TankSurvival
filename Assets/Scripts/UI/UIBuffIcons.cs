@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace UI
 {
-
+    //panel buff icon
     public class UIBuffIcons : MonoBehaviour
     {
 
@@ -16,14 +16,10 @@ namespace UI
         private CanvasGroup canvasGroup;
         private static UIGameOver instance;
 
-        public List<UIObject> itemList = new List<UIObject>();
+        public List<UIObject> itemList = new List<UIObject>(); //list icon
 
         public void Awake()
         {
-            //instance=this;
-            //thisObj=gameObject;
-            //canvasGroup=thisObj.GetComponent<CanvasGroup>();
-            //if(canvasGroup==null) canvasGroup=thisObj.AddComponent<CanvasGroup>();
 
             for (int i = 0; i < 1; i++)
             {

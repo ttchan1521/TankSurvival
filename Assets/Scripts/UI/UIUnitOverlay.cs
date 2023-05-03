@@ -6,6 +6,8 @@ using System.Collections;
 namespace UI
 {
 
+
+    //thanh máu
     public class UIUnitOverlay : MonoBehaviour
     {
 
@@ -26,7 +28,6 @@ namespace UI
             fullSize = rectT.sizeDelta;
         }
 
-        // Update is called once per frame
         void LateUpdate()
         {
             if (unit == null)

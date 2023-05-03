@@ -11,8 +11,6 @@ using System.Collections.Generic;
 public class WeaponDB : MonoBehaviour
 {
 
-    //private static bool initiated=false;
-    //private static List<Weapon> allweaponList=new List<Weapon>();	//for storing all effect during runtime
 
     public static WeaponDB instance;
     public static void Init()

@@ -7,47 +7,33 @@ using System.Collections.Generic;
 public class Trigger : MonoBehaviour
 {
 
-    public delegate void TriggerCallback(Trigger trigger);      //used for objective only
+    public delegate void TriggerCallback(Trigger trigger);
     protected List<TriggerCallback> triggerCallbackList = new List<TriggerCallback>();
     public void SetTriggerCallback(TriggerCallback callback) { triggerCallbackList.Add(callback); }
 
+    public bool destroyedAfterTriggered = true; //destroy trigger sau khi va chạm
 
-    public virtual string GetEditorDescription() { return "Trigger base class is not intended to be used use child class instead"; }
+    public AudioClip triggeredSFX; //Âm thanh khi va chạm
 
-
-    [Space(5)]
-    [Tooltip("Check if the tirgger object is to be destroyed after it's triggered")]
-    public bool destroyedAfterTriggered = true;
-
-    [Space(5)]
     [HideInInspector]
-    [Tooltip("The audio clip to play when the trigger is triggered")]
-    public AudioClip triggeredSFX;
+    public GameObject triggerEffObj; //spawn effect tại vị trí player
+   
+    [HideInInspector]
+    public bool autoDestroyEffObj = true; // auto destroy effect
 
+    [HideInInspector]
+    public float effActiveDur = 2;      //duration effect
 
-
-    [Tooltip("The effect object to spawn at the player position when the trigger is activated. Optional")]
     [HideInInspector]
-    public GameObject triggerEffObj;
-    [Tooltip("Check to auto destroy the trigger effect object")]
-    [HideInInspector]
-    public bool autoDestroyEffObj = true;
-    [Tooltip("The active duration of the effect object")]
-    [HideInInspector]
-    public float effActiveDur = 2;      //duration
-    [Tooltip("Check to spawn the effect at player position, otherwise the effect will be spawn at the trigger position")]
-    [HideInInspector]
-    public bool spawnEffectAtOrigin = false;    //check to have the effect spawn at the position of the trigger, otherwise it spawned at triggering object (player/unit) position
+    public bool spawnEffectAtOrigin = false;    //spawn effect tại trigger hay player
     protected Vector3 effPos;
 
-    [Space(10)]
-    [Tooltip("The effect object to spawn at the new player position when the trigger is activated. Optional")]
     [HideInInspector]
-    public GameObject altTriggerEffObj; //for teleport and switch-player
-    [Tooltip("Check to auto destroy the trigger effect object at new player position")]
+    public GameObject altTriggerEffObj; //effect ở vị trí mới của player
+    // [Tooltip("Check to auto destroy the trigger effect object at new player position")]
     [HideInInspector]
     public bool autoDestroyAltEffObj = true;
-    [Tooltip("The active duration of the effect object at new player position")]
+    // [Tooltip("The active duration of the effect object at new player position")]
     [HideInInspector]
     public float altEffActiveDur = 2;
     protected Vector3 targetEffPos;
@@ -96,15 +82,12 @@ public class Trigger : MonoBehaviour
     }
 
 
-    //called when the trigger is triggered
     protected void Triggered()
     {
         AudioManager.PlaySound(triggeredSFX);
 
         if (triggerEffObj != null)
         {
-            // if(!autoDestroyEffObj) ObjectPoolManager.Spawn(triggerEffObj, effPos, Quaternion.identity);
-            // else ObjectPoolManager.Spawn(triggerEffObj, effPos, Quaternion.identity, effActiveDur);
             var poolObj = triggerEffObj.GetComponent<ShootObject>().GetPoolItem(effPos, Quaternion.identity);
             if (autoDestroyEffObj)
             {
@@ -113,8 +96,7 @@ public class Trigger : MonoBehaviour
         }
         if (UseAltTriggerEffectObj() && altTriggerEffObj == null)
         {
-            // if(!autoDestroyAltEffObj) ObjectPoolManager.Spawn(altTriggerEffObj, targetEffPos, Quaternion.identity);
-            // else ObjectPoolManager.Spawn(altTriggerEffObj, targetEffPos, Quaternion.identity, altEffActiveDur);
+           
             var poolObj = altTriggerEffObj.GetComponent<ShootObject>().GetPoolItem(targetEffPos, Quaternion.identity);
             if (autoDestroyAltEffObj)
             {

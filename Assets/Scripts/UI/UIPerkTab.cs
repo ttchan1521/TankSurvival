@@ -12,20 +12,15 @@ namespace UI
 
         private PlayerPerk playerPerk;
 
-        [Space(5)]
-        //public bool manuallySetup=false;
         public bool manualSetup = false;
 
         //[HideInInspector] public List<int> perkIDList=new List<int>();
         [HideInInspector] public List<int> unAvaiPerkIDList = new List<int>();
 
-        [Header("PerkItemList (for manual setup)")]
         public List<UIPerkItem> perkItemList = new List<UIPerkItem>();
         private int selectID = 0;
 
-        [Header("UI Element Assignment")]
-        public Text lbPerkPoint;
-        public Text lbPerkRsc;
+        public Text lbPerkRsc; //số tiền hiện có
 
         public Text lbPerkName;
         public Text lbPerkDesp;

@@ -8,8 +8,6 @@ namespace UI
 
     public class UIHUD : MonoBehaviour
     {
-
-        //public Text lbCredit;
         public Text lbScore;
         public Text lbTimer;
 
@@ -17,9 +15,6 @@ namespace UI
 
         public Text lbHP;
         public Text lbEnergy;
-
-        //public Slider sliderHitPointBar;
-        //public Slider sliderEnergyBar;
 
         public Slider sliderHPBar;
         public Slider sliderEnergyBar;
@@ -30,11 +25,6 @@ namespace UI
         public Text opponentUsername;
         private PlayerProgression playerProgress;
 
-        //public RectTransform barHP;
-        //public RectTransform barEnergy;
-        //private float barHPLength;
-        //private float barEnergyLength;
-
         private float hitPointFull;
 
         public UIButton uiButtonWeapon;
@@ -42,8 +32,6 @@ namespace UI
         public GameObject abilityButtonObj;
 
 
-
-        //private int credit = 0;
         private int score = 0;
         private float minUpdateSpeed = 0.05f;
         private float updateSpeed = 0f;
@@ -56,8 +44,6 @@ namespace UI
 
             uiButtonWeapon.labelAlt2.text = "";
 
-            //barHPLength=barHP.parent.GetComponent<RectTransform>().sizeDelta.x;
-            //barEnergyLength=barEnergy.parent.GetComponent<RectTransform>().sizeDelta.x;
         }
 
         void Start()
@@ -96,15 +82,12 @@ namespace UI
         // Update is called once per frame
         void Update()
         {
-            //if timer is enabled, show the timer
+            //nếu tính thời gian
             if (GameControl.EnableTimer())
             {
                 float remainingDuration = GameControl.GetRemainingDuration();
                 if (remainingDuration > 0)
                 {
-                    //float duration=objective.survivalDuration;
-                    //int minO=(int)Mathf.Floor(duration/60);
-                    //int secO=(int)Mathf.Floor(duration%60);
 
                     int minR = (int)Mathf.Floor(remainingDuration / 60);
                     int secR = (int)Mathf.Floor(remainingDuration % 60);
@@ -126,23 +109,17 @@ namespace UI
             if (player == null)
             {
                 lbHP.text = "0/" + player.GetFullHitPoint();
-                //barHP.sizeDelta=new Vector2(-barHPLength, 0);
                 sliderHPBar.value = 0;
                 return;
             }
 
 
-            //sliderHitPointBar.value=player.hitPoint/player.hitPointFull;
-            //sliderEnergyBar.value=player.energy/player.energyFull;
-
 
             sliderHPBar.value = player.hitPoint / player.GetFullHitPoint();
             lbHP.text = Mathf.Round(player.hitPoint) + "/" + Mathf.Round(player.GetFullHitPoint());
-            //barHP.sizeDelta=new Vector2((1-(player.hitPoint/player.GetFullHitPoint()))*-barHPLength, 0);
 
             sliderEnergyBar.value = player.energy / player.GetFullEnergy();
             lbEnergy.text = Mathf.Round(player.energy) + "/" + Mathf.Round(player.GetFullEnergy());
-            //barEnergy.sizeDelta=new Vector2((1-(player.energy/player.GetFullEnergy()))*-barEnergyLength, 0);
 
 
             if (playerProgress != null) sliderExpBar.value = Mathf.Max(0.01f, playerProgress.GetCurrentLevelProgress());
@@ -150,13 +127,11 @@ namespace UI
 
             if (!reloading)
             {
-                // if (!player.UseEnergyAsAmmo())
-                // {
-                    string clip = player.GetCurrentClip() < 0 ? "∞" : player.GetCurrentClip().ToString();
-                    string ammo = player.GetAmmo() < 0 ? "∞" : player.GetAmmo().ToString();
-                    uiButtonWeapon.labelAlt.text = clip + "/" + ammo;
-                // }
-                // else uiButtonWeapon.labelAlt.text = "Use Energy";
+
+                string clip = player.GetCurrentClip() < 0 ? "∞" : player.GetCurrentClip().ToString();
+                string ammo = player.GetAmmo() < 0 ? "∞" : player.GetAmmo().ToString();
+                uiButtonWeapon.labelAlt.text = clip + "/" + ammo;
+
             }
 
 
@@ -171,13 +146,6 @@ namespace UI
             }
 
 
-            // int creditTgt = GameControl.GetCredits();
-            // if (credit != creditTgt)
-            // {
-            //     updateSpeed = Mathf.Max(minUpdateSpeed, Mathf.Abs(1f / (float)(creditTgt - credit)));
-            //     credit = (int)Mathf.Round(Mathf.Lerp(credit, creditTgt, updateSpeed));
-            // }
-
             int scoreTgt = GameControl.GetScore();
             if (score != scoreTgt)
             {
@@ -185,7 +153,6 @@ namespace UI
                 score = (int)Mathf.Round(Mathf.Lerp(score, scoreTgt, updateSpeed));
             }
 
-            //lbCredit.text="";	//lbCredit.text="Credits: "+(credit<0 ? "-" : "")+"$"+Mathf.Abs(credit);
             lbScore.text = "Score: " + score;
         }
 
@@ -197,7 +164,7 @@ namespace UI
         }
         IEnumerator ReloadRoutine()
         {
-            yield return null;      //in case the the previous weapon was switch while reloading, give it a frame to stop the ReloadRoutine
+            yield return null; 
 
             reloading = true;
             uiButtonWeapon.button.interactable = false;

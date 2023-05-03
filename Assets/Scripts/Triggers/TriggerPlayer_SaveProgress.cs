@@ -4,11 +4,6 @@ using System.Collections;
 public class TriggerPlayer_SaveProgress : Trigger
 {
 
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nThe progress made on PlayerProgression and PlayerPerk is saved when player hit this trigger";
-    }
-
     public override void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.GetComponent<UnitPlayer>() != null)

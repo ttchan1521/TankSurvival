@@ -3,14 +3,6 @@ using System.Collections;
 
 public class TriggerPlayer_Teleport : Trigger
 {
-
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nHitting this trigger will teleport player to a specific location";
-    }
-
-    [Space(5)]
-    [Tooltip("The transform which mark the position where the player should be teleport to")]
     public Transform targetTransform;
 
 
@@ -25,7 +17,7 @@ public class TriggerPlayer_Teleport : Trigger
 
         if (player != null)
         {
-            //for effect, check parent class
+    
             if (!spawnEffectAtOrigin) effPos = player.transform.position;
             targetEffPos = targetTransform.position;
 

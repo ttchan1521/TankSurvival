@@ -9,13 +9,11 @@ public class DemoUIInstruction : MonoBehaviour
     public GameObject instructionObjShow;
     public GameObject instructionObjHide;
 
-    // Use this for initialization
     void Start()
     {
         UpdateShow();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))

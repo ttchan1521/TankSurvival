@@ -7,14 +7,6 @@ using System.Collections.Generic;
 public class TriggerPlayer_UnitSpawner : Trigger
 {
 
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nThe spawner listed will start spawning when player hit this trigger";
-    }
-
-
-    [Space(10)]
-    [Tooltip("The UnitSpawner to start spawning when this trigger is triggered")]
     public List<UnitSpawner> spawnerList = new List<UnitSpawner>();
 
     public override void OnTriggerEnter(Collider collider)

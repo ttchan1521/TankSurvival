@@ -1,8 +1,7 @@
-﻿//for random item in the game that needs to follow the player
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
+//random xung quanh player
 public class FollowPlayer : MonoBehaviour
 {
 
@@ -13,7 +12,6 @@ public class FollowPlayer : MonoBehaviour
         thisT = transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         UnitPlayer player = GameControl.GetPlayer();

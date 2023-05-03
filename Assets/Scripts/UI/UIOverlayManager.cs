@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace UI
 {
-
+    //các thanh máu của unit
     public class UIOverlayManager : MonoBehaviour
     {
 
@@ -16,7 +16,7 @@ namespace UI
         private static UIOverlayManager instance;
         public static UIOverlayManager GetInstance() { return instance; }
 
-        // Use this for initialization
+
         void Awake()
         {
             instance = this;

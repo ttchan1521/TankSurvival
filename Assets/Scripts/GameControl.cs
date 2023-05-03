@@ -15,9 +15,9 @@ using BestHTTP;
 
 public enum _GameState
 {
-    Playing,        //when game is playing
-    Paused,     //when game is paused
-    GameOver,   //when game is over
+    Playing,
+    Paused,
+    GameOver,
 }
 
 public class GameControl : MonoBehaviour
@@ -36,15 +36,11 @@ public class GameControl : MonoBehaviour
 
     [HideInInspector] public float remainingDuration = 0;
 
-    public static bool EnableTimer() { return instance != null ? instance.enableTimer : false; }    //called to check if timer is enabled
-    public static bool TimesUp() { return instance != null ? instance.timesUp : false; }            //called to check if time is up
-    public static float GetRemainingDuration() { return instance != null ? instance.remainingDuration : 0; }    //get remaining time
+    public static bool EnableTimer() { return instance != null ? instance.enableTimer : false; }
+    public static bool TimesUp() { return instance != null ? instance.timesUp : false; }
+    public static float GetRemainingDuration() { return instance != null ? instance.remainingDuration : 0; }
 
-    //credit is not in used atm
-    // [HideInInspector] public int credits = 0;
-    // public static int GetCredits() { return instance.credits; }
-    // public static void GainCredits(int value) { instance.credits += value; }
-    // public static void SpendCredits(int value) { instance.credits = Mathf.Max(0, instance.credits - value); }
+
 
     [HideInInspector] public int score = 0;
     public static int GetScore() { return instance.score; }
@@ -57,7 +53,6 @@ public class GameControl : MonoBehaviour
     public static void ColletibleCollected(Collectible item) { if (instance != null && instance.objective != null) instance.objective.ColletibleCollected(item); }
 
 
-    //the active player unit in the game
     private UnitPlayer player;
     public static UnitPlayer GetPlayer() { return instance == null ? null : instance.player; }
     public static void SetPlayer(UnitPlayer newPlayer) { if (instance != null) instance.player = newPlayer; }
@@ -67,8 +62,7 @@ public class GameControl : MonoBehaviour
     public bool enableAltFire = false;
     public static bool EnableAltFire() { return instance.enableAltFire; }
 
-    // public bool enableContinousFire = true;
-    // public static bool EnableContinousFire() { return instance.enableContinousFire; }
+
 
     public bool enableAutoReload = true;
     public static bool EnableAutoReload() { return instance.enableAutoReload; }
@@ -85,20 +79,16 @@ public class GameControl : MonoBehaviour
 
     [Header("Level Objective")]
     public ObjectiveTracker objective;
-    //public static void SetObjective(ObjectiveTracker objInstance){ instance.objective=objInstance; }
-    //public static void ObjectiveComplete(ObjectiveTracker objectiveInstance){
-    //	if(objectiveInstance.mainObjective) GameOver(true);
-    //}
 
 
 
-    //call to inform objective that a unitspawner has been cleared
+
     public static void UnitSpawnerCleared(UnitSpawner spawner) { if (instance != null) instance._UnitSpawnerCleared(spawner); }
     public void _UnitSpawnerCleared(UnitSpawner spawner)
     {
         if (objective != null) objective.SpawnerCleared(spawner);
     }
-    //call to inform objective that a unit has been destroyed
+  
     public static void UnitDestroyed(Unit unit) { if (instance != null) instance._UnitDestroyed(unit); }
     public void _UnitDestroyed(Unit unit)
     {
@@ -106,14 +96,12 @@ public class GameControl : MonoBehaviour
     }
 
 
-
-    //how many time player can respawn
     public int playerLife = 0;
     public static int GetPlayerLife() { return instance.playerLife; }
     public static void GainLife() { instance.playerLife += 1; }
 
 
-    public Transform startPoint;    //the designated player start point, used as the first respawn point
+    public Transform startPoint;
     private Vector3 respawnPoint;
     public static void SetRespawnPoint(Vector3 pos)
     {
@@ -129,12 +117,11 @@ public class GameControl : MonoBehaviour
 
         if (respawning) return;
 
-        //player unit is destroyed, check playerLife and respawn player if need be
 
         playerLife -= 1;
 
         if (playerLife <= 0)
-        {   //playerLife's used up, game over
+        {   
             if (pvp)
             {
                 NetworkManager.Instance.Manager.Socket
@@ -148,37 +135,33 @@ public class GameControl : MonoBehaviour
             return;
         }
 
-        respawning = true;  //set respawning flag to true to prevent duplicate spawn
+        respawning = true;
 
-        //create a duplicate of current player unit so the selected weapon and ability is retained
+
         GameObject obj = (GameObject)Instantiate(player.gameObject, player.thisT.position, player.thisT.rotation);
         player = obj.GetComponent<UnitPlayer>();
         player.hitPoint = player.GetFullHitPoint();
         player.Start();
         player.ClearAllEffect();
 
-        //set the new player unit to false to give it a little delay before showing it again
+        //đợi một thời gian rồi respawn
         obj.SetActive(false);
 
-        //call the coroutine which will do the delay and reactivate the new unit
         StartCoroutine(ActivateRepawnPlayer());
     }
     IEnumerator ActivateRepawnPlayer()
     {
-        //delay for 1 second
         yield return new WaitForSeconds(1);
 
-        //after the delay, set the new player unit to the respawn point and activate it
         player.thisT.position = respawnPoint;
         player.thisObj.SetActive(true);
 
-        respawning = false; //clear the respawning flag
+        respawning = false;
 
         TDS.PlayerRespawned();
     }
 
 
-    //a unique ID for each new active unit in game, each time a value is retrieved to be given to a new unit, the number is increased
     private int unitInstanceID = 0;
     public static int GetUnitInstanceID()
     {
@@ -216,10 +199,7 @@ public class GameControl : MonoBehaviour
     {
         instance = this;
 
-        //QualitySettings.vSyncCount=1;
-        //Application.targetFrameRate=60;
 
-        //get the unit in game
         if (pvp)
         {
 
@@ -229,20 +209,15 @@ public class GameControl : MonoBehaviour
             player = (UnitPlayer)FindObjectOfType(typeof(UnitPlayer));
         }
 
-        //setup the collision rules
         Physics.IgnoreLayerCollision(TDS.GetLayerShootObject(), TDS.GetLayerShootObject(), !shootObject);
         Physics.IgnoreLayerCollision(TDS.GetLayerShootObject(), TDS.GetLayerCollectible(), !collectible);
 
         Physics.IgnoreLayerCollision(TDS.GetLayerShootObject(), TDS.GetLayerTerrain(), true);
         Physics.IgnoreLayerCollision(TDS.GetLayerShootObject(), TDS.GetLayerTrigger(), true);
 
-        //clear all the spawner and tracker sicne it's a new game
         UnitTracker.Clear();
         UnitSpawnerTracker.Clear();
 
-        //this is not required, each individual unit and spawner will register itself to the tracker
-        //UnitTracker.ScanForUnit();
-        //UnitSpawnerTracker.ScanForSpawner();
     }
     void OnDestroy()
     {
@@ -250,36 +225,35 @@ public class GameControl : MonoBehaviour
         UnitSpawnerTracker.Clear();
     }
 
-    //start of the game
     void Start()
     {
-        //if timer is enabled, start the count down
+
         if (enableTimer) StartCoroutine(TimerCountDown());
 
-        //set respawn point
+
         if (startPoint != null) SetRespawnPoint(startPoint.position);
         else SetRespawnPoint(player.thisT.position);
     }
 
-    //the coroutine for counting down timer
+
     IEnumerator TimerCountDown()
     {
         remainingDuration = timerDuration;
-        //keep looping at every frame while the count down is not complete
+
         while (remainingDuration > 0)
         {
-            while (!IsGamePlaying()) yield return null; //if game is not playing, hold the count
-            remainingDuration -= Time.deltaTime;            //reduce the remaining duration by how much time escalated since last frame
+            while (!IsGamePlaying()) yield return null; 
+            remainingDuration -= Time.deltaTime;
             yield return null;
         }
         timesUp = true;
-        objective.CheckObjectiveComplete(); //check objective
+        objective.CheckObjectiveComplete();
     }
 
 
-    private bool gameOver = false;  //a local flag to prevent gameover routine being run twice
+    private bool gameOver = false;
     public static void GameOver(bool won)
-    {   //static function to end the game
+    {   
         if (!instance.gameObject.activeInHierarchy) return;
         instance.StartCoroutine(instance._GameOver(won));
 
@@ -317,12 +291,11 @@ public class GameControl : MonoBehaviour
     }
     public IEnumerator _GameOver(bool won)
     {
-        if (gameOver) yield break;  //stop the coroutine if it has already been called
+        if (gameOver) yield break; //stop
         gameOver = true;
 
         Debug.Log("game over - " + (won ? "win" : "lost"));
 
-        //delay 1.5 second before issuing a global gameover event
         yield return new WaitForSeconds(1.5f);
         gameState = _GameState.GameOver;
         TDS.EndGame(won);

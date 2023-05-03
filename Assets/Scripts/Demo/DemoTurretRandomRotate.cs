@@ -10,7 +10,6 @@ public class DemoTurretRandomRotate : MonoBehaviour
     private Quaternion targetRot;
     private float rotateSpeed;
 
-    // Use this for initialization
     void Start()
     {
         StartCoroutine(RotateRoutine());
@@ -28,7 +27,6 @@ public class DemoTurretRandomRotate : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRot, Time.deltaTime * rotateSpeed);

@@ -11,7 +11,6 @@ public class DemoUnitHover : MonoBehaviour
     public float frequency = 6.5f;
     private float offset1;
 
-    // Use this for initialization
     void Start()
     {
         thisT = transform;
@@ -19,7 +18,6 @@ public class DemoUnitHover : MonoBehaviour
         offset1 = Random.Range(-frequency, frequency);
     }
 
-    // Update is called once per frame
     void Update()
     {
         float posY = magnitude * Mathf.Sin(frequency * Time.time + offset1);

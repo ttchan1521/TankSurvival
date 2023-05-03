@@ -1,7 +1,4 @@
-﻿//utilities script to move various object
-
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class Movement : MonoBehaviour
@@ -33,7 +30,7 @@ public class Movement : MonoBehaviour
 
     [Tooltip("The distance limit of the object from the origin (object starting point)")]
     public float limit = 15;
-    public float speed = 5; //movement speed
+    public float speed = 5;
 
     [Tooltip("Check to randomize the move speed upon starting the script")]
     public bool randomizeSpeed = false;
@@ -62,7 +59,6 @@ public class Movement : MonoBehaviour
     }
 
 
-    // Update is called once per frame
     void Update()
     {
         if (unit != null && unit.IsStunned()) return;
@@ -73,7 +69,6 @@ public class Movement : MonoBehaviour
 
         thisT.Translate(dir * travelV * speed * Time.deltaTime, space);
 
-        //when hit limit, check move mode
         if (Vector3.Distance(thisT.position, startPos) >= limit)
         {
             if (type == _MovType.PingPoing)

@@ -4,15 +4,7 @@ using System.Collections;
 
 public class TriggerPlayer_RespawnPoint : Trigger
 {
-
-    [Space(5)]
-    [Tooltip("Check to have player unit save any progress made in leveling and perks")]
     public bool triggerSave = false;
-
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nIt set the player respawn point to the trigger's position";
-    }
 
     public override void OnTriggerEnter(Collider collider)
     {

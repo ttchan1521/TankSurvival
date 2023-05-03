@@ -15,7 +15,7 @@ public enum _AbilityType
     Custom,
 }
 
-public enum _MoveType { Blink, Dash, Teleport }
+public enum _MoveType { Dash, Teleport }
 
 [System.Serializable]
 public class Ability : Item
@@ -24,12 +24,10 @@ public class Ability : Item
 
     public _AbilityType type;
 
-    //public float aoeRadius=3;	//aoeradius on aStats is used instead
-
-    //used for movement only
+    //sử dụng cho movement
     public _MoveType moveType;
     public float duration = 0.2f;
-    //end use for movement
+    //end sử dụng cho movement
 
     public float cost;
 
@@ -48,21 +46,16 @@ public class Ability : Item
 
     public AudioClip launchSFX;
 
-    //called at the when an ability is first added to player
+    //call when an ability added to player
     public void Init()
     {
         aStats.Init();
 
         currentCD = 0;
-
-        if (type == _AbilityType.Shoot && shootObject == null)
-        {
-            Debug.LogWarning("Ability (" + name + ") - is shoot type but no shoot object has been assigned", null);
-        }
     }
 
 
-    //check if the ability is ready to launch
+    //check if the ability is ready
     public string IsReady()
     {
         if (GameControl.GetPlayer().energy < GetCost()) return "Insufficient Energy";
@@ -71,55 +64,52 @@ public class Ability : Item
     }
 
 
-    //launch the ability, at the position given
+    //active ability
     public void Activate(Vector3 pos = default(Vector3), bool useCostNCD = true)
     {
         if (useCostNCD)
         {
-            currentCD = GetCooldown();                          //set the cooldown
-            GameControl.GetPlayer().energy -= GetCost();    //deduct player energy by the ability cost
+            currentCD = GetCooldown();                          //set cooldown
+            GameControl.GetPlayer().energy -= GetCost();    //giảm energy player theo cost
         }
 
         AudioManager.PlaySound(launchSFX);
 
-        //instantiate the launch object, if there's any
+        //custom type
         if (launchObj != null)
         {
             GameObject obj = (GameObject)MonoBehaviour.Instantiate(launchObj, pos, Quaternion.identity);
             if (autoDestroyLaunchObj) MonoBehaviour.Destroy(obj, launchObjActiveDuration);
         }
 
-        //for aoe ability
         if (type == _AbilityType.AOE || type == _AbilityType.AOESelf)
         {
-            //get all the collider in range
+            //get all collider in range
             Collider[] cols = Physics.OverlapSphere(pos, GetAOERadius());
             for (int i = 0; i < cols.Length; i++)
             {
                 Unit unitInstance = cols[i].gameObject.GetComponent<Unit>();
 
-                //only continue if the collider is a unit and is not player
+                //apply attack lên unit không phải player
                 if (unitInstance != null && unitInstance != GameControl.GetPlayer())
                 {
-                    //create an AttackInstance and mark it as AOE attack
                     AttackInstance aInstance = new AttackInstance(GameControl.GetPlayer(), GetRuntimeAttackStats());
                     aInstance.isAOE = true;
                     aInstance.aoeDistance = Vector3.Distance(pos, cols[i].transform.position);
-                    //apply the AttackInstance
+                    //apply attack
                     unitInstance.ApplyAttack(aInstance);
                 }
             }
 
-            //apply explosion force
+            //apply lực đẩy
             TDSPhysics.ApplyExplosionForce(pos, aStats);
         }
 
-        //for ability that affects all hostile unit in game
+        //apply effect lên toàn bộ kẻ thù
         else if (type == _AbilityType.All)
         {
-            //get all hostile unit for unit tracker
+            //lấy tất cả kẻ thù
             List<Unit> unitList = new List<Unit>(UnitTracker.GetAllUnitList());
-            //loop through all unit, create an AttackInstance and apply the attack
             for (int i = 0; i < unitList.Count; i++)
             {
                 AttackInstance aInstance = new AttackInstance(GameControl.GetPlayer(), GetRuntimeAttackStats());
@@ -127,46 +117,37 @@ public class Ability : Item
             }
         }
 
-        //for ability that meant to be cast on player unit
+        //apply lên player
         else if (type == _AbilityType.Self)
         {
-            //apply the attack on player 
             AttackInstance aInstance = new AttackInstance(GameControl.GetPlayer(), GetRuntimeAttackStats());
             GameControl.GetPlayer().ApplyAttack(aInstance);
         }
 
-        //for ability that fires a shoot object
+        //shoot type
         else if (type == _AbilityType.Shoot)
         {
-            //get the position and rotation to fire the shoot object from
+            //get the position của nòng súng player
             Transform srcT = GetShootObjectSrcTransform();
-            Vector3 shootPos = srcT.TransformPoint(shootPosOffset);
+            Vector3 shootPos = srcT.TransformPoint(shootPosOffset); //chuyển local to world space
             pos.y = shootPos.y;
-            //Quaternion shootRot = Quaternion.LookRotation(pos - shootPos);
             Quaternion shootRot = GameControl.GetPlayer().turretObj.rotation;
 
-            //create the AttackInstance
+            //create the AttackInstance với nguồn gây ra là player
             AttackInstance aInstance = new AttackInstance(GameControl.GetPlayer(), GetRuntimeAttackStats());
 
-            //Instantiate the shoot-object and fires it
-            // GameObject soObj = (GameObject)MonoBehaviour.Instantiate(shootObject, shootPos, shootRot);
-            // ShootObject soInstance = soObj.GetComponent<ShootObject>();
+            //Instantiate the shoot-object
             ShootObject soInstance = shootObject.GetComponent<ShootObject>().GetPoolItem<ShootObject>(shootPos, shootRot);
             soInstance.Shoot(GameControl.GetPlayer().thisObj.layer, GetRange(), srcT, aInstance);
         }
 
         else if (type == _AbilityType.Movement)
         {
-            if (moveType == _MoveType.Blink)
+            if (moveType == _MoveType.Dash) //tốc biến
             {
-                GameControl.GetPlayer().thisT.position += GameControl.GetPlayer().thisT.TransformVector(Vector3.forward * range);
-            }
-            else if (moveType == _MoveType.Dash)
-            {
-                //GameControl.GetPlayer().thisT.position+=GameControl.GetPlayer().thisT.TransformPoint(Vector3.z)*range;
                 GameControl.GetPlayer().Dash(range, duration);
             }
-            else if (moveType == _MoveType.Teleport)
+            else if (moveType == _MoveType.Teleport) //di chuyển sang vị trí khác
             {
                 Transform playerT = GameControl.GetPlayer().thisT;
                 Vector3 tgtPos = new Vector3(pos.x, playerT.position.y, pos.z);
@@ -182,7 +163,7 @@ public class Ability : Item
     }
 
 
-    //to get the player turret object (for shooting ability) 
+    //get nòng súng player
     public Transform GetShootObjectSrcTransform()
     {
         return GameControl.GetPlayer().turretObj != null ? GameControl.GetPlayer().turretObj : GameControl.GetPlayer().thisT;
@@ -239,21 +220,10 @@ public class Ability : Item
         aStats.damageMin *= (1 + perk.GetAbilityDamageMul());
         aStats.damageMax *= (1 + perk.GetAbilityDamageMul());
 
-        // aStats.critChance *= (1 + perk.GetAbilityCritMul(ID));
-        // aStats.critMultiplier *= (1 + perk.GetAbilityCritMulMul(ID));
-
         aStats.aoeRadius *= (1 + perk.GetAbilityAOEMul());
 
         return aStats;
     }
-
-
-    public void ChangeEffect(int newID, int newIdx)
-    {   //for perk
-        aStats.effectID = newID;
-        aStats.effectIdx = newIdx;
-    }
-
 
 }
 

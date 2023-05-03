@@ -14,7 +14,6 @@ public class ProgressionStats_DB : ScriptableObject
 
     public LevelProgressionStats stats;
 
-    //only used in runtime to load db data to runtime PlayerProgression
     public static void CopyStats(PlayerProgression progress)
     {
         Init();

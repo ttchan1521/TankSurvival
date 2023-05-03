@@ -43,8 +43,6 @@ public class BulletStorm : MonoBehaviour
                 UnitPlayer player = GameControl.GetPlayer();
                 AttackInstance attInstance = new AttackInstance(player, aStats);
 
-                // GameObject soObj = (GameObject)Instantiate(shootObject, sp.position, sp.rotation);
-                // soObj.GetComponent<ShootObject>().Shoot(player.thisObj.layer, range, sp, attInstance);
                 ShootObject shootObj = shootObject.GetPoolItem<ShootObject>(sp.position, sp.rotation);
                 shootObj.Shoot(player.thisObj.layer, range, sp, attInstance);
             }

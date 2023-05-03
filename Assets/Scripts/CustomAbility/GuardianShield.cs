@@ -6,7 +6,7 @@ public class GuardianShield : MonoBehaviour
 
     public float duration = 2;
 
-    // Use this for initialization
+
     IEnumerator Start()
     {
         transform.parent = GameControl.GetPlayer().turretObj;

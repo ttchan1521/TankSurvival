@@ -42,10 +42,10 @@ namespace UI
 
     public class UIItemCallback : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
-        private Callback enterCB;
-        private Callback exitCB;
-        private CallbackInputDependent downCB;
-        private CallbackInputDependent upCB;
+        private Callback enterCB; //hover
+        private Callback exitCB; //bỏ hover
+        private CallbackInputDependent downCB; //click
+        private CallbackInputDependent upCB; //bỏ click
 
         public void SetEnterCallback(Callback callback) { enterCB = callback; }
         public void SetExitCallback(Callback callback) { exitCB = callback; }
@@ -183,7 +183,7 @@ namespace UI
 
 
 
-    //used in UIWeaponAbilityTab only
+    //used in UIWeaponAbilityTab
     [System.Serializable]
     public class UISelectItem : UIButton
     {
@@ -225,8 +225,6 @@ namespace UI
     }
 
 
-
-    //used in perk menu only
     [System.Serializable]
     public class UIPerkItem : UIButton
     {

@@ -12,27 +12,16 @@ namespace UI
 
         public enum _PerkTabType { LevelList, RepeatableList, Item, None }
 
-
-        [Tooltip("Check if this menu is the only menu in the scene (being used as inter-level upgrade screen for instance)")]
         public bool LevelPerkMenuOnly = false;
 
-
-        [Space(10)]
-        [Tooltip("Check to enable the stats panel")]
         public bool enableStatsTab = true;
         public UIStatsTab uiStatsTab;
 
 
-        [Space(10)]
-        [Tooltip("The perk panel type:\n\nLevelList - A simple non-interactable list showing the perk to be unlocked at specific level\n\nRepeatableList - a list type perk menu designed for attribute style perk\n\nItem -  A full perk menu, with option to configure custom tech or skill-tree\n\nNone - Don't how any perk menu")]
         public _PerkTabType perkTabType = _PerkTabType.Item;
 
-        [Space(10)]
-        public UIPerkTabListDisplay uiLPerkTabDisplay;
-        public UIPerkTabList uiPerkTabList;
         public UIPerkTab uiPerkTab;
 
-        [Space(10)]
         public UIButton butClose;
 
 
@@ -66,16 +55,16 @@ namespace UI
 
             uiStatsTab.gameObject.SetActive(enableStatsTab);
 
-            uiLPerkTabDisplay.gameObject.SetActive(perkTabType == _PerkTabType.LevelList);
-            uiPerkTabList.gameObject.SetActive(perkTabType == _PerkTabType.RepeatableList);
+            // uiLPerkTabDisplay.gameObject.SetActive(perkTabType == _PerkTabType.LevelList);
+            // uiPerkTabList.gameObject.SetActive(perkTabType == _PerkTabType.RepeatableList);
             uiPerkTab.gameObject.SetActive(perkTabType == _PerkTabType.Item);
         }
 
         void Start()
         {
             if (enableStatsTab) uiStatsTab.Init();
-            if (perkTabType == _PerkTabType.LevelList) uiLPerkTabDisplay.Init();
-            if (perkTabType == _PerkTabType.RepeatableList) uiPerkTabList.Init();
+            // if (perkTabType == _PerkTabType.LevelList) uiLPerkTabDisplay.Init();
+            // if (perkTabType == _PerkTabType.RepeatableList) uiPerkTabList.Init();
             if (perkTabType == _PerkTabType.Item) uiPerkTab.Init();
 
             if (!LevelPerkMenuOnly)
@@ -111,8 +100,8 @@ namespace UI
 
             uiStatsTab.SetPlayer(player);
 
-            uiLPerkTabDisplay.SetPlayer(player);
-            uiPerkTabList.SetPlayer(player);
+            // uiLPerkTabDisplay.SetPlayer(player);
+            // uiPerkTabList.SetPlayer(player);
             uiPerkTab.SetPlayer(player);
         }
 
@@ -139,9 +128,9 @@ namespace UI
         {
             if (enableStatsTab) uiStatsTab.Show();
 
-            if (perkTabType == _PerkTabType.LevelList) uiLPerkTabDisplay.Show();
-            else if (perkTabType == _PerkTabType.RepeatableList) uiPerkTabList.Show();
-            else if (perkTabType == _PerkTabType.Item) uiPerkTab.Show();
+            // if (perkTabType == _PerkTabType.LevelList) uiLPerkTabDisplay.Show();
+            // else if (perkTabType == _PerkTabType.RepeatableList) uiPerkTabList.Show();
+            if (perkTabType == _PerkTabType.Item) uiPerkTab.Show();
 
             isOn = true;
             if (!LevelPerkMenuOnly) butClose.SetActive(true);

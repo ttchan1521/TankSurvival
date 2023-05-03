@@ -23,7 +23,6 @@ public class UnitPlayer : Unit
 
     public Weapon weapon;
     [HideInInspector] public bool weaponInitiated = false;  //for respawning unit
-    //[HideInInspector] public List<Ability> abilityList=new List<Ability>();
 
 
     [Header("Aiming")]

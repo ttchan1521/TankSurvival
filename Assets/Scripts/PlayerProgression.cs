@@ -119,20 +119,20 @@ public class PlayerProgression : MonoBehaviour
     //public static void LevelUp(){ instance._LevelUp(); }
     public void _LevelUp()
     {
-        PlayerPerk perk = player.GetPlayerPerk();
-        if (perk != null)
-        {
-            for (int i = 0; i < stats.perkUnlockingAtLevelList.Count; i++)
-            {
-                if (level + 1 == stats.perkUnlockingAtLevelList[i].level)
-                {
-                    for (int n = 0; n < stats.perkUnlockingAtLevelList[i].perkIDList.Count; n++)
-                        perk.PurchasePerk(stats.perkUnlockingAtLevelList[i].perkIDList[n], false);
+        // PlayerPerk perk = player.GetPlayerPerk();
+        // if (perk != null)
+        // {
+        //     for (int i = 0; i < stats.perkUnlockingAtLevelList.Count; i++)
+        //     {
+        //         if (level + 1 == stats.perkUnlockingAtLevelList[i].level)
+        //         {
+        //             for (int n = 0; n < stats.perkUnlockingAtLevelList[i].perkIDList.Count; n++)
+        //                 perk.PurchasePerk(stats.perkUnlockingAtLevelList[i].perkIDList[n], false);
 
-                    break;
-                }
-            }
-        }
+        //             break;
+        //         }
+        //     }
+        // }
 
         level += 1;
 

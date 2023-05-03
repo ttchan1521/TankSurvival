@@ -5,13 +5,6 @@ using System.Collections;
 public class TriggerPlayer_Damage : Trigger
 {
 
-    public override string GetEditorDescription()
-    {
-        return "This is a trigger for player unit\nHitting this trigger will damage player";
-    }
-
-    [Space(10)]
-    [Tooltip("damage inflicted to player when this trigger is triggered")]
     public int damageMin = 1;
     public int damageMax = 1;
 
