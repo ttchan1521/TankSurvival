@@ -14,7 +14,7 @@ public enum _SOType
 public class ShootObject : PooledObject
 {
 
-    //a class given to all fired shootobject, contain the aimed target information 
+    //mục tiêu 
     public class AimInfo
     {
         public Vector3 hitPoint;
@@ -27,14 +27,14 @@ public class ShootObject : PooledObject
             hitPoint = point;
         }
         public AimInfo(Unit tgt)
-        {           //for a specific target (used by AI unit)
+        {
             unit = tgt;
             hitPoint = unit.thisT.position;
             targetT = unit.thisT;
             collider = unit.GetCollider();
         }
         public AimInfo(RaycastHit hit)
-        {   //from the raycast from the cursor used to aim at the target
+        {
             hitPoint = hit.point;
             targetT = hit.transform;
             collider = hit.collider;

@@ -85,7 +85,7 @@ public class Weapon : MonoBehaviour
         ability = Ability_DB.CloneItem(abilityID);
         if (ability != null) ability.Init();
 
-        if (shootObject != null) ObjectPoolManager.New(shootObject.gameObject, 3);
+        // if (shootObject != null) ObjectPoolManager.New(shootObject.gameObject, 3);
         else Debug.LogWarning("shoot object for weapon unassigned", this);
 
         Reset();

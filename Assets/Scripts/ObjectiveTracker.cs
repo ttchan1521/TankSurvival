@@ -16,11 +16,11 @@ public class ObjectiveTracker : MonoBehaviour
     private bool scored = false;
 
     public bool clearAllHostile = true;
-    public List<Unit> unitList = new List<Unit>();  //unit exist
+    public List<Unit> unitList = new List<Unit>();  //unit tồn tại sẵn cần kill
 
-    public List<Unit> prefabList = new List<Unit>();        //unit chưa được spawn
-    public List<int> prefabCountList = new List<int>();     //số lượng unit cần kill
-    [HideInInspector] public List<int> prefabKillCountList = new List<int>(); //số lượng unit đã kill
+    public List<Unit> prefabList = new List<Unit>();        //unit spawn cần kill
+    public List<int> prefabCountList = new List<int>();     //số lượng mỗi unit spawn cần kill
+    [HideInInspector] public List<int> prefabKillCountList = new List<int>(); //số lượng mỗi unit spawn đã kill
 
 
     public bool clearAllSpawner = true;
@@ -31,11 +31,11 @@ public class ObjectiveTracker : MonoBehaviour
 
 
     //public bool clearAllCol=false;
-    public List<Collectible> collectibleList = new List<Collectible>(); //collectible exist
+    public List<Collectible> collectibleList = new List<Collectible>(); //collectible tồn tại sẵn cần collect
 
-    public List<Collectible> colPrefabList = new List<Collectible>();   //collectible cần collect
-    public List<int> colPrefabCountList = new List<int>();      //số lượng collectible cần collect
-    [HideInInspector] public List<int> colPrefabCollectedCountList = new List<int>(); //số lượng collectible đã collect
+    public List<Collectible> colPrefabList = new List<Collectible>();   //collectible spawn cần collect
+    public List<int> colPrefabCountList = new List<int>();      //số lượng mỗi collectible spawn cần collect
+    [HideInInspector] public List<int> colPrefabCollectedCountList = new List<int>(); //số lượng mỗi collectible spawn đã collect
 
 
     private bool isComplete = false;
@@ -171,7 +171,6 @@ public class ObjectiveTracker : MonoBehaviour
 
         unitList.Remove(unit);
 
-        //if the unit's prefab is in prefabList, increase the corresponding kill count
         for (int i = 0; i < prefabList.Count; i++)
         {
             if (unit.prefabID == prefabList[i].prefabID)
@@ -181,44 +180,33 @@ public class ObjectiveTracker : MonoBehaviour
             }
         }
 
-        //if unitList is cleared, check if objective is complete
         if (unitList.Count == 0) CheckObjectiveComplete();
     }
 
-
-    //called from GameControl when a unit spawner has done spawning (or is destroyed)
     public void SpawnerCleared(UnitSpawner spawner)
     {
         if (spawner == null) return;
 
-        //remove the cleared unit spawner from spawnerList
         spawnerList.Remove(spawner);
 
-        //if spawnerList is cleared, check if objective is complete
         if (spawnerList.Count == 0) CheckObjectiveComplete();
     }
 
 
-    //called from trigger objective
     public void Triggered(Trigger trigger)
     {
         if (trigger == null) return;
 
-        //remove the trigger from triggerList
         if (triggerList.Contains(trigger)) triggerList.Remove(trigger);
 
-        //if trigger list is cleared, check if objective is complete
         if (triggerList.Count == 0) CheckObjectiveComplete();
     }
 
 
-    //called from collectible OnTriggerEnter
     public void ColletibleCollected(Collectible item)
     {
-        //remove the collected item from specific collectible item list
         collectibleList.Remove(item);
 
-        //if the item's prefab is in prefabList, increase the corresponding collected count
         for (int i = 0; i < colPrefabList.Count; i++)
         {
             if (item.ID == colPrefabList[i].ID)
