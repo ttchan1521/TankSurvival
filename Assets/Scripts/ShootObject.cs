@@ -51,22 +51,21 @@ public class ShootObject : PooledObject
     [HideInInspector] public Transform thisT;
     [HideInInspector] public GameObject thisObj;
 
-    [HideInInspector] private float srcRange = 50;  //effective range for projectile and beam, value is retrived from shooter
+    [HideInInspector] private float srcRange = 50;  //khoảng cách đạn có thể bay
 
     [Header("Projectile")]
-    [Tooltip("The travelling speed of the shoot object")]
     public float speed = 15;
     public float delayBeforeDestroy = 0;
-    private float travelledDistance = 0;
+    private float travelledDistance = 0; //khoảng cách đã bay
 
     [Header("Homing")]
-    public float trackingDuration = 1f;
-    public float spread = 1f;
-    private Unit targetUnit;
+    public float trackingDuration = 1f; //thời gian theo dõi mục tiêu
+    public float spread = 1f; //độ lệch so với vị trí mục tiêu
+    private Unit targetUnit; 
     private Vector3 targetPos;
-    private Vector3 initialPos;
+    private Vector3 initialPos; //vị trí ban đầu
     private Vector3 dummyPos;
-    private float initialDist;
+    private float initialDist; //khoảng cách ban đầu
     private float curveMod = 0;
     private float timeSinceFire = 0;
 

@@ -15,6 +15,7 @@ public class DemoUIMenu : MonoBehaviour
     [SerializeField] Button pvpButton;
     [SerializeField] Button chatButton;
     [SerializeField] Button leaderboardButton;
+    [SerializeField] GameObject loading;
 
     private Camera _cameraMain;
     private bool activeColorInput = true;
@@ -151,6 +152,7 @@ public class DemoUIMenu : MonoBehaviour
 
     private void RequestJoinRoom()
     {
+        loading.SetActive(true);
         networkManager.Manager.Socket
             .Emit("createPvp");
         networkManager.Manager.Socket.On<string, int>("joined", JoinRoom);
@@ -158,6 +160,7 @@ public class DemoUIMenu : MonoBehaviour
 
     private void JoinRoom(string roomId, int land)
     {
+        loading.SetActive(false);
         PvP.SetRoom(roomId);
         PvP.SetLand(land);
         SceneManager.LoadScene("MobilePvP");
