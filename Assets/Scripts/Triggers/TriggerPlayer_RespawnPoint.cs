@@ -10,7 +10,6 @@ public class TriggerPlayer_RespawnPoint : Trigger
     {
         if (collider.gameObject.GetComponent<UnitPlayer>() != null)
         {
-            if (triggerSave) collider.gameObject.GetComponent<UnitPlayer>().Save();
             GameControl.SetRespawnPoint(transform.position);
             Triggered();
         }

@@ -11,7 +11,7 @@ using pvp;
 public class Unit : PooledObject
 {
 
-    public delegate void DestroyCallback();     //for spawner to keep track of active ai unit count
+    public delegate void DestroyCallback();
     private List<DestroyCallback> destroyCallbackList = new List<DestroyCallback>();
     public void SetDestroyCallback(DestroyCallback callback) { destroyCallbackList.Add(callback); }
 
@@ -35,76 +35,73 @@ public class Unit : PooledObject
 
     public float hitPointFull = 10;
     public float hitPoint = 10;
-    public bool startHitPointAtFull = true; //not used by AI
+    public bool startHitPointAtFull = true;
 
     public float hpRegenRate = 0;
     public float hpRegenStagger = 5;
     private float hpRegenStaggerCounter = 0;
 
 
-    //energy is not used by AI
     public float energyFull = 10;
     public float energy = 10;
     public float energyRate = 0.5f;
     public bool startEnergyAtFull = true;
 
-    public int armorType = 0;
 
-    public bool anchorDown = false;
+    public bool anchorDown = false; //đứng im
 
     public float moveSpeed = 5;
-    public float brakeRange = 2;
-    public float rotateSpeed = 90;  //in degree per second
+    public float brakeRange = 2; //ngưỡng khoảng cách so với target, k di chuyển
+    public float rotateSpeed = 90;
 
 
     [HideInInspector] public Unit target;
 
 
     [Header("Range Attack Setting")]
-    public bool enableRangeAttack = false;
+    public bool enableRangeAttack = false; //enable shoot target
 
     public GameObject shootObject;
     public List<Transform> shootPointList = new List<Transform>();
-    public float shootPointDelay = 0;
+    public float shootPointDelay = 0; //delay giữa các shootPoint
 
     public Transform turretObj;
-    public bool smoothTurretRotation = true;
-    public float turretTrackingSpeed = 90;      //in degree per second
+    public bool smoothTurretRotation = true; //quay mượt
+    public float turretTrackingSpeed = 90;      //tốc độ quay nếu mượt
 
     public float range = 30; // khoảng cách đạn bay
-    public float cooldown = 5f;
+    public float cooldown = 5f; //khoảng cách giữa các lần bắn đạn
     protected float currentCD = 0.25f;
     public AttackStats attackStats;
 
 
     [Header("Contact Attack Stats")]
-    public bool enableContactAttack = false;
-    public float contactCooldown = 1f;
+    public bool enableContactAttack = false; //enable va chạm với player
+    public float contactCooldown = 1f; //delay giữa những lần contact
     [HideInInspector] public float contactCurrentCD = .0f;
     public AttackStats contactAttackStats;
 
 
 
-    [Header("Destroyed Setting ")]
-    public int valueCredits = 0;
+    [Header("Destroyed Setting ")] //Phần thưởng khi destroy
     public int valueScore = 0;
     public int valueHitPoint = 0;
     public int valueEnergy = 0;
-    public int valueExp = 0;        //experience
-    public int valuePerkC = 0;  //perkCurrency
+    public int valueExp = 0;
+    public int valuePerkC = 0;
 
 
     public float destroyCamShake = 0;
 
     public GameObject destroyedEffectObj;
-    public bool autoDestroyDObj = true;
-    public float dObjActiveDuration = 2;
+    public bool autoDestroyDObj = true; //destroy effect
+    public float dObjActiveDuration = 2; //duration effect
 
-    public bool useDropManager = true;
-    public GameObject dropObject;
-    public float dropChance = 0.5f;
+    public bool useDropManager = true; //spawn collectible when destroyed
+    public GameObject dropObject; //collectible
+    public float dropChance = 0.5f; //tỉ lệ rơi vật phẩm
 
-    public Unit spawnUponDestroy;
+    public Unit spawnUponDestroy; //spawn unit when destroyed
     public int spawnUponDestroyCount = 2;
 
 

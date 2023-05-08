@@ -93,7 +93,6 @@ public class UnitPlayer : Unit
         perk = thisObj.GetComponent<PlayerPerk>();
         if (perk != null) perk.SetPlayer(this);
 
-        Load();
     }
 
     public override void Start()
@@ -806,28 +805,6 @@ public class UnitPlayer : Unit
 
     public bool saveUponChange = false;
     public bool SaveUponChange() { return saveProgress & saveUponChange; }
-
-    public void Save()
-    {
-        if (!saveProgress) return;
-        if (progress != null) progress.Save();
-        //if (perk != null) perk.Save();
-    }
-    public void Load()
-    {
-        if (!loadProgress) return;
-        if (progress != null) progress.Load();
-        if (perk != null) perk.Load();
-    }
-    public void DeleteSave()
-    {
-        if (progress == null) progress = gameObject.GetComponent<PlayerProgression>();
-        if (perk == null) perk = gameObject.GetComponent<PlayerPerk>();
-
-        if (progress != null) progress.DeleteSave();
-        if (perk != null) perk.DeleteSave();
-    }
-
 
 
 
