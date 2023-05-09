@@ -16,37 +16,28 @@ public class Weapon : MonoBehaviour
     public string weaponName = "Weapon";
     public string desp = "";
 
-    [Space(10)]
     public GameObject shootObject;
     public List<Transform> shootPointList = new List<Transform>();
     public float shootPointDelay = 0.05f; // delay giữa các điểm bắn
 
-    // [Space(10)]
-    // public bool continousFire = true;
-
-    [Header("Base Stats")]
     public float range = 20; //khoảng cách đạn có thể bay
     public float cooldown = 0.15f; //thời gian giữa 2 lần bắn đạn
     [HideInInspector] public float currentCD = 0.25f;
-    //public float GetCurrentCD(){ return currentCD; }
 
-    // public bool useEnergyAsAmmo = false;
-    // public float energyCost = 1;
 
     public int clipSize = 30;
     public int currentClip = 30;
 
-    public int ammoCap = 300;
-    public int ammo = 300;
+    public int ammoCap = 300; //tổng số viên đạn
+    public int ammo = 300; //lượng đạn còn lại
 
     public float reloadDuration = 2;
     [HideInInspector] public float currentReload = 0;
-    //public float GetCurrentReload(){ return currentReload; }
 
-    public float recoilMagnitude = .2f;
+    public float recoilMagnitude = .2f; //độ chính xác
     [HideInInspector] public float recoil = 1;
 
-    public float recoilCamShake = 0;
+    public float recoilCamShake = 0; //độ cam shake
 
     public int spread = 0; //số viên đạn bắn ra trong một lần
     public float spreadAngle = 15;
@@ -60,12 +51,9 @@ public class Weapon : MonoBehaviour
     public AudioClip reloadSFX;
 
 
-    [HideInInspector] public bool temporary = false;        //used for weapon that is collected via collectible, cannot switch weapon and discard when out of ammo
-
 
     void Awake()
     {
-        //make sure none of the element in shootPointList is null
         for (int i = 0; i < shootPointList.Count; i++)
         {
             if (shootPointList[i] == null)
@@ -74,35 +62,25 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        //if no shoot point has been assigned, use the current transform
         if (shootPointList.Count == 0) shootPointList.Add(transform);
 
         if (shootObject != null) InitShootObject();
 
-        aStats.Init();  //initiate the attack stats
-
-        //create the ability
-        ability = Ability_DB.CloneItem(abilityID);
-        if (ability != null) ability.Init();
-
-        // if (shootObject != null) ObjectPoolManager.New(shootObject.gameObject, 3);
-        else Debug.LogWarning("shoot object for weapon unassigned", this);
+        aStats.Init();
 
         Reset();
     }
-    //init certain parameter based on shoot object
+
     public void InitShootObject()
     {
         ShootObject so = shootObject.GetComponent<ShootObject>();
-        //requireAiming = (so.type == _SOType.Homing || so.type == _SOType.Point);
-        requireAiming = so.type == _SOType.Homing;
-        //randCursorForRecoil = so.type == _SOType.Point;
+
+        requireAiming = so.type == _SOType.Homing; //ngắm bắn
+
     }
 
-    //stop reloading when the weapon is disabled (when it's deselect, the weapon gameObject will be deactivated)
     void OnDisable() { reloading = false; }
 
-    //reset the weapon, called when the weapon is first used or first collected
     public void Reset()
     {
         currentClip = GetClipSize();
@@ -110,7 +88,6 @@ public class Weapon : MonoBehaviour
         currentCD = 0;
     }
 
-    //function call to fire the weapon
     public void Fire()
     {
         for (int i = 0; i < fireCallbackList.Count; i++) fireCallbackList[i]();
@@ -120,20 +97,12 @@ public class Weapon : MonoBehaviour
 
         AudioManager.PlaySound(shootSFX);
 
-        //for weapon with finite clip
-        if (/**!useEnergyAsAmmo  || */ currentClip > 0)
+        if (currentClip > 0)
         {
             currentClip -= 1;
             if (currentClip <= 0)
-            {   //if out of ammo
-                //if this is a temporary weapon, remove the weapon
-                if (temporary)
-                {
-                    //GameControl.GetPlayer().RemoveWeapon();
-                    return;
-                }
+            {
 
-                //if auto reload is enabled, reload
                 if (GameControl.EnableAutoReload()) Reload();
             }
         }
@@ -144,21 +113,21 @@ public class Weapon : MonoBehaviour
 
     public bool Reload()
     {
-        if (ammo == 0) return false;                    //if out of ammo, dont continue
-        if (reloading) return false;                        //if reloading is in process, dont continue
-        if (currentClip == GetClipSize()) return false; //if clip is full, dont continue
+        if (ammo == 0) return false;                    //out of ammo
+        if (reloading) return false;                        //reloading
+        if (currentClip == GetClipSize()) return false; //đầy đạn
 
-        StartCoroutine(ReloadRoutine());            //start reloading coroutine
-        TDS.Reloading();                                    //fire the reload event
+        StartCoroutine(ReloadRoutine());
+        TDS.Reloading();
 
-        AudioManager.PlaySound(reloadSFX);      //play the sound
+        AudioManager.PlaySound(reloadSFX);
 
         return true;
     }
     IEnumerator ReloadRoutine()
     {
-        reloading = true;   //to mark the we are reloading
-        currentReload = 0;  //time counter for reloading
+        reloading = true;
+        currentReload = 0;
 
         while (currentReload < GetReloadDuration())
         {
@@ -166,7 +135,6 @@ public class Weapon : MonoBehaviour
             yield return null;
         }
 
-        //refill the weapon clip and reduce the ammo count accordingly
         currentClip = ammo == -1 ? GetClipSize() : Mathf.Min(GetClipSize(), ammo);
         if (ammo > 0) ammo = Mathf.Max(ammo - GetClipSize(), 0);
 
@@ -178,12 +146,12 @@ public class Weapon : MonoBehaviour
     public bool OutOfAmmo() { return currentClip == 0 ? true : false; }
 
 
-    //set ammo to full
+
     public void FullAmmo()
     {
         ammo = GetAmmoCap();
     }
-    //gain a set amount of ammo
+
     public int GainAmmo(int value)
     {
         int limit = GetAmmoCap() - ammo;
@@ -194,42 +162,16 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        currentCD -= Time.deltaTime;                //reduce the cooldown (weapon can only be fired when currentCD<0)
-        recoil = recoil * (1 - Time.deltaTime * 3); //reduce the recoil
+        currentCD -= Time.deltaTime;
+        recoil = recoil * (1 - Time.deltaTime * 3);
 
-        if (ability != null) ability.currentCD -= Time.deltaTime;   //reduce the ability cooldown
     }
 
 
 
-    public int abilityID = -1;      //the ability ID, used in editor and correspoding to the ID of the abilities in DB
-    [HideInInspector] public Ability ability;   //the actual ability, only assigned in runtime
-
-    //fire alternate mode
-    public void FireAlt()
-    {
-        //if there's no ability, return
-        if (ability == null || abilityID < 0) return;
-
-        //check if the ability is ready to be activated
-        string status = ability.IsReady();
-        if (status != "")
-        {
-            //if cannot fire, fire event explaining why (for UI)
-            TDS.FireAltFail(status);
-            return;
-        }
-
-        //launch the ability
-        AbilityManager.LaunchAbility(ability);
-    }
-
-
-    private bool requireAiming = false; //set to true if the shoot-object used require aiming (missile or point)
+    private bool requireAiming = false;
     public bool RequireAiming() { return requireAiming; }
 
-    //public bool randCursorForRecoil = false;
-    //public bool RandCursorForRecoil() { return randCursorForRecoil; }
 
 
 
@@ -247,29 +189,15 @@ public class Weapon : MonoBehaviour
     public float GetRecoilMagnitude() { return recoilMagnitude * (1 + (perk != null ? perk.GetWeaponRecoilMagMul() : 0)); }
 
     public AttackStats ModifyAttackStatsToPerk(AttackStats aStats)
-    {   //
+    {   
         if (perk == null) return aStats;
 
         aStats.damageMin *= (1 + perk.GetWeaponDamageMul());
         aStats.damageMax *= (1 + perk.GetWeaponDamageMul());
 
-        // aStats.critChance *= (1 + perk.GetWeaponCritMul(ID));
-        // aStats.critMultiplier *= (1 + perk.GetWeaponCritMulMul(ID));
-
         aStats.aoeRadius *= (1 + perk.GetWeaponAOEMul());
 
         return aStats;
-    }
-
-    public void ChangeEffect(int newID, int newIdx)
-    {   //for perk
-        aStats.effectID = newID;
-        aStats.effectIdx = newIdx;
-    }
-
-    public void ChangeAbility(int newID)
-    {
-        ability = Ability_DB.CloneItem(abilityID);
     }
 
 }

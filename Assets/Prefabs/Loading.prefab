@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 983003677813147491}
   - component: {fileID: 983003677813147488}
   - component: {fileID: 983003677813147489}
-  - component: {fileID: 983003677813147490}
+  - component: {fileID: 911299067408505215}
   m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
@@ -77,19 +77,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!111 &983003677813147490
-Animation:
+--- !u!95 &911299067408505215
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 983003677813147492}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 80292d2c4413794489952f5171206d0d, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 80292d2c4413794489952f5171206d0d, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 60f84939184245d449787e92e5789b95, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
