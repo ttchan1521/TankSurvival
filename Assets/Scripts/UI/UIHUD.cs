@@ -137,12 +137,7 @@ namespace UI
 
             if (GameControl.EnableAltFire())
             {
-                Ability ability = player.GetWeaponAbility();
-                if (ability != null)
-                {
-                    uiButtonAltFire.label.text = ability.currentCD <= 0 ? "" : ability.currentCD.ToString("f1") + "s";
-                    uiButtonAltFire.button.interactable = ability.IsReady() == "" ? true : false;
-                }
+                
             }
 
 
@@ -203,15 +198,10 @@ namespace UI
 
             if (GameControl.EnableAltFire())
             {
-                if (weapon.ability != null)
-                {
-                    uiButtonAltFire.imgIcon.sprite = weapon.ability.icon;
-                }
-                else
-                {
+                
                     uiButtonAltFire.imgIcon.sprite = null;
                     uiButtonAltFire.label.text = "";
-                }
+                
             }
 
             if (reloading) reloading = false;

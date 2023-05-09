@@ -4,5 +4,23 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Mobile/_MobileMenu.unity
+    guid: 6bbf28f2e56844f4b9cc1787446f5ee1
+  - enabled: 1
+    path: Assets/Scenes/Mobile/MobileArena.unity
+    guid: 4f85b23ee8a3bee4e9f18c5d5d0c5b06
+  - enabled: 1
+    path: Assets/Scenes/Mobile/MobileGauntlet.unity
+    guid: e23f4ec9bf65e4144906a10aa1fbe203
+  - enabled: 1
+    path: Assets/Scenes/Mobile/MobilePvP.unity
+    guid: ae13a4206cf7d0740a31177d289eb3aa
+  - enabled: 1
+    path: Assets/Scenes/Mobile/MobileShootingRange.unity
+    guid: 3e50c7f930902fe46892e5965f475ea9
+  - enabled: 1
+    path: Assets/Scenes/Mobile/MobileSideScroller.unity
+    guid: 9129c0663571b5e4d88c3cb439894aee
   m_configObjects: {}

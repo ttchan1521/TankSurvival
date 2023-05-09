@@ -19,36 +19,34 @@ public class UnitPlayer : Unit
     private Transform turretObjParent;
 
     [Header("Weapon Info")]
-    public Transform weaponMountPoint;
+    public Transform weaponMountPoint; //vị trí đặt súng
 
     public Weapon weapon;
-    [HideInInspector] public bool weaponInitiated = false;  //for respawning unit
+    [HideInInspector] public bool weaponInitiated = false;
 
 
     [Header("Aiming")]
-    public bool enableTurretRotate = true;
+    public bool enableTurretRotate = true; //nòng súng có thể xoay
     public _TurretAimMode turretAimMode = _TurretAimMode.ScreenSpace;
     public LayerMask castMask;
 
-    public bool aimAtTravelDirection = true;
-    public bool enableAutoAim = false;          //only works when turret rotation is enabled and aimAtTravelDirection is disabled
+    public bool aimAtTravelDirection = true; //xoay theo hướng di chuyển
+    public bool enableAutoAim = false;          //auto xoay
 
 
     [Header("Movement")]
-    public bool faceTravelDirection = true;
+    public bool faceTravelDirection = true; //xoay xe tăng theo hướng di chuyển
     public bool enabledMovementX = true;
     public bool enabledMovementZ = true;
 
     public _MovementMode movementMode = _MovementMode.FreeForm;
-    public float acceleration = 3;
-    public float decceleration = 1;
-    public float boostEnergyRate = 0.2f;
-    public float boostMultiplier = 2f;
-    public float activeBrakingRate = 1;
+    public float acceleration = 3; //tốc độ tăng tốc
+    public float decceleration = 1; //tốc độ giảm tốc
+    public float activeBrakingRate = 1; //tốc độ phanh
     private Vector3 velocity;
     private float momentum;
 
-    public bool useLimit = false;
+    public bool useLimit = false; //giới hạn phạm vi di chuyển
     public bool showGizmo = true;
     public float minPosX = -Mathf.Infinity;
     public float minPosZ = -Mathf.Infinity;
@@ -58,7 +56,6 @@ public class UnitPlayer : Unit
     private Player data = new Player();
 
 
-    // Use this for initialization
     public override void Awake()
     {
         base.Awake();
@@ -163,15 +160,7 @@ public class UnitPlayer : Unit
         {
             weapon = Weapon_DB.GetPrefab(weaponID);
             weaponInitiated = true;
-            // for (int i = 0; i < weaponList.Count; i++)
-            // {
-            //     GameObject obj = MountWeapon((GameObject)Instantiate(weaponList[i].gameObject));
-            //     weaponList[i] = obj.GetComponent<Weapon>();
-            //     weaponList[i].Reset();
-            //     if (i > 0) obj.SetActive(false);
 
-            //     if (perk != null) weaponList[i].SetPlayerPerk(perk);
-            // }
 
             GameObject obj = MountWeapon((Instantiate(weapon.gameObject)));
             weapon = obj.GetComponent<Weapon>();
@@ -188,11 +177,6 @@ public class UnitPlayer : Unit
                 weapon.aStats.damageMax = 2;
                 //weaponList[0].Reset();
                 weapon.Reset();
-
-                // obj = MountWeapon(GameObject.CreatePrimitive(PrimitiveType.Sphere), "defaultShootObject");
-                // obj.AddComponent<ShootObject>();
-                // obj.SetActive(false);
-                // obj.transform.localScale = new Vector3(.2f, .2f, .2f);
 
                 GameObject soObj = (GameObject)Instantiate(Resources.Load("Prefab_TDSTK/DefaultShootObject", typeof(GameObject)));
                 soObj.SetActive(false);
@@ -215,107 +199,7 @@ public class UnitPlayer : Unit
         return obj;
     }
 
-    // private int tempWeapReturnID = 0;   //a cache to store the default weaponID when using temporary weapon
-    // public void AddWeapon(Weapon prefab, bool replaceWeapon = false, bool temporary = false, float temporaryTimer = 30)
-    // {
-    //     GameObject obj = MountWeapon((GameObject)Instantiate(prefab.gameObject));
-
-    //     //replace weapon and temporary are mutually exclusive
-    //     if (replaceWeapon)
-    //     {
-    //         Destroy(weaponList[weaponID].gameObject);
-    //         weaponList[weaponID] = obj.GetComponent<Weapon>();
-
-    //         TDS.NewWeapon(weaponList[weaponID], weaponID);
-    //     }
-    //     else if (temporary)
-    //     {
-    //         tempWeapReturnID = weaponID;
-    //         weaponList[weaponID].gameObject.SetActive(false);
-
-    //         if (weaponList[weaponID].temporary) RemoveWeapon();
-
-    //         weaponID = weaponList.Count;
-    //         weaponList.Add(obj.GetComponent<Weapon>());
-
-    //         weaponList[weaponList.Count - 1].temporary = true;
-    //         if (temporaryTimer > 0) StartCoroutine(TemporaryWeaponTimer(weaponList[weaponList.Count - 1], temporaryTimer));
-    //     }
-    //     else
-    //     {
-    //         weaponID = weaponList.Count;
-    //         weaponList.Add(obj.GetComponent<Weapon>());
-    //         TDS.NewWeapon(weaponList[weaponID]);
-    //     }
-
-    //     weaponList[weaponID].Reset();
-
-    //     TDS.SwitchWeapon(weaponList[weaponID]);
-    // }
-    // public void RemoveWeapon()
-    // {   //used to remove temporary weapon only
-    //     if (weaponList.Count <= 1) return;
-
-    //     if (weaponList[weaponID] != null) Destroy(weaponList[weaponID].gameObject);
-
-    //     weaponList.RemoveAt(weaponID);
-    //     weaponID = tempWeapReturnID;
-
-    //     weaponList[weaponID].gameObject.SetActive(true);
-    //     TDS.SwitchWeapon(weaponList[weaponID]);
-    // }
-
-    // IEnumerator TemporaryWeaponTimer(Weapon weapon, float time)
-    // {
-    //     Effect effect = new Effect();
-    //     effect.ID = 999;
-    //     effect.duration = time;
-    //     effect.icon = weapon.icon;
-    //     ApplyEffect(effect);
-
-    //     while (effect.duration > 0 && weapon != null) yield return null;
-
-    //     effect.duration = -1;
-    //     if (weapon != null) RemoveWeapon();
-    // }
-
-
-
-
-    // public void SwitchWeapon(int newID)
-    // {
-    //     weaponList[weaponID].gameObject.SetActive(false);
-    //     weaponList[newID].gameObject.SetActive(true);
-
-    //     if (weaponList[newID].currentClip == 0 && GameControl.EnableAutoReload())
-    //     {
-    //         weaponList[newID].Reload();
-    //     }
-
-    //     TDS.SwitchWeapon(weaponList[newID]);
-
-    //     weaponID = newID;
-    // }
-
-
-
-    //***********************************************************************
-    //Input command
-
-    //switch to next/prev weapon in the list
-    // public void ScrollWeapon(int scrollDir)
-    // {
-    //     if (destroyed) return;
-    //     if (weaponList[weaponID].temporary) return;
-
-    //     int newID = weaponID + scrollDir;
-    //     if (newID >= weaponList.Count) newID = 0;
-    //     else if (newID < 0) newID = weaponList.Count - 1;
-
-    //     if (newID != weaponID) SwitchWeapon(newID);
-    // }
-
-    //turret facing
+    
     public void AimTurretMouse(Vector3 mousePos)
     {
         if (destroyed || IsStunned()) return;
@@ -324,7 +208,6 @@ public class UnitPlayer : Unit
 
         if (enableAutoAim)
         {
-            //enableAutoAim
             Unit target = UnitTracker.GetNearestUnit(thisT.position);
             Vector3 p1 = turretObj.position; p1.y = 0;
             Vector3 p2 = target.thisT.position; p2.y = 0;
@@ -338,7 +221,6 @@ public class UnitPlayer : Unit
 
         if (turretAimMode == _TurretAimMode.ScreenSpace)
         {
-            //get camera direction and mouse direction with repect to the player position on screen
             Vector3 camV = Quaternion.Euler(0, camT.eulerAngles.y, 0) * Vector3.forward;
             Vector3 dir = (mousePos - Camera.main.WorldToScreenPoint(thisT.position)).normalized;
             dir = new Vector3(dir.x, 0, dir.y);
@@ -352,20 +234,20 @@ public class UnitPlayer : Unit
             if (!smoothTurretRotation) turretObj.rotation = wantedRot;
             else turretObj.rotation = Quaternion.Slerp(turretObj.rotation, wantedRot, Time.deltaTime * 15);
         }
-        else if (turretAimMode == _TurretAimMode.Raycast)
-        {
-            LayerMask mask = 1 << TDS.GetLayerTerrain();
-            Ray ray = Camera.main.ScreenPointToRay(mousePos);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-            {
-                Vector3 point = new Vector3(hit.point.x, thisT.position.y, hit.point.z);
+        // else if (turretAimMode == _TurretAimMode.Raycast)
+        // {
+        //     LayerMask mask = 1 << TDS.GetLayerTerrain();
+        //     Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        //     RaycastHit hit;
+        //     if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
+        //     {
+        //         Vector3 point = new Vector3(hit.point.x, thisT.position.y, hit.point.z);
 
-                Quaternion wantedRot = Quaternion.LookRotation(point - thisT.position);
-                if (!smoothTurretRotation) turretObj.rotation = wantedRot;
-                else turretObj.rotation = Quaternion.Slerp(turretObj.rotation, wantedRot, Time.deltaTime * 15);
-            }
-        }
+        //         Quaternion wantedRot = Quaternion.LookRotation(point - thisT.position);
+        //         if (!smoothTurretRotation) turretObj.rotation = wantedRot;
+        //         else turretObj.rotation = Quaternion.Slerp(turretObj.rotation, wantedRot, Time.deltaTime * 15);
+        //     }
+        // }
     }
     //for DPad (touch input)
     public void AimTurretDPad(Vector2 direction)
@@ -456,7 +338,7 @@ public class UnitPlayer : Unit
         if (destroyed || IsStunned()) return;
         if (GameControl.EnableAltFire())
         {
-            weapon.FireAlt();
+            //weapon.FireAlt();
         }
         if (!GameControl.EnableAltFire() && GameControl.EnableAbility())
         {
@@ -491,7 +373,6 @@ public class UnitPlayer : Unit
         return flag1 || flag2;
     }
 
-    private float obstacleStopMultiplier = 0;
 
     /*
     public Vector3 CurbMovementToObjstacle(Vector3 dir){
@@ -514,37 +395,31 @@ public class UnitPlayer : Unit
     */
 
     //move
-    public void Move(Vector2 direction, bool boosting = false)
+    public void Move(Vector2 direction)
     {
         if (destroyed || IsStunned()) return;
 
         direction = direction.normalized;
 
-        Vector3 dirV = Quaternion.Euler(0, camT.eulerAngles.y, 0) * Vector3.forward; //forward direction with respect to the cam, so just yaxis-rotation * (0, 0, 1)
-        Vector3 dirH = Quaternion.Euler(0, 90, 0) * dirV;                                           //right direction, so rotate it further by 90 degree
+        Vector3 dirV = Quaternion.Euler(0, camT.eulerAngles.y, 0) * Vector3.forward; //hướng camera
+        Vector3 dirH = Quaternion.Euler(0, 90, 0) * dirV;                                          
         dirV = dirV * direction.y * (enabledMovementZ ? 1 : 0);
         dirH = dirH * direction.x * (enabledMovementX ? 1 : 0);
         Vector3 dirHV = (dirH + dirV).normalized;
 
-        float boost = 1;
-        if (energy > 0 && boosting)
-        {
-            boost = boostMultiplier;
-            energy -= Time.deltaTime * energyFull * boostEnergyRate;
-        }
 
         if (movementMode == _MovementMode.FreeForm)
         {
-            velocity += dirHV * 0.025f * boost * (acceleration - velocity.magnitude);       //remove  '-velocity.magnitude' to retain momentum when changing direction
-        }
+            velocity += dirHV * 0.025f * (acceleration - velocity.magnitude);       //remove  '-velocity.magnitude' to retain momentum when changing direction
+        } 
         else
         {
-            float stopper = !CheckObstacle(dirHV) ? 1 : obstacleStopMultiplier;
+            float stopper = !CheckObstacle(dirHV) ? 1 : 0;
 
             //Vector3 moveMag=CurbMovementToObjstacle(dirHV * moveSpeed * Time.deltaTime * GetTotalSpeedMultiplier() * boost);
 
             //thisT.Translate(moveMag, Space.World);
-            thisT.Translate(dirHV * moveSpeed * Time.deltaTime * GetTotalSpeedMultiplier() * boost * stopper, Space.World);
+            thisT.Translate(dirHV * moveSpeed * Time.deltaTime * GetTotalSpeedMultiplier() * stopper, Space.World);
             velocity = dirHV;
             moved = true;
         }
@@ -591,11 +466,10 @@ public class UnitPlayer : Unit
 
         if (movementMode == _MovementMode.FreeForm)
         {
-            float stopper = !CheckObstacle(velocity) ? 1 : obstacleStopMultiplier;
+            float stopper = !CheckObstacle(velocity) ? 1 : 0;
             thisT.Translate(velocity * moveSpeed * Time.deltaTime * GetTotalSpeedMultiplier() * stopper, Space.World);
 
-            float brakeBoost = Input.GetKey(KeyCode.Space) ? 2 : 1;
-            velocity *= (1 - Time.deltaTime * decceleration * velocity.magnitude * brakeBoost);
+            velocity *= (1 - Time.deltaTime * decceleration * velocity.magnitude);
         }
 
         if (!enableTurretRotate && aimAtTravelDirection && turretObj != null) turretObj.rotation = thisT.rotation;
@@ -761,7 +635,6 @@ public class UnitPlayer : Unit
     public int GetCurrentClip() { return weapon.currentClip; }
     public int GetAmmo() { return weapon.ammo; }
 
-    public Ability GetWeaponAbility() { return weapon.ability; }
 
 
 

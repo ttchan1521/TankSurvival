@@ -125,7 +125,7 @@ namespace UI
                     //movement
                     bool boost = Input.GetKey(KeyCode.LeftShift);
                     if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
-                        player.Move(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")), boost);
+                        player.Move(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
 
                     //phanh
                     if (Input.GetKey(KeyCode.Space)) player.Brake();

@@ -12,76 +12,67 @@ public enum _SpawnMode
 }
 
 public enum _OverrideMode { Replace, Addition, Multiply }
-public enum _SpawnLimitType { Count, Timed, None }  //for free formed spawning
+public enum _SpawnLimitType { Count, Timed, None }
 
 public class UnitSpawner : MonoBehaviour
 {
 
     public _SpawnMode spawnMode;
-    public bool spawnUponStart = true;
+    public bool spawnUponStart = true; //auto spawn
     private bool spawnStarted = false;
 
     public float startDelay = 1;
 
-    //public TDSArea spawnArea;
-    public List<TDSArea> spawnAreaList = new List<TDSArea>(); //first element is used as the default 
+
+    public List<TDSArea> spawnAreaList = new List<TDSArea>(); 
     public bool randomRotation = true;
 
-    public bool anchorToPoint = false;
-    public float anchorRadius = 3;
 
 
-
-    [Header("Procedural Generation Setting")]   //used in freeform and endless wave
     public List<Unit> spawnUnitList = new List<Unit>();
 
-    public bool overrideHitPoint = false;
-    public _OverrideMode overrideHPMode = _OverrideMode.Multiply;
-    public float startingHitPoint = 25;
-    public float hitPointIncrement = 5;
-    public float hitPointTimeStep = 30;
+    public bool overrideHitPoint = false; //chỉnh sửa hp của unit
+    public _OverrideMode overrideHPMode = _OverrideMode.Multiply; //type chỉnh sửa hp
+    public float startingHitPoint = 25; //giá trị để chỉnh sửa
+    public float hitPointIncrement = 5; //hp tăng mỗi lần
+    public float hitPointTimeStep = 30; //khoảng cách giữa những lần tăng hp
     private float spawnHP = 0;
 
 
 
-    [Header("WaveBased Setting")]
+    [Header("Wave")]
     private int currentWaveIDX = -1;
 
-    public bool endlessWave = false;
+    public bool endlessWave = false; //wave vô tận
     public List<Wave> waveList = new List<Wave>();
-    public float delayBetweenWave = 3;
+    public float delayBetweenWave = 3; //delay giữa các wave
+
+
+    public int maxSubWaveCount = 3; //số lượng subwave max
+    public int unitCount = 8; //số lượng unit mỗi wave cơ bản
+    public int unitCountInc = 4; //số lượng unit tăng theo wave (wave càng cao càng nhiều unit)
+    private Wave waveE = null;  //currentWave (endless)
+
+    public int startingScore = 10; //score cơ bản
+    public int scoreIncrement = 10; //score tăng theo wave
 
 
 
-    [Header("Wave Endless Setting")]
-    public int maxSubWaveCount = 3;
-    public int unitCount = 8;
-    public int unitCountInc = 4;
-    private Wave waveE = null;  //the current wave used in endless mode
+    [Header("FreeForm")]
+    public float spawnCD = 1.5f; //khoảng cách giữa những lần spawn
 
-    // public int startingCredit = 10;
-    // public int creditIncrement = 10;
-
-    public int startingScore = 10;
-    public int scoreIncrement = 10;
-
-
-
-    [Header("FreeForm Setting")]
-    public float spawnCD = 1.5f;
-
-    public int activeLimit = 10;
-    public int limitSpawnCount = 20;
-    public int limitSpawnTime = 20;
+    public int activeLimit = 10; //số lượng unit hiện tại tối đa
+    public int limitSpawnCount = 20; //số lượng unit spawn tối đa
+    public int limitSpawnTime = 20; //thời gian spawnn
     public _SpawnLimitType limitType = _SpawnLimitType.Timed;
 
 
 
     [Header("Stats Tracking")]
-    private int activeCount = 0;    //the total unit currently active in the game
-    private int spawnCount = 0; //the total unit that has been spawned
+    private int activeCount = 0;    //số lượng unit hiện tại
+    private int spawnCount = 0; //số lượng unit đã spawn
 
-    private int killCount = 0;      //the total unit that has been destroyed
+    private int killCount = 0;      //số lượng unit bị destroyed
 
 
 
@@ -91,10 +82,10 @@ public class UnitSpawner : MonoBehaviour
     {
         thisT = transform;
 
-        //assign each of the wave in waveList with an ID
+        //gán id từng wave
         for (int i = 0; i < waveList.Count; i++) waveList[i].waveID = i;
 
-        //make sure none of the element in spawnAreaList and spawnUnitList is null
+        //remove null element
         for (int i = 0; i < spawnAreaList.Count; i++)
         {
             if (spawnAreaList[i] == null)
@@ -110,16 +101,16 @@ public class UnitSpawner : MonoBehaviour
             }
         }
 
-        //if no spawn area has been assigned, create one
+        //nếu không có area thì tạo
         if (spawnAreaList.Count == 0)
         {
             spawnAreaList.Add(gameObject.AddComponent<TDSArea>());
         }
 
-        //warn user if no unit has been assigned
+        //nếu không có unit
         if (spawnMode == _SpawnMode.FreeForm || (spawnMode == _SpawnMode.WaveBased && endlessWave))
         {
-            if (spawnUnitList.Count == 0) Debug.LogWarning("No unit has been specified for unit spawner", thisT);
+            if (spawnUnitList.Count == 0) Debug.LogWarning("No unit", thisT);
         }
     }
 
@@ -128,19 +119,18 @@ public class UnitSpawner : MonoBehaviour
     {
         //InitObjectPool();
 
-        //add this spawner to tracker
+        //thêm vào spawn tracker
         UnitSpawnerTracker.AddSpawner(this);
 
         if (overrideHitPoint) spawnHP = startingHitPoint;
 
-        //if spawnUponStart is enabled, start spawning
         if (spawnUponStart) StartSpawn();
     }
 
 
     void OnDisable()
     {
-        //if the spawner is destroyed, consider it cleared
+        //clear in tracker
         Cleared();
     }
 
@@ -174,7 +164,7 @@ public class UnitSpawner : MonoBehaviour
     {
         if (!gameObject.activeInHierarchy) return;
 
-        if (spawnStarted) return;   //prevent duplicate spawning routine
+        if (spawnStarted) return;
         spawnStarted = true;
 
         if (spawnMode == _SpawnMode.WaveBased)
@@ -189,19 +179,18 @@ public class UnitSpawner : MonoBehaviour
     }
 
 
-    //spawn the next wave in wavelist
+    //spawn next wave in wavelist
     void SpawnWaveFromList(float delay = 0)
     {
-        //if we have past the final wave, stop and clear the spawner
+        //final wave
         if (currentWaveIDX + 1 >= waveList.Count)
         {
-            Debug.Log(gameObject.name + " - all waves cleared");
             Cleared();
             return;
         }
         StartCoroutine(SpawnWave(waveList[currentWaveIDX += 1], delay));
     }
-    //spawn a generated wave, for endless mode only
+    //tạo wave for endless mode
     void SpawnGeneratedWave(float delay = 0)
     {
         waveE = GenerateWave(currentWaveIDX += 1);
@@ -215,90 +204,75 @@ public class UnitSpawner : MonoBehaviour
 
         if (currentWaveIDX > 0) spawnHP += hitPointIncrement;
 
-        if (wave.subWaveList.Count == 0) Debug.LogWarning("Trying to spawn an empty wave", thisT);
-
         wave.subWaveSpawned = 0;
 
-        //start coroutine for each subwave
         for (int i = 0; i < wave.subWaveList.Count; i++) StartCoroutine(SpawnSubWave(wave, i));
 
-        //wait until all of the wubwave finish spawning
+        //wait until subwave finish spawn
         while (wave.subWaveSpawned < wave.subWaveList.Count) yield return null;
 
         wave.spawned = true;
         Debug.Log(gameObject.name + " - wave " + currentWaveIDX + " spawned complete");
     }
-    //function call to spawn a subwave
+
     IEnumerator SpawnSubWave(Wave wave, int subWaveIdx)
     {
         SubWave subWave = wave.subWaveList[subWaveIdx];
-        TDSArea sArea = subWave.spawnArea != null ? subWave.spawnArea : spawnAreaList[0];   //use the default spawn area if nothing has been assigned for the subwave
+        TDSArea sArea = subWave.spawnArea != null ? subWave.spawnArea : spawnAreaList[0]; //nếu subwave không có area thì lấy mặc định ở vị trí mặc định
 
-        //wait for start delay
         yield return new WaitForSeconds(subWave.startDelay);
 
         if (subWave.unitPrefab != null)
         {
             for (int i = 0; i < subWave.count; i++)
             {
-                //wait for the spawn cooldown
+                //delay giữa các lần spawn unit
                 if (i > 0) yield return new WaitForSeconds(subWave.interval);
 
                 Quaternion rot = !randomRotation ? sArea.GetRotation() : Quaternion.Euler(0, Random.Range(0, 360), 0);
 
                 UnitAI unitInstance = SpawnUnit(subWave.unitPrefab, sArea.GetRandomPosition(), rot, subWave.unitPrefab.gameObject.name + "_" + spawnCount);
-                unitInstance.SetWaveID(this, wave.waveID);  //assign the unit with the waveID so they know they belong to a wave (unit with valid waveID will call UnitCleared() callback)
+                unitInstance.SetWaveID(this, wave.waveID);  //để biết wave của unit khi unit destroy
 
                 wave.activeUnitCount += 1;
             }
         }
 
-        //increase the subWaveSpawned counter
         wave.subWaveSpawned += 1;
         yield return null;
     }
 
-    //called from unit to add the new SpawnUponDestroy unit to the parent unit's wave
+    //add unit to parent wave (unit destroy sinh ra unit khác)
     public void AddUnitToWave(Unit unitInstance)
     {
         waveList[unitInstance.waveID].activeUnitCount += 1;
         AddUnit(unitInstance);
     }
 
-    //callback when a unit belong to a particular wave is destroyed, check if the wave is cleared
+    //callback when unit destroyed, check wave is cleared
     public void UnitCleared(int waveID)
     {
         bool waveCleared = false;
 
-        //check if the wave has completed its spawning and have all active units destroyed
         if (!endlessWave)
         {
             waveList[waveID].activeUnitCount -= 1;
-            //if the wave has done spawning and there's no active unit
             if (waveList[waveID].spawned && waveList[waveID].activeUnitCount == 0)
             {
                 waveCleared = true;
                 waveList[waveID].Completed();
-                SpawnWaveFromList(delayBetweenWave); //start spawning the next wave
+                SpawnWaveFromList(delayBetweenWave); //next wave
             }
         }
         else
         {
             waveE.activeUnitCount -= 1;
-            //if the wave has done spawning and there's no active unit
             if (waveE.spawned && waveE.activeUnitCount == 0)
             {
                 waveCleared = true;
                 waveE.Completed();
-                SpawnGeneratedWave(delayBetweenWave);   //start spawning the next wave
+                SpawnGeneratedWave(delayBetweenWave);   //next wave
             }
-        }
-
-        //if the wave is cleared
-        if (waveCleared)
-        {
-            Debug.Log(gameObject.name + " - wave " + (currentWaveIDX - 1) + " cleared");
-            Debug.Log("");
         }
     }
 
@@ -311,50 +285,38 @@ public class UnitSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(startDelay);
 
-        //if limited by time, start the timer
         if (limitType == _SpawnLimitType.Timed) StartCoroutine(SpawnLimitTimerRoutine());
 
-        if (overrideHitPoint) StartCoroutine(OverridingHitPointRoutine());
+        if (overrideHitPoint) StartCoroutine(OverridingHitPointRoutine()); //tăng hp sau một khoảng thời gian
 
-        //keep on looping
+        
         while (true)
         {
-            //if spawnUnitList is empty, do nothing
             while (spawnUnitList.Count == 0) yield return null;
 
-            //if activeCount has reached the limit, hold on for spawning
             while (activeCount == activeLimit) yield return null;
 
-            //if using timer and time is up, break from the loop and stop the spawning
+            //hết thời gian spawn
             if (limitType == _SpawnLimitType.Timed && freeformTimeOut) break;
 
-            //randomly choose a spawn area and position as well as a rotation
             int rand = Random.Range(0, spawnAreaList.Count);
             Vector3 pos = spawnAreaList[rand].GetRandomPosition();
             Quaternion rot = !randomRotation ? spawnAreaList[rand].GetRotation() : Quaternion.Euler(0, Random.Range(0, 360), 0);
 
-            //choose the unit prefab to spawn
             int randU = Random.Range(0, spawnUnitList.Count);
             SpawnUnit(spawnUnitList[randU], pos, rot, spawnUnitList[randU].gameObject.name + "_" + spawnCount);
 
-            //if spawnCount has reached the specified limit, break from the loop and stop the spawning
             if (limitType == _SpawnLimitType.Count && spawnCount == limitSpawnCount) break;
 
-            //wait for spawnCD before attempting next spawn
             yield return new WaitForSeconds(spawnCD);
         }
 
-        //wait until all active unit is cleared before proceed
         while (activeCount > 0) yield return null;
 
-        //spawn completed and all spawned unit is cleared
-        Debug.Log(gameObject.name + " (UnitSpawner) is cleared");
         Cleared();
     }
 
 
-
-    //spawn timer, spawning will stop when time run out, only used for free-form mode
     private bool freeformTimeOut = false;
     IEnumerator SpawnLimitTimerRoutine()
     {
@@ -362,7 +324,6 @@ public class UnitSpawner : MonoBehaviour
         freeformTimeOut = true;
     }
 
-    //Gradually incrase the overridingHP, only used in freeform mode
     IEnumerator OverridingHitPointRoutine()
     {
         while (true)
@@ -375,14 +336,13 @@ public class UnitSpawner : MonoBehaviour
 
 
 
-    //function to check if the spawner has spawned everything
+
     public bool IsSpawnCompleted()
     {
         if (spawnMode == _SpawnMode.WaveBased)
         {
-            if (endlessWave) return false;  //the spawn will never complete in endless mode
+            if (endlessWave) return false;
 
-            //check for everywave, the spawn is considered completed if all wave has been spawned
             bool allSpawned = true;
             for (int i = 0; i < waveList.Count; i++)
             {
@@ -396,32 +356,27 @@ public class UnitSpawner : MonoBehaviour
         }
         else if (spawnMode == _SpawnMode.FreeForm)
         {
-            //the spawn is considered completed if spawn count has exceeded spawn limit or spawner timer has ran out
+
             if (limitType == _SpawnLimitType.Count && spawnCount >= limitSpawnCount) return true;
             else if (limitType == _SpawnLimitType.Timed && freeformTimeOut) return true;
         }
 
-        //none of the criteria has been fullfiled, return false;
+
         return false;
     }
 
 
 
-    //spawn the an unit instance of given the prefab
+
     private UnitAI SpawnUnit(PooledObject prefab, Vector3 spawnPos, Quaternion rot, string name = "")
     {
-        //instantiate the unit, assign the layer and name
-        //~ GameObject unitObj=(GameObject)Instantiate(prefab, spawnPos, rot);
+        //GameObject unitObj=(GameObject)Instantiate(prefab, spawnPos, rot);
         UnitAI unitObj = prefab.GetPoolItem<UnitAI>(spawnPos, rot);
         unitObj.gameObject.layer = TDS.GetLayerAIUnit();
         unitObj.gameObject.name = name;
 
-        //get the UnitAI instance and assign target
-        //UnitAI unitInstance=unitObj.GetComponent<UnitAI>();
         unitObj.target = GameControl.GetPlayer();
-        //if(anchorToPoint) unitInstance.SetAnchorPoint(transform, anchorRadius);	//not in use atm
 
-        //override the unit default hitpoint if overrideHitPoint is enabled
         if (overrideHitPoint) unitObj.OverrideHitPoint(spawnHP, overrideHPMode);
 
         if (GameControl.GetInstance().pvp && PvP.GetLandSpawnPlayer() == 0)
@@ -451,7 +406,6 @@ public class UnitSpawner : MonoBehaviour
     //track unit
     public void AddUnit(Unit unitInstance)
     {
-        //set destroy callback for the unit
         unitInstance.SetDestroyCallback(this.UnitDestroy);
         spawnCount += 1;
         activeCount += 1;
@@ -466,15 +420,13 @@ public class UnitSpawner : MonoBehaviour
 
     public void Cleared()
     {
-        //remove the spawner from the tracker
         UnitSpawnerTracker.RemoveSpawner(this);
-        //inform the GameControl that the spawner has been cleared (which would in term check for objective)
         GameControl.UnitSpawnerCleared(this);
     }
 
 
 
-    //called to generate a spawn wave using the procedural generation parameter
+    //tạo wave trong chế độ endless
     Wave GenerateWave(int waveIDX)
     {
         Wave wave = new Wave();
@@ -492,7 +444,7 @@ public class UnitSpawner : MonoBehaviour
         List<int> countList = new List<int>();
         for (int i = 0; i < subWaveCount; i++) countList.Add(1);
 
-        int totalUnitCount = unitCount + unitCountInc * waveIDX - subWaveCount;
+        int totalUnitCount = unitCount + unitCountInc * waveIDX;
         if (subWaveCount <= 0) totalUnitCount = 0;
 
         int count = 0;
