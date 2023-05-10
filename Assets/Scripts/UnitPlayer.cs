@@ -234,27 +234,27 @@ public class UnitPlayer : Unit
             if (!smoothTurretRotation) turretObj.rotation = wantedRot;
             else turretObj.rotation = Quaternion.Slerp(turretObj.rotation, wantedRot, Time.deltaTime * 15);
         }
-        // else if (turretAimMode == _TurretAimMode.Raycast)
-        // {
-        //     LayerMask mask = 1 << TDS.GetLayerTerrain();
-        //     Ray ray = Camera.main.ScreenPointToRay(mousePos);
-        //     RaycastHit hit;
-        //     if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-        //     {
-        //         Vector3 point = new Vector3(hit.point.x, thisT.position.y, hit.point.z);
+        else if (turretAimMode == _TurretAimMode.Raycast)
+        {
+            LayerMask mask = 1 << TDS.GetLayerTerrain();
+            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
+            {
+                Vector3 point = new Vector3(hit.point.x, thisT.position.y, hit.point.z);
 
-        //         Quaternion wantedRot = Quaternion.LookRotation(point - thisT.position);
-        //         if (!smoothTurretRotation) turretObj.rotation = wantedRot;
-        //         else turretObj.rotation = Quaternion.Slerp(turretObj.rotation, wantedRot, Time.deltaTime * 15);
-        //     }
-        // }
+                Quaternion wantedRot = Quaternion.LookRotation(point - thisT.position);
+                if (!smoothTurretRotation) turretObj.rotation = wantedRot;
+                else turretObj.rotation = Quaternion.Slerp(turretObj.rotation, wantedRot, Time.deltaTime * 15);
+            }
+        }
     }
-    //for DPad (touch input)
+
     public void AimTurretDPad(Vector2 direction)
     {
         if (destroyed || IsStunned()) return;
 
-        direction = direction.normalized * 100;
+        direction = direction.normalized;
 
         Vector2 screenPos = Camera.main.WorldToScreenPoint(thisT.position);
         float x = screenPos.x + direction.x;
@@ -274,10 +274,6 @@ public class UnitPlayer : Unit
         {
             OnFireWeapon();
 
-            // if (weapon.useEnergyAsAmmo)
-            // {
-            //     energy -= weapon.energyCost;
-            // }
         }
         else
         {
@@ -307,32 +303,11 @@ public class UnitPlayer : Unit
                 });
         }
 
-        // if (weapon.RequireAiming()) //nếu nhắm bắn
-        // {
-        //     Vector2 cursorPos = Input.mousePosition;
-
-        //     if (weapon.RandCursorForRecoil())
-        //     {
-        //         float recoil = GameControl.GetPlayer().GetRecoil() * 4;
-        //         cursorPos += new Vector2(Random.value - 0.5f, Random.value - 0.5f) * recoil;
-        //     }
-
-        //     Ray ray = Camera.main.ScreenPointToRay(cursorPos);
-        //     RaycastHit hit;
-        //     //LayerMask mask=1<<TDS.GetLayerTerrain();
-        //     //Physics.Raycast(ray, out hit, Mathf.Infinity, mask);
-        //     Physics.Raycast(ray, out hit, Mathf.Infinity);
-
-        //     ShootObject.AimInfo aimInfo = new ShootObject.AimInfo(hit);
-
-        //     StartCoroutine(ShootRoutine(aimInfo));
-        // }
-        // else 
         StartCoroutine(ShootRoutine());
 
         weapon.Fire();
     }
-    //alt fire, could fire weapon alt-mode to launch selected ability
+
     public void FireAbility()
     {
         if (destroyed || IsStunned()) return;
@@ -345,7 +320,7 @@ public class UnitPlayer : Unit
             AbilityManager.LaunchAbility();
         }
     }
-    //launch ability
+
     public void FireAbilityAlt()
     {
         if (destroyed || IsStunned()) return;
@@ -359,7 +334,7 @@ public class UnitPlayer : Unit
         weapon.Reload();
     }
 
-    //without this the player can clip into collider when running into a 90 degree corner
+    //check va chạm
     public bool CheckObstacle(Vector3 dir)
     {
         CapsuleCollider collider = thisObj.GetComponent<CapsuleCollider>();
@@ -374,27 +349,6 @@ public class UnitPlayer : Unit
     }
 
 
-    /*
-    public Vector3 CurbMovementToObjstacle(Vector3 dir){
-        CapsuleCollider collider=thisObj.GetComponent<CapsuleCollider>();
-
-        Vector3 pos=thisT.position+new Vector3(0, 0.25f, 0);
-        Vector3 dirSide=thisT.TransformDirection(new Vector3(1f, 0, 0))*collider.radius*0.5f;
-
-        float range=dir.magnitude;
-
-        RaycastHit hit;
-        LayerMask mask = 1 << 0;
-        if(Physics.Raycast(pos+dirSide, dir, out hit, collider.radius+0.1f+range, mask)){
-            float limit=(hit.point-thisT.position).magnitude - collider.radius+0.1f;
-            dir*=limit/range;
-        }
-
-        return dir;
-    }
-    */
-
-    //move
     public void Move(Vector2 direction)
     {
         if (destroyed || IsStunned()) return;
@@ -410,7 +364,7 @@ public class UnitPlayer : Unit
 
         if (movementMode == _MovementMode.FreeForm)
         {
-            velocity += dirHV * 0.025f * (acceleration - velocity.magnitude);       //remove  '-velocity.magnitude' to retain momentum when changing direction
+            velocity += dirHV * 0.025f * (acceleration - velocity.magnitude);
         } 
         else
         {
@@ -424,14 +378,11 @@ public class UnitPlayer : Unit
             moved = true;
         }
 
-        //take the angle difference between the travel direction and +z direction to get the rotation
         if (faceTravelDirection && rotateSpeed > 0 && turretObj != thisT)
         {
             //Debug.Log((enableTurretRotate || (!enableTurretRotate && !aimAtTravelDirection))+"   "+turretObjParent);
             if ((enableTurretRotate || (!enableTurretRotate && !aimAtTravelDirection)) && turretObj != null && turretObjParent != null) turretObj.parent = null;
 
-            //~ if(faceTravelDirection && rotateSpeed>0){
-            //~ if(turretObj!=null && !aimAtTravelDirection) turretObj.parent=null;
 
             float sign = dirHV.x > 0 ? 1 : -1;
             Quaternion wantedRot = Quaternion.Euler(0, sign * Vector3.Angle(Vector3.forward, dirHV), 0);
@@ -447,7 +398,6 @@ public class UnitPlayer : Unit
         velocity = Vector3.Lerp(velocity, Vector3.zero, Time.deltaTime * activeBrakingRate * 5);
     }
 
-    //***********************************************************************
 
 
     public override void Update()
@@ -489,7 +439,6 @@ public class UnitPlayer : Unit
     }
 
 
-    //for animation
     void LateUpdate()
     {
         if (movementMode == _MovementMode.FreeForm) AnimationMove(velocity);
@@ -501,7 +450,6 @@ public class UnitPlayer : Unit
     {
         if (uAnimation == null) return;
 
-        //Debug.Log("AnimationMove  "+dir.magnitude+"    "+camT.eulerAngles.y+"    "+dir);
 
         if (faceTravelDirection)
         {
@@ -516,16 +464,15 @@ public class UnitPlayer : Unit
 
 
 
-    //for camera dynamic zoom
+    //camera zoom
     public float GetVelocity()
     {
         if (movementMode == _MovementMode.FreeForm) return velocity.magnitude * GetTotalSpeedMultiplier();
-        return (Input.GetButton("Horizontal") || Input.GetButton("Vertical")) ? moveSpeed * GetTotalSpeedMultiplier() * .15f : 0;
+        return 0;
     }
 
 
 
-    //modify the attackStats to active effect
     public Effect levelModifier = new Effect();
     protected AttackStats ModifyAttackStatsToLevel(AttackStats aStats)
     {
@@ -535,8 +482,6 @@ public class UnitPlayer : Unit
         aStats.damageMin *= dmgMul;
         aStats.damageMax *= dmgMul;
 
-        // aStats.critChance *= GetCritChanceMultiplier();
-        // aStats.critMultiplier *= GetCritMulMultiplier();
 
         return aStats;
     }
@@ -552,7 +497,7 @@ public class UnitPlayer : Unit
         //aStats=ModifyAttackStatsToExistingEffect(weaponList[weaponID].GetRuntimeAttackStats());
         AttackInstance aInstance = new AttackInstance(this, aStats);
 
-        //int weapID = weaponID;  //to prevent weapon switch and state change while delay and firing multiple so
+
 
         int spread = weapon.spread;
         if (spread > 1)
@@ -564,7 +509,7 @@ public class UnitPlayer : Unit
         float startAngle = spread > 1 ? -weapon.spreadAngle / 2f : 0;
         float angleDelta = spread > 1 ? weapon.spreadAngle / (spread - 1) : 0;
 
-        List<Collider> soColliderList = new List<Collider>();   //colliders of all the so fired, used to tell each so to ignore each other
+        List<Collider> soColliderList = new List<Collider>();
 
         for (int i = 0; i < weapon.shootPointList.Count; i++)
         {
@@ -578,7 +523,7 @@ public class UnitPlayer : Unit
             for (int m = 0; m < Mathf.Max(1, spread); m++)
             {
                 Vector3 shootPos = shootPoint.position;
-                if (spread > 1) shootPos = shootPoint.TransformPoint(new Vector3(0, 0, Random.Range(-1.5f, 1.5f)));
+                //if (spread > 1) shootPos = shootPoint.TransformPoint(new Vector3(0, 0, Random.Range(-1.5f, 1.5f)));
                 Quaternion shootRot = baseShootRot * Quaternion.Euler(0, startAngle + (m * angleDelta), 0);
 
                 //GameObject soObj=(GameObject)Instantiate(weaponList[weapID].shootObject, shootPos, shootRot);
@@ -597,7 +542,6 @@ public class UnitPlayer : Unit
 
             if (weapon.shootPointDelay > 0) yield return new WaitForSeconds(weapon.shootPointDelay);
 
-            //if (weapID >= weaponList.Count) break;
         }
 
     }
@@ -606,7 +550,7 @@ public class UnitPlayer : Unit
 
 
 
-    private bool disableFire = false;   //for whatever reason some external component need to stop player from firing
+    private bool disableFire = false;
     public void DisableFire() { disableFire = true; }
     public void EnableFire() { disableFire = false; }
 
@@ -616,18 +560,15 @@ public class UnitPlayer : Unit
         if (weapon.OnCoolDown()) return 2;
         if (weapon.OutOfAmmo()) return 3;
         if (weapon.Reloading()) return 4;
-        //if (weapon.useEnergyAsAmmo && energy < weapon.energyCost) return 5;
         return 0;
     }
 
-    //public bool ContinousFire() { return GameControl.EnableContinousFire() & weapon.continousFire; }
 
     public override float GetRange() { return weapon.GetRange(); }
 
     private float recoilSignTH = 0.5f;
     public float GetRecoil() { return weapon.GetRecoilMagnitude(); }
 
-    //public bool UseEnergyAsAmmo() { return weapon.useEnergyAsAmmo; }
 
     public bool Reloading() { return weapon.Reloading(); }
     public float GetReloadDuration() { return weapon.GetReloadDuration(); }
@@ -656,28 +597,17 @@ public class UnitPlayer : Unit
     public override bool ApplyEffect(Effect effect)
     {
         if (!base.ApplyEffect(effect)) return false;
-        TDS.GainEffect(effect); //for UIBuffIcons
+        TDS.GainEffect(effect); //show icon
         return true;
     }
 
 
     public void PlayerDestroyCallback()
     {
-        //if (weapon.temporary) RemoveWeapon();
         if (GameControl.GetPlayer() == this)
             GameControl.PlayerDestroyed();
     }
 
-
-
-
-
-    [HideInInspector] public int playerID = 0;  //for saving
-    public bool loadProgress = false;
-    public bool saveProgress = false;
-
-    public bool saveUponChange = false;
-    public bool SaveUponChange() { return saveProgress & saveUponChange; }
 
 
 
@@ -696,10 +626,6 @@ public class UnitPlayer : Unit
     public float GetBaseHitPoint() { return hitPointBase; }
     public float GetBaseEnergy() { return energyBase; }
 
-    //void OnGUI(){
-    //	GUI.Label(new Rect(50, 300, 200, 30), ""+GetFullHitPoint()+"    "+GetPerkHitPoint());
-    //	GUI.Label(new Rect(50, 320, 200, 30), ""+(1+GetLevelDamageMul()+GetPerkDamageMul()));
-    //}
 
     public override float GetFullHitPoint() { return hitPointBase + GetLevelHitPoint() + GetPerkHitPoint(); }
     public override float GetFullEnergy() { return energyBase + GetLevelEnergy() + GetPerkEnergy(); }
@@ -707,8 +633,7 @@ public class UnitPlayer : Unit
     public override float GetEnergyRegen() { return energyRate + GetLevelEnergyRegen() + GetPerkEnergyRegen(); }
 
     public float GetDamageMultiplier() { return 1 + GetLevelDamageMul() + GetPerkDamageMul(); }
-    // public float GetCritChanceMultiplier() { return 1 + GetLevelCritMul() + GetPerkCritMul(); }
-    // public float GetCritMulMultiplier() { return 1 + GetLevelCritMulMul() + GetPerkCritMulMul(); }
+
     public override float GetSpeedMultiplier() { return 1 + GetLevelSpeedMul() + GetPerkSpeedMul(); }
 
 
@@ -723,8 +648,7 @@ public class UnitPlayer : Unit
     public float GetLevelEnergyRegen() { return progress != null ? progress.GetEnergyRegenGain() : 0; }
 
     public float GetLevelDamageMul() { return progress != null ? progress.GetDamageMulGain() : 0; }
-    // public float GetLevelCritMul() { return progress != null ? progress.GetCritChanceMulGain() : 0; }
-    // public float GetLevelCritMulMul() { return progress != null ? progress.GetCritMultiplierMulGain() : 0; }
+
     public float GetLevelSpeedMul() { return progress != null ? progress.GetSpeedMulGain() : 0; }
 
 
@@ -737,54 +661,15 @@ public class UnitPlayer : Unit
     public float GetPerkSpeedMul() { return perk != null ? perk.GetMoveSpeedMul() : 0; }
 
     public float GetPerkDamageMul() { return perk != null ? perk.GetDamageMul() : 0; }
-    // public float GetPerkCritMul() { return perk != null ? perk.GetCritMul() : 0; }
-    // public float GetPerkCritMulMul() { return perk != null ? perk.GetCirtMulMul() : 0; }
 
 
-    //for perk that modify the weapon attack effect
-    // public void ChangeAllWeaponEffect(int effectID)
-    // {
-    //     int effectIndex = Effect_DB.GetEffectIndex(effectID);
-    //     weapon.ChangeEffect(effectID, effectIndex);
-    // }
 
-    // //for perk that modify the weapon ability
-    // public void ChangeAllWeaponAbility(int abilityID)
-    // {
-    //     for (int i = 0; i < weaponList.Count; i++) weaponList[i].ChangeAbility(abilityID);
-    // }
-    // public void ChangeWeaponAbility(int weaponID, int abilityID)
-    // {
-    //     for (int i = 0; i < weaponList.Count; i++)
-    //     {
-    //         if (weaponList[i].ID == weaponID)
-    //         {
-    //             weaponList[i].ChangeAbility(abilityID);
-    //             break;
-    //         }
-    //     }
-    // }
-
-    //for perk that modify the ability attack effect
-    // public void ChangeAllAbilityEffect(int effectID)
-    // {
-    //     int effectIndex = Effect_DB.GetEffectIndex(effectID);
-    //     Ability ab = AbilityManager.GetAbility();
-    //     ab.ChangeEffect(effectID, effectIndex);
-    // }
-    // public void ChangeAbilityEffect(int abilityID, int effectID)
-    // {
-    //     int effectIndex = Effect_DB.GetEffectIndex(effectID);
-    //     Ability ab = AbilityManager.GetAbility();
-    //     if (ab.ID == abilityID) ab.ChangeEffect(effectID, effectIndex);
-
-    // }
-
+    
 
 
     private bool dashing = false;
     public bool IsDashing() { return dashing; }
-    public void Dash(float range, float dur) { StartCoroutine(_Dash(range, dur)); }
+    public void Dash(float range, float dur) { StartCoroutine(_Dash(range, dur)); } //tôc biến
     public IEnumerator _Dash(float range, float dur)
     {
         dashing = true;

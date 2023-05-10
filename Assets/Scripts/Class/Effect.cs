@@ -24,7 +24,7 @@ public class Effect : Item
     // public float critChanceMul = 1;
     // public float critMultiplierMul = 1;
 
-    [HideInInspector] public bool expired = false;  //set to true when target is destroyed or the effect has been override
+    [HideInInspector] public bool expired = false;
 
 
 

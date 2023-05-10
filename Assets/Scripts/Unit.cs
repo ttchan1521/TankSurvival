@@ -112,16 +112,15 @@ public class Unit : PooledObject
     protected Collider thisCollider;
     public Collider GetCollider() { return thisCollider; }
 
-    [Space(10)] public float spawnImmunity = 3;
+    [Space(10)] public float spawnImmunity = 3; //thời gian bất tử ban đầu
     private float immunityCounter = -1;
     public void InitSpawnImmunity() { immunityCounter = spawnImmunity; }
 
     [Space(10)] public UnitAnimation uAnimation;
     public void SetUnitAnimation(UnitAnimation uAnim) { uAnimation = uAnim; }
-    protected bool moved = false;   //to indicate if the unit has moved in the frame (move animation is called in LateUpdate())
+    protected bool moved = false;   //để gọi anim
 
 
-    //attack range
     public virtual float GetRange() { return range; }
 
 
@@ -130,7 +129,6 @@ public class Unit : PooledObject
         thisT = transform;
         thisObj = gameObject;
 
-        //initiate the base stats
         if (startHitPointAtFull) hitPoint = hitPointFull;
 
         if (startEnergyAtFull) energy = energyFull;
@@ -138,7 +136,6 @@ public class Unit : PooledObject
 
         currentCD = 0;
 
-        //setup the physics
         thisCollider = thisObj.GetComponent<Collider>();
         if (anchorDown)
         {
@@ -153,22 +150,20 @@ public class Unit : PooledObject
             if (rBody != null) rBody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         }
 
-        //initiate the attack-stats
+
         attackStats.Init();
         contactAttackStats.Init();
 
-        //if(destroyedEffectObj!=null) ObjectPoolManager.New(destroyedEffectObj);
 
-        //TDSUtility.DestroyColliderRecursively(thisT);
     }
 
     public virtual void Start()
     {
-        //assign a unique ID to the unit instance
+
         if (instanceID <= 0)
             instanceID = GameControl.GetUnitInstanceID();
 
-        //add to UnitTracker if this is a hostile unit
+        
         if (hostileUnit) UnitTracker.AddUnit(this);
 
         TDS.NewUnit(this);
@@ -190,7 +185,7 @@ public class Unit : PooledObject
         }
     }
 
-    //called by unit spawner to override the hitpoint
+
     public void OverrideHitPoint(float value, _OverrideMode mode)
     {
         if (mode == _OverrideMode.Replace) hitPointFull = value;
@@ -220,27 +215,25 @@ public class Unit : PooledObject
     }
 
 
-    //function call when the unit instance gain/lost hitpoint from external source
     public virtual float GainHitPoint(float value)
     {
         float limit = GetFullHitPoint() - hitPoint;
         hitPoint += Mathf.Min(value, limit);
 
-        //if the unit lost hitpoint instead of gaining it
         if (value < 0)
         {
             hpRegenStaggerCounter = hpRegenStagger;
 
-            //if this is the player, call the damage event (inform UI)
+
             if (thisObj.layer == TDS.GetLayerPlayer()) TDS.PlayerDamaged(value);
         }
 
-        //if hitpoint reach 0, destroy the unit
+
         if (hitPoint <= 0) Destroyed();
 
         return limit;
     }
-    //function call when the unit instance gain/lost energy 
+
     public virtual float GainEnergy(float value)
     {
         float limit = GetFullEnergy() - energy;
@@ -254,7 +247,7 @@ public class Unit : PooledObject
     public bool IsInvincible() { return activeEffect.invincible; }
 
 
-    //applies the effect of an attack
+
     public void ApplyAttack(AttackInstance attInstance)
     {
         if (thisObj.layer == TDS.GetLayerOtherPlayer())
@@ -271,7 +264,7 @@ public class Unit : PooledObject
         }
         if (immunityCounter > 0) return;
 
-        //if unit is invincible, do nothing
+
         if (IsInvincible())
         {
             Debug.Log("Immuned");
@@ -282,25 +275,16 @@ public class Unit : PooledObject
 
         AttackStats aStats = attInstance.aStats;
 
-        //check if the attack is an aoe and modify the damage value is dimishingAOE is enabled
+        
         float damage = Random.Range(aStats.damageMin, aStats.damageMax);
         if (attInstance.isAOE && aStats.diminishingAOE)
         {
             damage *= Mathf.Clamp(1 - attInstance.aoeDistance / aStats.aoeRadius, 0, 1);
         }
 
-
-        //check for cirtical and modify the damage based on critical multiplier
-        // bool critical = Random.value < aStats.critChance;
-        // if (critical) damage *= aStats.critMultiplier;
-
-        //modify the damage based on damage and armor type
-        //damage *= DamageTable.GetModifier(armorType, aStats.damageType);
-
-        //if damage is valid, modify the hit point
         if (damage > 0)
         {
-            //show the overlay (for UI)
+
             if (GameControl.GetInstance().pvp && thisObj.layer != TDS.GetLayerPlayer())
             {
                 NetworkManager.Instance.Manager.Socket
@@ -314,74 +298,45 @@ public class Unit : PooledObject
                     });
             }
             Vector3 offsetPos = new Vector3(0, Random.value + 0.5f, 0);
-            // if (!critical) new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"));
-            // else 
+           
             new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"), new Color(1f, 0.9f, 0.9f, 1f), 1.5f);
 
-            //if the unit is player, fire event to inform UI
+
             if (thisObj.layer == TDS.GetLayerPlayer()) TDS.PlayerDamaged(damage);
 
-            //register the stagger
+
             hpRegenStaggerCounter = hpRegenStagger;
 
-            hitPoint -= damage; //damage the hitpoint
+            hitPoint -= damage;
             if (hitPoint <= 0) Destroyed(attInstance.GetSrcPlayer());
 
             if (hitPoint > 0 && uAnimation != null) uAnimation.Hit();
         }
 
-        //apply effect if there's any
+
         //if(aStats.effect!=null) ApplyEffect(aStats.effect);
         if (hitPoint > 0 && aStats.effectIdx >= 0) ApplyEffect(Effect_DB.CloneItem(aStats.effectIdx));
     }
 
-    //for apply damage directly, not in used
-    public void ApplyDamage(float damage)
-    {
-        if (immunityCounter > 0) return;
-
-        //show the overlay (for UI)
-        Vector3 offsetPos = new Vector3(0, Random.value + 0.5f, 0);
-        new TextOverlay(thisT.position + offsetPos, damage.ToString("f0"));
-
-        //if the unit is player, fire event to inform UI
-        if (thisObj.layer == TDS.GetLayerPlayer()) TDS.PlayerDamaged(damage);
-
-        //register the stagger
-        hpRegenStaggerCounter = hpRegenStagger;
-
-        hitPoint -= damage; //damage the hitpoint
-        if (hitPoint <= 0) Destroyed();
-
-        if (hitPoint > 0 && uAnimation != null) uAnimation.Hit();
-    }
 
 
-
-
-    //for when the unit is destroy by game mechanic
     public void Destroyed(UnitPlayer player = null)
     {
         if (destroyed) return;
 
-        //if(player==null) Debug.LogWarning("unit destroyed by not source player has been detected", null);
 
         destroyed = true;
 
-        //spawn a unit if spawnUponDestroy is assigned
         if (spawnUponDestroy != null)
         {
-            //loop as many as required
+
             for (int i = 0; i < spawnUponDestroyCount; i++)
             {
-                //instantiate the unit
-                //GameObject unitObj=(GameObject)Instantiate(spawnUponDestroy.gameObject, thisT.position, thisT.rotation);
-                //GameObject unitObj=ObjectPoolManager.Spawn(spawnUponDestroy.gameObject, thisT.position, thisT.rotation);
+            
                 Unit unitObj = spawnUponDestroy.GetPoolItem<Unit>(thisT.position, thisT.rotation);
                 unitObj.gameObject.layer = thisObj.layer;
 
-                //pass on the wave info
-                //Unit unitInstance=unitObj.GetComponent<Unit>();
+
                 if (waveID >= 0)
                 {
                     unitObj.SetWaveID(spawner, waveID);
@@ -391,15 +346,15 @@ public class Unit : PooledObject
             }
         }
 
-        //check if the unit is going to drop any collectible
+
         if (useDropManager)
-        {   //if useDropManager is enabled, inform CollectibleDropManager
+        {  
         
             CollectibleDropManager.instance.UnitDestroyed(thisT.position);
         }
         else
         {
-            //check chance and spawn the item
+
             if (dropObject != null && Random.value < dropChance)
                 //ObjectPoolManager.Spawn(dropObject.gameObject, thisT.position, Quaternion.identity);
                 dropObject.GetComponent<PooledObject>().GetPoolItem(thisT.position, Quaternion.identity);
@@ -408,8 +363,7 @@ public class Unit : PooledObject
 
         if (player != null)
         {
-            //applies the bonus value for when the unit is destroyed.
-            //if(valueCredits>0) GameControl.GainCredits(valueCredits);
+            
             if (valueScore > 0) GameControl.GainScore(valueScore);
 
             if (valuePerkC > 0) player.GainPerkCurrency(valuePerkC);
@@ -420,9 +374,9 @@ public class Unit : PooledObject
 
         if (GetUnitAI()) GetUnitAI()._Destroyed();
 
-        //if(isPlayer) GetUnitPlayer().DeleteSave();
+        
 
-        //shake camera
+
         TDS.CameraShake(destroyCamShake);
 
         float delay = uAnimation != null ? uAnimation.Destroyed() : 0;
@@ -430,7 +384,7 @@ public class Unit : PooledObject
         ClearUnit(true, delay);
     }
 
-    //called when unit is destroyed, also called by other component to take unit out of the game
+
     public void ClearUnit(bool showDestroyEffect = true, float delay = 0) 
     { 
         if (GameControl.GetInstance().pvp && thisObj.layer != TDS.GetLayerPlayer())
@@ -455,31 +409,28 @@ public class Unit : PooledObject
     {
         destroyed = true;
 
-        //if the unit is spawned from a spawner for a parcicular wave, inform the spawner that a unit in the wave is cleared
         if (spawner != null && waveID >= 0)
         {
             spawner.UnitCleared(waveID);
         }
 
-        //remove the unit from UnitTracker and inform GameControl (to check for objective)
         if (hostileUnit)
         {
             UnitTracker.RemoveUnit(this);
             GameControl.UnitDestroyed(this);
         }
 
-        //clear all the effects on the unit
+
+        //remove effect
         for (int i = 0; i < effectList.Count; i++) effectList[i].expired = true;
 
-        //call all the destroy callback, if there's any
+
         for (int i = 0; i < destroyCallbackList.Count; i++) destroyCallbackList[i]();
 
-        //spawn the destroy effect
         if (showDestroyEffect) DestroyedEffect(thisT.position + new Vector3(0, 0.1f, 0));
 
         if (delay > 0) yield return new WaitForSeconds(delay);
 
-        //if(destroyParent) Destroy(thisT.parent.gameObject);
 
         Destroy(thisObj);
         //ReturnToPool();
@@ -487,17 +438,11 @@ public class Unit : PooledObject
         yield return null;
     }
 
-    //[HideInInspector] public bool destroyParent=false;
 
-    //spawn the destroy effect
     void DestroyedEffect(Vector3 pos)
     {
         if (destroyedEffectObj == null) return;
-        //~ GameObject obj=(GameObject)MonoBehaviour.Instantiate(destroyedEffectObj, pos, thisT.rotation);
-        //~ if(autoDestroyDObj) MonoBehaviour.Destroy(obj, dObjActiveDuration);
 
-        // if(!autoDestroyDObj) ObjectPoolManager.Spawn(destroyedEffectObj, pos, thisT.rotation);
-        // else ObjectPoolManager.Spawn(destroyedEffectObj, pos, thisT.rotation, dObjActiveDuration);
         var effectObj = destroyedEffectObj.GetComponent<PooledObject>().GetPoolItem(pos, thisT.rotation);
         if (autoDestroyDObj)
         {
@@ -506,8 +451,7 @@ public class Unit : PooledObject
     }
 
 
-    //for unit which spawned for a particular wave in wave based spawning
-    //to keep track if the wave has been cleared
+
     [HideInInspector] public int waveID = -1;
     [HideInInspector] public UnitSpawner spawner;
     public void SetWaveID(UnitSpawner sp, int id)
@@ -519,7 +463,6 @@ public class Unit : PooledObject
 
 
 
-    //the lsit of active effects on the unit
     private List<Effect> effectList = new List<Effect>();
 
     public void ClearAllEffect()
@@ -528,31 +471,29 @@ public class Unit : PooledObject
         UpdateActiveEffect();
     }
 
-    //function call to add new effect to the unit
+
     public virtual bool ApplyEffect(Effect effect)
     {
         if (effect == null || !effect.Applicable()) return false;
 
-        //add the effect to the list and update the active effect
+
         effectList.Add(effect);
         UpdateActiveEffect();
 
-        //run the coroutine for the effect
         if (!effCoroutine) StartCoroutine(EffectRoutine());
 
         return true;
     }
 
-    private bool effCoroutine = false;  //make sure we dont run 2 instance of EffectRoutine
-                                        //to keep track of all the effect
+    private bool effCoroutine = false;   //ngăn chạy coroutine 2 lần
+                                        
     IEnumerator EffectRoutine()
     {
         effCoroutine = true;
 
-        //loop forever
         while (true)
         {
-            //gain hit point or energy if applicable
+
             if (activeEffect.restoreHitPoint != 0) GainHitPoint(activeEffect.restoreHitPoint * Time.deltaTime);
             if (activeEffect.restoreEnergy != 0) GainEnergy(activeEffect.restoreEnergy * Time.deltaTime);
 
@@ -560,12 +501,11 @@ public class Unit : PooledObject
             for (int i = 0; i < effectList.Count; i++)
             {
                 effectList[i].duration -= Time.deltaTime;
-                //if an effect duration has run out
                 if (effectList[i].duration <= 0)
                 {
                     effectList.RemoveAt(i);
                     i -= 1;
-                    updateEffect = true;    //set updateEffect to true so UpdateActiveEffect() will be called later
+                    updateEffect = true;    //remove khỏi effect tổng
                 }
             }
             if (updateEffect) UpdateActiveEffect();
@@ -574,11 +514,9 @@ public class Unit : PooledObject
         }
     }
 
-    //this is the master effect combining all the stats from all active effect
-    //the stats is recalculated in UpdateActiveEffect everytime an effect is added or removed
+
     public Effect activeEffect = new Effect();
 
-    //refresh the stats in activeEffect
     public void UpdateActiveEffect()
     {
         activeEffect = new Effect();
@@ -593,19 +531,14 @@ public class Unit : PooledObject
 
             activeEffect.damageMul *= effectList[i].damageMul;
 
-            // activeEffect.critChanceMul *= effectList[i].critChanceMul;
-            // activeEffect.critMultiplierMul *= effectList[i].critMultiplierMul;
         }
     }
 
-    //modify the attackStats to active effect
     protected AttackStats ModifyAttackStatsToExistingEffect(AttackStats aStats)
     {
         aStats.damageMin *= activeEffect.damageMul;
         aStats.damageMax *= activeEffect.damageMul;
 
-        // aStats.critChance *= activeEffect.critChanceMul;
-        // aStats.critMultiplier *= activeEffect.critMultiplierMul;
 
         return aStats;
     }
