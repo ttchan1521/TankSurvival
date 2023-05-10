@@ -11,7 +11,6 @@ namespace UI
 
         public Text lbTitle;
 
-        public GameObject butContinueObj;
 
         private GameObject thisObj;
         private CanvasGroup canvasGroup;
@@ -54,12 +53,10 @@ namespace UI
                 if (won)
                 {
                     lbTitle.text = "Level Cleared!";
-                    butContinueObj.SetActive(true);
                 }
                 else
                 {
                     lbTitle.text = "Level Lost";
-                    butContinueObj.SetActive(UIMainControl.ShowContinueButtonWhenLost());
                 }
             }
             else
@@ -72,7 +69,6 @@ namespace UI
                 {
                     lbTitle.text = "You lost";
                 }
-                butContinueObj.SetActive(false);
             }
 
             UIMainControl.FadeIn(canvasGroup, 0.25f, thisObj);

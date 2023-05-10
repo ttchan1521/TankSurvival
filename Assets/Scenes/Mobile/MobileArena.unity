@@ -1892,8 +1892,6 @@ MonoBehaviour:
   - {fileID: 984251520}
   - {fileID: 105088105}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11429150, guid: 1ba28e33c3075524b9a78cfd369a9836, type: 3}
   overrideHitPoint: 0
@@ -1925,7 +1923,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -1936,8 +1933,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 4
@@ -4739,6 +4734,7 @@ Transform:
   - {fileID: 1601061147}
   - {fileID: 1667901339}
   - {fileID: 1407617859}
+  - {fileID: 2136350260}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5194,8 +5190,6 @@ MonoBehaviour:
   - {fileID: 75221467}
   - {fileID: 1222222474}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11437226, guid: ad710aa37c73fc3409a9e9a64e226786, type: 3}
   - {fileID: 0}
@@ -5228,7 +5222,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -5239,8 +5232,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 5
@@ -5806,15 +5797,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 90
+  startDelay: 75
   spawnAreaList:
   - {fileID: 190666971}
   - {fileID: 138098580}
   - {fileID: 1882321677}
   - {fileID: 243401797}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11480342, guid: cdf399e9d1f58d5449d9e508588b20d1, type: 3}
   - {fileID: 0}
@@ -5847,7 +5836,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -5858,8 +5846,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 5
@@ -5930,15 +5916,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 120
+  startDelay: 100
   spawnAreaList:
   - {fileID: 471107730}
   - {fileID: 1109817356}
   - {fileID: 1496696470}
   - {fileID: 1500134563}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11431630, guid: e71d82a40f222f64993c4ecd47bbbf3b, type: 3}
   - {fileID: 0}
@@ -5971,7 +5955,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -5982,8 +5965,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 5
@@ -8737,7 +8718,6 @@ MonoBehaviour:
   timerDuration: 120
   pvp: 0
   remainingDuration: 0
-  credits: 0
   score: 0
   enableAbility: 1
   enableAltFire: 0
@@ -11210,8 +11190,6 @@ MonoBehaviour:
   - {fileID: 1246613685}
   - {fileID: 1362257449}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11425830, guid: 21f5cd3ffb3eea14984206bc5635f671, type: 3}
   - {fileID: 0}
@@ -11244,7 +11222,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -11255,8 +11232,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 5
@@ -11519,6 +11494,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 499104, guid: 1a42e9b1ab51fd343ab1e2cadd86c1ad, type: 3}
   m_PrefabInstance: {fileID: 1818476885}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2136350259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2136350260}
+  - component: {fileID: 2136350261}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2136350260
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136350259}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 924782452}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2136350261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136350259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1dd787150e49f40b5994be22eb789c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolList: []
 --- !u!1 &2142006773
 GameObject:
   m_ObjectHideFlags: 0

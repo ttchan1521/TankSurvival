@@ -366,8 +366,6 @@ MonoBehaviour:
   - {fileID: 1790627325}
   - {fileID: 0}
   randomRotation: 0
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11429150, guid: 044d511b82e163541bc3d1a1d9150ea8, type: 3}
   overrideHitPoint: 0
@@ -384,7 +382,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -398,7 +395,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -409,8 +405,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 0
-  creditIncrement: 0
   startingScore: 10
   scoreIncrement: 15
   spawnCD: 0.5
@@ -526,6 +520,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   gizmoColor: {r: 1, g: 0, b: 0.5, a: 1}
+--- !u!1 &426202955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 426202956}
+  - component: {fileID: 426202957}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &426202956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426202955}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 924782452}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &426202957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426202955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1dd787150e49f40b5994be22eb789c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolList: []
 --- !u!1 &624855133
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,8 +618,6 @@ MonoBehaviour:
   - {fileID: 2082557852}
   - {fileID: 402129257}
   randomRotation: 0
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11483926, guid: 1318fe57b303b6d47a25f16dcb59b148, type: 3}
   - {fileID: 0}
@@ -598,7 +635,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -612,7 +648,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -623,8 +658,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 0
-  creditIncrement: 0
   startingScore: 10
   scoreIncrement: 15
   spawnCD: 5
@@ -927,6 +960,7 @@ Transform:
   - {fileID: 1601061147}
   - {fileID: 940576240}
   - {fileID: 949431555}
+  - {fileID: 426202956}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7039,7 +7073,6 @@ MonoBehaviour:
   timerDuration: 120
   pvp: 0
   remainingDuration: 0
-  credits: 0
   score: 0
   enableAbility: 1
   enableAltFire: 0
@@ -12051,8 +12084,6 @@ MonoBehaviour:
   - {fileID: 118829258}
   - {fileID: 0}
   randomRotation: 0
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11429150, guid: b0be0bd1c3767724baa8b478f5d76fc0, type: 3}
   overrideHitPoint: 0
@@ -12069,7 +12100,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -12083,7 +12113,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -12094,8 +12123,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 0
-  creditIncrement: 0
   startingScore: 10
   scoreIncrement: 15
   spawnCD: 0.5

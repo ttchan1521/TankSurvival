@@ -53,7 +53,7 @@ public class Collectible_DB : ScriptableObject
     public static Collectible GetCollectibleAtIndex(int index)
     {
         Init();
-        if (index < instance.collectibleList.Count)
+        if (index < instance.collectibleList.Count && index >= 0)
             return instance.collectibleList[index];
         return null;
     }

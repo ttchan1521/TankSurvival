@@ -252,7 +252,7 @@ public class PvPManager : MonoBehaviour
     public Unit GetPlayerNearest(Vector3 position)
     {
         Unit u = GameControl.GetPlayer();
-        float currentDistance = Vector3.Distance(position, u.transform.position);
+        float currentDistance = u != null ? Vector3.Distance(position, u.transform.position) : Int32.MaxValue;
         foreach(var kvp in otherPlayers)
         {
             var newDistance = Vector3.Distance(position, kvp.Value.transform.position);

@@ -2495,8 +2495,6 @@ MonoBehaviour:
   - {fileID: 984251520}
   - {fileID: 105088105}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11429150, guid: 1ba28e33c3075524b9a78cfd369a9836, type: 3}
   overrideHitPoint: 0
@@ -3184,6 +3182,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 428305348}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &442051900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 442051901}
+  - component: {fileID: 442051902}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &442051901
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442051900}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 924782452}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &442051902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442051900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1dd787150e49f40b5994be22eb789c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolList: []
 --- !u!4 &444583297 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 499104, guid: 1a42e9b1ab51fd343ab1e2cadd86c1ad, type: 3}
@@ -5558,6 +5601,7 @@ Transform:
   - {fileID: 1667901339}
   - {fileID: 906469616}
   - {fileID: 1989362025}
+  - {fileID: 442051901}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5940,15 +5984,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 30
+  startDelay: 50
   spawnAreaList:
   - {fileID: 140765103}
   - {fileID: 1801645282}
   - {fileID: 75221467}
   - {fileID: 1222222474}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11437226, guid: ad710aa37c73fc3409a9e9a64e226786, type: 3}
   overrideHitPoint: 0
@@ -6542,15 +6584,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 30
+  startDelay: 90
   spawnAreaList:
   - {fileID: 190666971}
   - {fileID: 138098580}
   - {fileID: 1882321677}
   - {fileID: 243401797}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11480342, guid: cdf399e9d1f58d5449d9e508588b20d1, type: 3}
   overrideHitPoint: 0
@@ -6649,15 +6689,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 30
+  startDelay: 110
   spawnAreaList:
   - {fileID: 471107730}
   - {fileID: 1109817356}
   - {fileID: 1496696470}
   - {fileID: 1500134563}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11431630, guid: e71d82a40f222f64993c4ecd47bbbf3b, type: 3}
   overrideHitPoint: 0
@@ -8958,7 +8996,7 @@ MonoBehaviour:
   pvp: 1
   remainingDuration: 0
   score: 0
-  enableAbility: 1
+  enableAbility: 0
   enableAltFire: 0
   enableAutoReload: 1
   friendly: 0
@@ -8967,7 +9005,7 @@ MonoBehaviour:
   objective: {fileID: 13880324}
   playerLife: 0
   startPoint: {fileID: 0}
-  mainMenu: _DemoMenu
+  mainMenu: _MobileMenu
   nextScene: DemoGauntlet
 --- !u!4 &1557837476
 Transform:
@@ -11438,15 +11476,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMode: 1
   spawnUponStart: 1
-  startDelay: 30
+  startDelay: 70
   spawnAreaList:
   - {fileID: 206046211}
   - {fileID: 698596599}
   - {fileID: 1246613685}
   - {fileID: 1362257449}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11425830, guid: 21f5cd3ffb3eea14984206bc5635f671, type: 3}
   overrideHitPoint: 0

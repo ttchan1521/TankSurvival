@@ -19345,8 +19345,6 @@ MonoBehaviour:
   - {fileID: 327212811}
   - {fileID: 21442104}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11429150, guid: 1ba28e33c3075524b9a78cfd369a9836, type: 3}
   - {fileID: 11425830, guid: 21f5cd3ffb3eea14984206bc5635f671, type: 3}
@@ -19371,7 +19369,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -19382,8 +19379,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 2
@@ -19421,7 +19416,6 @@ MonoBehaviour:
   energy: 10
   energyRate: 0.5
   startEnergyAtFull: 1
-  armorType: 0
   anchorDown: 1
   moveSpeed: 0
   brakeRange: 2
@@ -19438,13 +19432,10 @@ MonoBehaviour:
   range: 30
   cooldown: 5
   attackStats:
-    damageType: 0
     damageMin: 1
     damageMax: 4
     aoeRadius: 0
     diminishingAOE: 1
-    critChance: 0.15
-    critMultiplier: 2
     impactForce: 2
     explosionRadius: 2.5
     explosionForce: 5
@@ -19454,19 +19445,15 @@ MonoBehaviour:
   contactCooldown: 1
   contactCurrentCD: 0
   contactAttackStats:
-    damageType: 0
     damageMin: 1
     damageMax: 4
     aoeRadius: 0
     diminishingAOE: 1
-    critChance: 0.15
-    critMultiplier: 2
     impactForce: 2
     explosionRadius: 2.5
     explosionForce: 5
     effectID: -1
     effectIdx: -1
-  valueCredits: 0
   valueScore: 10
   valueHitPoint: 0
   valueEnergy: 0
@@ -19491,7 +19478,6 @@ MonoBehaviour:
     icon: {fileID: 0}
     desp: 
     showOnUI: 1
-    hitChance: 1
     duration: 2.5
     restoreHitPoint: 0
     restoreEnergy: 0
@@ -19499,8 +19485,6 @@ MonoBehaviour:
     stun: 0
     invincible: 0
     damageMul: 1
-    critChanceMul: 1
-    critMultiplierMul: 1
     expired: 0
   agent: {fileID: 0}
   destroyUponPlayerContact: 0
@@ -19518,11 +19502,6 @@ MonoBehaviour:
   alwaysShootTowardsTarget: 0
   randFirstAttackDelay: 1
   firstAttackDelay: 0
-  anchorToPoint: 0
-  anchorT: {fileID: 0}
-  anchorRadius: 0
-  anchorPoint: {x: 0, y: 0, z: 0}
-  currentAnchor: {x: 0, y: 0, z: 0}
 --- !u!54 &457716677
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -31765,8 +31744,6 @@ MonoBehaviour:
   - {fileID: 1413424877}
   - {fileID: 1455730297}
   randomRotation: 1
-  anchorToPoint: 0
-  anchorRadius: 3
   spawnUnitList:
   - {fileID: 11425830, guid: 21f5cd3ffb3eea14984206bc5635f671, type: 3}
   overrideHitPoint: 0
@@ -31788,7 +31765,6 @@ MonoBehaviour:
       startDelay: 0
       interval: 1
       spawnArea: {fileID: 0}
-    creditGain: 0
     scoreGain: 0
     spawnArea: {fileID: 0}
     activeUnitCount: 0
@@ -31799,8 +31775,6 @@ MonoBehaviour:
   maxSubWaveCount: 3
   unitCount: 2
   unitCountInc: 1
-  startingCredit: 10
-  creditIncrement: 10
   startingScore: 10
   scoreIncrement: 10
   spawnCD: 2
@@ -31838,7 +31812,6 @@ MonoBehaviour:
   energy: 10
   energyRate: 0.5
   startEnergyAtFull: 1
-  armorType: 0
   anchorDown: 1
   moveSpeed: 0
   brakeRange: 2
@@ -31855,13 +31828,10 @@ MonoBehaviour:
   range: 30
   cooldown: 5
   attackStats:
-    damageType: 0
     damageMin: 1
     damageMax: 4
     aoeRadius: 0
     diminishingAOE: 1
-    critChance: 0.15
-    critMultiplier: 2
     impactForce: 2
     explosionRadius: 2.5
     explosionForce: 5
@@ -31871,19 +31841,15 @@ MonoBehaviour:
   contactCooldown: 1
   contactCurrentCD: 0
   contactAttackStats:
-    damageType: 0
     damageMin: 1
     damageMax: 4
     aoeRadius: 0
     diminishingAOE: 1
-    critChance: 0.15
-    critMultiplier: 2
     impactForce: 2
     explosionRadius: 2.5
     explosionForce: 5
     effectID: -1
     effectIdx: -1
-  valueCredits: 0
   valueScore: 10
   valueHitPoint: 0
   valueEnergy: 0
@@ -31908,7 +31874,6 @@ MonoBehaviour:
     icon: {fileID: 0}
     desp: 
     showOnUI: 1
-    hitChance: 1
     duration: 2.5
     restoreHitPoint: 0
     restoreEnergy: 0
@@ -31916,8 +31881,6 @@ MonoBehaviour:
     stun: 0
     invincible: 0
     damageMul: 1
-    critChanceMul: 1
-    critMultiplierMul: 1
     expired: 0
   agent: {fileID: 0}
   destroyUponPlayerContact: 0
@@ -31935,11 +31898,6 @@ MonoBehaviour:
   alwaysShootTowardsTarget: 0
   randFirstAttackDelay: 1
   firstAttackDelay: 0
-  anchorToPoint: 0
-  anchorT: {fileID: 0}
-  anchorRadius: 0
-  anchorPoint: {x: 0, y: 0, z: 0}
-  currentAnchor: {x: 0, y: 0, z: 0}
 --- !u!54 &725051812
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -43964,6 +43922,7 @@ Transform:
   - {fileID: 1601061147}
   - {fileID: 735287440}
   - {fileID: 1577586821}
+  - {fileID: 1879321272}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -87970,7 +87929,6 @@ MonoBehaviour:
   timerDuration: 10
   pvp: 0
   remainingDuration: 0
-  credits: 0
   score: 0
   enableAbility: 0
   enableAltFire: 0
@@ -110505,6 +110463,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a42e9b1ab51fd343ab1e2cadd86c1ad, type: 3}
+--- !u!1 &1879321271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1879321272}
+  - component: {fileID: 1879321273}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1879321272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879321271}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 924782452}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1879321273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879321271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1dd787150e49f40b5994be22eb789c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolList: []
 --- !u!4 &1880822302 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 499104, guid: 1a42e9b1ab51fd343ab1e2cadd86c1ad, type: 3}

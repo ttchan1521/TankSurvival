@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mobile/MobilePvP.unity
     guid: ae13a4206cf7d0740a31177d289eb3aa
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Mobile/MobileShootingRange.unity
     guid: 3e50c7f930902fe46892e5965f475ea9
   - enabled: 1
