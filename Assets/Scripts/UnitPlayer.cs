@@ -6,7 +6,7 @@ using DefaultNamespace;
 using pvp;
 
 public enum _MovementMode { Rigid, FreeForm }
-public enum _TurretAimMode { ScreenSpace, Raycast }
+
 
 public class UnitPlayer : Unit
 {
@@ -27,7 +27,7 @@ public class UnitPlayer : Unit
 
     [Header("Aiming")]
     public bool enableTurretRotate = true; //nòng súng có thể xoay
-    public _TurretAimMode turretAimMode = _TurretAimMode.ScreenSpace;
+
     public LayerMask castMask;
 
     public bool aimAtTravelDirection = true; //xoay theo hướng di chuyển
@@ -60,7 +60,7 @@ public class UnitPlayer : Unit
     {
         base.Awake();
 
-        
+
 
         isPlayer = true;
 
@@ -199,7 +199,7 @@ public class UnitPlayer : Unit
         return obj;
     }
 
-    
+
     public void AimTurretMouse(Vector3 mousePos)
     {
         if (destroyed || IsStunned()) return;
@@ -219,35 +219,18 @@ public class UnitPlayer : Unit
             return;
         }
 
-        if (turretAimMode == _TurretAimMode.ScreenSpace)
+        LayerMask mask = 1 << TDS.GetLayerTerrain();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
         {
-            Vector3 camV = Quaternion.Euler(0, camT.eulerAngles.y, 0) * Vector3.forward;
-            Vector3 dir = (mousePos - Camera.main.WorldToScreenPoint(thisT.position)).normalized;
-            dir = new Vector3(dir.x, 0, dir.y);
+            Vector3 point = new Vector3(hit.point.x, thisT.position.y, hit.point.z);
 
-            float angleOffset = camT.eulerAngles.y; //get the camera y-axis angle 
-            float sign = dir.x > 0 ? 1 : -1;                    //get the angle direction
-
-            Vector3 dirM = Quaternion.Euler(0, angleOffset, 0) * dir;   //rotate the dir for the camera angle, dir has to be vector3 in order to work
-
-            Quaternion wantedRot = Quaternion.Euler(0, sign * Vector3.Angle(camV, dirM) + angleOffset, 0);
+            Quaternion wantedRot = Quaternion.LookRotation(point - thisT.position);
             if (!smoothTurretRotation) turretObj.rotation = wantedRot;
             else turretObj.rotation = Quaternion.Slerp(turretObj.rotation, wantedRot, Time.deltaTime * 15);
         }
-        else if (turretAimMode == _TurretAimMode.Raycast)
-        {
-            LayerMask mask = 1 << TDS.GetLayerTerrain();
-            Ray ray = Camera.main.ScreenPointToRay(mousePos);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-            {
-                Vector3 point = new Vector3(hit.point.x, thisT.position.y, hit.point.z);
 
-                Quaternion wantedRot = Quaternion.LookRotation(point - thisT.position);
-                if (!smoothTurretRotation) turretObj.rotation = wantedRot;
-                else turretObj.rotation = Quaternion.Slerp(turretObj.rotation, wantedRot, Time.deltaTime * 15);
-            }
-        }
     }
 
     public void AimTurretDPad(Vector2 direction)
@@ -356,7 +339,7 @@ public class UnitPlayer : Unit
         direction = direction.normalized;
 
         Vector3 dirV = Quaternion.Euler(0, camT.eulerAngles.y, 0) * Vector3.forward; //hướng camera
-        Vector3 dirH = Quaternion.Euler(0, 90, 0) * dirV;                                          
+        Vector3 dirH = Quaternion.Euler(0, 90, 0) * dirV;
         dirV = dirV * direction.y * (enabledMovementZ ? 1 : 0);
         dirH = dirH * direction.x * (enabledMovementX ? 1 : 0);
         Vector3 dirHV = (dirH + dirV).normalized;
@@ -365,7 +348,7 @@ public class UnitPlayer : Unit
         if (movementMode == _MovementMode.FreeForm)
         {
             velocity += dirHV * 0.025f * (acceleration - velocity.magnitude);
-        } 
+        }
         else
         {
             float stopper = !CheckObstacle(dirHV) ? 1 : 0;
@@ -664,7 +647,7 @@ public class UnitPlayer : Unit
 
 
 
-    
+
 
 
     private bool dashing = false;
