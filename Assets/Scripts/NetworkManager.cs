@@ -8,7 +8,7 @@ namespace DefaultNamespace
 {
     public class NetworkManager : Singleton<NetworkManager>
     {
-        public const string UriString = "http://localhost:3000";
+        public const string UriString = "http://ec2-34-219-26-196.us-west-2.compute.amazonaws.com:25577";
         public SocketManager Manager { get; private set; }
 
         private void Start()

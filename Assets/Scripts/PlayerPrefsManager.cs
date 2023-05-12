@@ -59,21 +59,24 @@ public class PlayerPrefsManager
 
     public static string UserId
     {
-        get => PlayerPrefs.GetString(GetKeyClone(GetKeyClone(PREFS_USER_ID)), string.Empty);
-        set => PlayerPrefs.SetString(GetKeyClone(GetKeyClone(PREFS_USER_ID)), value);
+        get => PlayerPrefs.GetString(GetKeyClone(PREFS_USER_ID), string.Empty);
+        set => PlayerPrefs.SetString(GetKeyClone(PREFS_USER_ID), value);
     }
 
     public static string Username
     {
-        get => PlayerPrefs.GetString(GetKeyClone(GetKeyClone(PREFS_USERNAME)), string.Empty);
-        set => PlayerPrefs.SetString(GetKeyClone(GetKeyClone(PREFS_USERNAME)), value);
+        get => PlayerPrefs.GetString(GetKeyClone(PREFS_USERNAME), string.Empty);
+        set => PlayerPrefs.SetString(GetKeyClone(PREFS_USERNAME), value);
     }
+
+static string username;
+static string userId;
 
     private static string GetKeyClone(string key)
     {
 #if UNITY_EDITOR
         if (!ClonesManager.IsClone()) return key;
-        string customArgument = ClonesManager.GetArgument();
+        string customArgument = "clone";
         return $"{customArgument}:{key}";
 #else
         return key;
